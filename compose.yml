@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: analyz_corp_admin
       POSTGRES_PASSWORD: analyz_corp_passwd
-      POSTGRES_DB: my_database
+      POSTGRES_DB: analyz_corp
     ports:
       - "5432:5432"
 
