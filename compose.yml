@@ -1,0 +1,13 @@
+services:
+  analyz_corp_db:
+    image: postgres:17
+    container_name: analyz_corp_db
+    environment:
+      POSTGRES_USER: analyz_corp_admin
+      POSTGRES_PASSWORD: analyz_corp_passwd
+      POSTGRES_DB: my_database
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
