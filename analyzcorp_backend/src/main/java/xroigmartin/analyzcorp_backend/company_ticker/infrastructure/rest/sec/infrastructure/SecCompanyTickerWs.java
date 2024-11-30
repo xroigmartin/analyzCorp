@@ -1,6 +1,5 @@
 package xroigmartin.analyzcorp_backend.company_ticker.infrastructure.rest.sec.infrastructure;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -21,14 +20,13 @@ public class SecCompanyTickerWs implements FindCompanyTickerRepository {
 
     private static final String COMPANIES_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json";
 
-    @Value("${analyzCorpo.system-email}")
-    private String systemEmail;
-    private final ObjectMapper mapper;
+    private final String systemEmail;
     private final RestTemplate restTemplate;
 
-    public SecCompanyTickerWs(ObjectMapper mapper, RestTemplate restTemplate) {
-        this.mapper = mapper;
+    public SecCompanyTickerWs(RestTemplate restTemplate,
+                              @Value("${analyzCorpo.system-email}") String systemEmail) {
         this.restTemplate = restTemplate;
+        this.systemEmail = systemEmail;
     }
 
     @Override
