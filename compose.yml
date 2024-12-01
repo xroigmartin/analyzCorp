@@ -3,11 +3,14 @@ services:
     image: postgres:17
     container_name: analyz_corp_db
     environment:
-      POSTGRES_USER: analyz_corp_admin
-      POSTGRES_PASSWORD: analyz_corp_passwd
-      POSTGRES_DB: analyz_corp
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    volumes:
+      - ./init-scripts/init_admin.sql:/docker-entrypoint-initdb.d/init_admin.sql
+      - ./init-scripts/init_flyway.sql:/docker-entrypoint-initdb.d/init_flyway.sql
 
 volumes:
   postgres_data:

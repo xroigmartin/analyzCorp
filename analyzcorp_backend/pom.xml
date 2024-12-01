@@ -56,14 +56,14 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
+			<version>11.0.0</version>
+			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -75,6 +75,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 
@@ -92,6 +93,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<configuration>
+					<url>${env.FLYWAY_URL}</url>
+					<user>${env.FLYWAY_USER}</user>
+					<password>${env.FLYWAY_PASSWORD}</password>
+					<schemas>${env.FLYWAY_SCHEMA}</schemas>
+					<locations>classpath:db/migration</locations>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
