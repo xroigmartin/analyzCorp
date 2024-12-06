@@ -98,11 +98,9 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-					<url>${env.FLYWAY_URL}</url>
-					<user>${env.FLYWAY_USER}</user>
-					<password>${env.FLYWAY_PASSWORD}</password>
-					<schemas>${env.FLYWAY_SCHEMA}</schemas>
-					<locations>classpath:db/migration</locations>
+					<configFiles>
+						<configFile>../flyway.conf</configFile>
+					</configFiles>
 				</configuration>
 			</plugin>
 

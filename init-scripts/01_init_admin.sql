@@ -1,4 +1,4 @@
-CREATE USER analyz_corp_adm WITH PASSWORD 'xhAELT@gdhgDtn9Ldf4j';
+CREATE USER analyz_corp_adm WITH PASSWORD '${ANALYZ_CORP_ADM_PASS}';
 
 DO $$
     DECLARE

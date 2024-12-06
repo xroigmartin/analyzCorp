@@ -4,11 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### LOGS ###
-*.log
-*.gz
-
-
 ### STS ###
 .apt_generated
 .classpath
@@ -38,4 +33,6 @@ build/
 .vscode/
 
 ### Log folder ###
+*.log
+*.gz
 /logs/**

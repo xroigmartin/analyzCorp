@@ -1,0 +1,1 @@
+CREATE SCHEMA analyz_corp AUTHORIZATION analyz_corp_adm

@@ -5,12 +5,14 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      ANALYZ_CORP_ADM_PASS: ${ANALYZ_CORP_ADM_PASS}
+      ANALYZ_CORP_FLYWAY_PASS: ${ANALYZ_CORP_FLYWAY_PASS}
+      ANALYZ_CORP_READ_USER_PASS: ${ANALYZ_CORP_READ_USER_PASS}
+      ANALYZ_CORP_OW_USER_PASS: ${ANALYZ_CORP_OW_USER_PASS}
     ports:
       - "5432:5432"
     volumes:
-      - ./init-scripts/init_admin.sql:/docker-entrypoint-initdb.d/init_admin.sql
-      - ./init-scripts/init_flyway.sql:/docker-entrypoint-initdb.d/init_flyway.sql
+      - ./init-scripts/:/docker-entrypoint-initdb.d/
 
 volumes:
   postgres_data:

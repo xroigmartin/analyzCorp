@@ -1,6 +1,6 @@
 CREATE SCHEMA flyway;
 
-CREATE USER analyz_corp_flyway WITH PASSWORD 'A4sxNe!Hgpfzp!-@nxNK';
+CREATE USER analyz_corp_flyway WITH PASSWORD '${ANALYZ_CORP_FLYWAY_PASS}';
 
 GRANT ALL PRIVILEGES ON SCHEMA flyway TO analyz_corp_flyway;
 
