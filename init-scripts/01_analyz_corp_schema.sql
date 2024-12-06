@@ -1,0 +1,1 @@
+CREATE SCHEMA analyz_corp;
