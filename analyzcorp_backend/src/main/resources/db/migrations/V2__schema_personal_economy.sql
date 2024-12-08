@@ -1,0 +1,1 @@
+CREATE SCHEMA personal_economy AUTHORIZATION analyz_corp_container_user;
