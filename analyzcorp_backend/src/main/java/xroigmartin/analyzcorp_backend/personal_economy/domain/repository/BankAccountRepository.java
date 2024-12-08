@@ -7,5 +7,6 @@ import java.util.List;
 public interface BankAccountRepository {
 
     List<BankAccount> findAllBankAccount();
-    BankAccount createBankAccount(BankAccount createBankAccountDTO);
+    BankAccount createBankAccount(BankAccount createBankAccount);
+    BankAccount updateBankAccount(BankAccount updateBankAccount, Integer id);
 }

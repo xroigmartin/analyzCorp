@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xroigmartin.analyzcorp_backend.personal_economy.application.dto.BankAccountDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.application.dto.CreateBankAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.application.dto.UpdateBankAccountDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.application.interfaces.BankAccountService;
 import xroigmartin.analyzcorp_backend.personal_economy.application.utils.BankAccountUtils;
 import xroigmartin.analyzcorp_backend.personal_economy.domain.model.BankAccount;
@@ -38,6 +39,20 @@ public class BankAccountServiceImpl implements BankAccountService {
                 createBankAccountDTO.alias());
 
         var bankAccount = bankAccountJpaService.createBankAccount(newBankAccount);
+
+        return BankAccountUtils.convertBankAccountToBankAccountDTO(bankAccount);
+    }
+
+    @Override
+    public BankAccountDTO updateBankAccount(UpdateBankAccountDTO updateBankAccountDTO, Integer idBankAccount) {
+        var bankAccountUpdateInfo = new BankAccount(
+                idBankAccount,
+                updateBankAccountDTO.bankName(),
+                updateBankAccountDTO.iban(),
+                updateBankAccountDTO.alias()
+        );
+
+        var bankAccount = bankAccountJpaService.updateBankAccount(bankAccountUpdateInfo, idBankAccount);
 
         return BankAccountUtils.convertBankAccountToBankAccountDTO(bankAccount);
     }
