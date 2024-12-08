@@ -3,6 +3,7 @@ package xroigmartin.analyzcorp_backend.shared.infrastructure.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
@@ -11,7 +12,8 @@ import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResp
 @Slf4j
 public class AnalyzCorpControllerAdvice {
 
-    @ExceptionHandler({UnsupportedOperationException.class})
+    @ExceptionHandler({UnsupportedOperationException.class,
+                        HttpRequestMethodNotSupportedException.class})
     public ResponseEntity<ApiResponse<Void>> unsupportedMethodException(Exception ex){
         log.error("Unsupported operation: {}",ex.getMessage(), ex);
         var apiResponseError = ApiResponseHandler.generateError(
