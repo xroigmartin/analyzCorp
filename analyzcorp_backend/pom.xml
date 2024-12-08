@@ -99,7 +99,7 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
 					<configFiles>
-						<configFile>../flyway.conf</configFile>
+						<configFile>src/main/resources/db/flyway.conf</configFile>
 					</configFiles>
 				</configuration>
 			</plugin>
