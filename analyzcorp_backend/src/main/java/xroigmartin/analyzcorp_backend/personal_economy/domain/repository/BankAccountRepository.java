@@ -4,7 +4,8 @@ import xroigmartin.analyzcorp_backend.personal_economy.domain.model.BankAccount;
 
 import java.util.List;
 
-public interface ListBankAccountRepository {
+public interface BankAccountRepository {
 
     List<BankAccount> findAllBankAccount();
+    BankAccount createBankAccount(BankAccount createBankAccountDTO);
 }

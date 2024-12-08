@@ -9,4 +9,5 @@ public class BankAccountControllerConstants {
 
     public static final String BANK_ACCOUNT_PATH = PERSONAL_ECONOMY_PATH + "/bank-account";
     public static final String SUCCESS_FIND_ALL_BANK_ACCOUNT = "Find all bank accounts";
+    public static final String SUCCESS_CREATE_BANK_ACCOUNT = "Create bank accounts";
 }
