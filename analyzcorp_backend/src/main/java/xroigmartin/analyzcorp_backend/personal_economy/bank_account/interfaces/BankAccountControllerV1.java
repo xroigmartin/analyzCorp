@@ -1,11 +1,5 @@
 package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces;
 
-import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.BANK_ACCOUNT_PATH;
-import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_CREATE_BANK_ACCOUNT;
-import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_FIND_ALL_BANK_ACCOUNT;
-
-import java.util.List;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,40 +12,45 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.BankAccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.CreateBankAccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.UpdateBankAccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces.BankAccountService;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.AccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.CreateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.UpdateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces.AccountService;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntityHandler;
+
+import java.util.List;
+
+import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.BANK_ACCOUNT_PATH;
+import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_CREATE_BANK_ACCOUNT;
+import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_FIND_ALL_BANK_ACCOUNT;
 
 @RestController
 @RequestMapping(BANK_ACCOUNT_PATH)
 @AllArgsConstructor
 public final class BankAccountControllerV1 {
 
-
-    private final BankAccountService bankAccountService;
+    private final AccountService bankAccountService;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<List<BankAccountDTO>>> findAllBankAccounts(){
-        var bankAccounts = bankAccountService.findAllBankAccount();
+    public ResponseEntity<ApiResponse<List<AccountDTO>>> findAllBankAccounts(){
+        var bankAccounts = bankAccountService.findAllAccount();
         var apiResponse = ApiResponseHandler.generateSuccess(bankAccounts, SUCCESS_FIND_ALL_BANK_ACCOUNT, HttpStatus.OK.value());
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
     }
 
     @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<BankAccountDTO>> createBankAccount(@RequestBody @Valid CreateBankAccountDTO createBankAccountDTO){
-        var bankAccount = bankAccountService.createBankAccount(createBankAccountDTO);
+    public ResponseEntity<ApiResponse<AccountDTO>> createBankAccount(@RequestBody @Valid CreateAccountDTO createAccountDTO){
+        var bankAccount = bankAccountService.createAccount(createAccountDTO);
         var apiResponse = ApiResponseHandler.generateSuccess(bankAccount, SUCCESS_CREATE_BANK_ACCOUNT, HttpStatus.CREATED.value());
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(value="/{id-bank-account}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<BankAccountDTO>> updateBankAccount(@PathVariable("id-bank-account") Integer id,
-                                                                        @RequestBody @Valid UpdateBankAccountDTO updateBankAccountDTO){
-        var bankAccount = bankAccountService.updateBankAccount(updateBankAccountDTO, id);
+    public ResponseEntity<ApiResponse<AccountDTO>> updateBankAccount(@PathVariable("id-bank-account") Long id,
+                                                                     @RequestBody @Valid UpdateAccountDTO updateAccountDTO){
+        var bankAccount = bankAccountService.updateAccount(updateAccountDTO, id);
         var apiResponse = ApiResponseHandler.generateSuccess(bankAccount, SUCCESS_CREATE_BANK_ACCOUNT, HttpStatus.OK.value());
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
     }
