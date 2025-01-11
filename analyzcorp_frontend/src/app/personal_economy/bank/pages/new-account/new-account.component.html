@@ -1,0 +1,27 @@
+<p-card>
+  <form #accountForm="ngForm" (ngSubmit)="onSubmit()" id="bank-account-form">
+    <div>
+      <p-floatlabel variant="on">
+        <label for="bankName">Bank name: </label>
+        <input pInputText id="bankName" name="bankName" type="text" [(ngModel)]="accountModel.bankName" #bankName="ngModel" required>
+      </p-floatlabel>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <label for="iban">IBAN: </label>
+        <input pInputText id="iban" name="iban" type="text" [(ngModel)]="accountModel.iban" #iban="ngModel" required>
+      </p-floatlabel>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <label for="alias">Alias: </label>
+        <input pInputText id="alias" name="alias" type="text" [(ngModel)]="accountModel.alias" #alias="ngModel">
+      </p-floatlabel>
+
+    </div>
+
+    <p-button type="submit" label="Submit" [disabled]="!accountForm.form.valid"/>
+  </form>
+</p-card>
