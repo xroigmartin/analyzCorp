@@ -1,7 +1,8 @@
-<p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
+<p-toast position="center" key="message" (onClose)="onReject()" [baseZIndex]="5000">
   <ng-template let-message #message>
     <div class="toastMessage">
-      <div class="font-medium text-lg my-4">{{ message.summary }}</div>
+      <div class="messageSummary">{{ message.summary }}</div>
+      <div class="messageDetail">{{message.detail}}</div>
       <p-button severity="success" size="small" label="OK" (click)="onConfirm()" />
     </div>
   </ng-template>

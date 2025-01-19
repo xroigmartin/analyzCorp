@@ -15,6 +15,9 @@ import {Message} from 'primeng/message';
 import {MessageService, ToastMessageOptions} from 'primeng/api';
 import {MessageComponent} from '../../../../shared/components/message/message.component';
 import {Router} from '@angular/router';
+import {BankAccountService} from '../../services/bank-account.service';
+import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
+import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 
 @Component({
   standalone: true,
@@ -26,8 +29,9 @@ import {Router} from '@angular/router';
 export class NewAccountComponent {
 
   private router: Router = inject(Router);
+  private bankAccountService: BankAccountService = inject(BankAccountService);
 
-  private successfuly: boolean = false;
+  private successfully: boolean = false;
 
   @ViewChild('message')
   public messageComponent!: MessageComponent;
@@ -40,24 +44,54 @@ export class NewAccountComponent {
 
   onSubmit(): void  {
 
-    this.successfuly = true;
+    this.bankAccountService.createBankAccount(this.accountModel).subscribe({
+      next: (response: ApiResponse<AccountDTO>): void =>{
+        this.successfully = true;
 
-    const message: ToastMessageOptions = {
-      key:'confirm',
-      sticky: true,
-      summary:'Bank account created successfully.',
-      severity: 'success',
-    };
+        let message: ToastMessageOptions = {};
 
-    this.messageComponent.addMessage(message)
+        if(response.data.alias){
+          message = {
+            key: 'message',
+            sticky: true,
+            severity: 'success',
+            summary: 'Success',
+            detail: `Bank account ${response.data.alias} created successfully`,
+          }
+        }
+        else{
+          message = {
+            key: 'message',
+            sticky: true,
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Bank account created successfully',
+          }
+        }
 
-    console.log(this.accountModel);
-  }
+        this.messageComponent.addMessage(message);
+
+      },
+      error: (err) : void => {
+        const errorMessage= err.error?.error?.detail || 'Failed to create bank account';
+
+        const message: ToastMessageOptions = {
+          key: 'message',
+          sticky: true,
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+        }
+
+        this.messageComponent.addMessage(message);
+      }
+    });
+   }
 
   onCloseMessage(): void{
-    if(this.successfuly){
-      this.successfuly = false;
-      this.router.navigate(['personal-economy/account'])
+    if(this.successfully){
+      this.successfully = false;
+      this.router.navigate(['personal-economy/account']);
     }
   }
 }
