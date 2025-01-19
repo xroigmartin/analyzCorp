@@ -25,3 +25,12 @@
     <p-button type="submit" label="Submit" [disabled]="!accountForm.form.valid"/>
   </form>
 </p-card>
+
+<p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
+  <ng-template let-message #message>
+    <div class="toastMessage">
+      <div class="font-medium text-lg my-4">{{ message.summary }}</div>
+      <p-button severity="success" size="small" label="OK" (click)="onConfirm()" />
+    </div>
+  </ng-template>
+</p-toast>
