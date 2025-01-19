@@ -68,9 +68,7 @@ export class NewAccountComponent {
             detail: 'Bank account created successfully',
           }
         }
-
         this.messageComponent.addMessage(message);
-
       },
       error: (err) : void => {
         const errorMessage= err.error?.error?.detail || 'Failed to create bank account';
@@ -82,7 +80,6 @@ export class NewAccountComponent {
           summary: 'Error',
           detail: errorMessage,
         }
-
         this.messageComponent.addMessage(message);
       }
     });
@@ -93,5 +90,9 @@ export class NewAccountComponent {
       this.successfully = false;
       this.router.navigate(['personal-economy/account']);
     }
+  }
+
+  trimIban() : void {
+    this.accountModel.iban = this.accountModel.iban.replace(/\s/g, "");
   }
 }
