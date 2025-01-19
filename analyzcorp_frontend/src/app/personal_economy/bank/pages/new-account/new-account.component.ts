@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -12,20 +12,25 @@ import {Button} from 'primeng/button';
 import {Toast} from 'primeng/toast';
 import {Avatar} from 'primeng/avatar';
 import {Message} from 'primeng/message';
-import {MessageService} from 'primeng/api';
+import {MessageService, ToastMessageOptions} from 'primeng/api';
+import {MessageComponent} from '../../../../shared/components/message/message.component';
+import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'personal-economy-new-account',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, Card, FloatLabel, InputText, Button, Toast, Avatar],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, Card, FloatLabel, InputText, Button, MessageComponent],
   templateUrl: './new-account.component.html',
   styleUrl: './new-account.component.css',
-  providers: [MessageService]
 })
 export class NewAccountComponent {
 
-  constructor(private messageService: MessageService) {
-  }
+  private router: Router = inject(Router);
+
+  private successfuly: boolean = false;
+
+  @ViewChild('message')
+  public messageComponent!: MessageComponent;
 
   public accountModel: CreateAccountDTO = {
     bankName: '',
@@ -33,21 +38,26 @@ export class NewAccountComponent {
     alias: ''
   }
 
-  public visible: boolean = false;
-
   onSubmit(): void  {
-    this.messageService.add({ key: 'confirm', sticky: true, severity: 'success', summary: 'Bank account create successfully' })
-    this.visible = true;
+
+    this.successfuly = true;
+
+    const message: ToastMessageOptions = {
+      key:'confirm',
+      sticky: true,
+      summary:'Bank account created successfully.',
+      severity: 'success',
+    };
+
+    this.messageComponent.addMessage(message)
+
     console.log(this.accountModel);
   }
 
-  onConfirm(): void{
-    this.messageService.clear('confirm');
-    this.visible = false;
-  }
-
-  onReject(): void {
-    this.messageService.clear('confirm');
-    this.visible = false;
+  onCloseMessage(): void{
+    if(this.successfuly){
+      this.successfuly = false;
+      this.router.navigate(['personal-economy/account'])
+    }
   }
 }

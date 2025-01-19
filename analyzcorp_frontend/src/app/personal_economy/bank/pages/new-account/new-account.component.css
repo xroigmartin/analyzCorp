@@ -4,9 +4,3 @@
   row-gap: 1rem;
 }
 
-.toastMessage{
-  display: flex;
-  flex: auto;
-  flex-direction: column;
-  align-items: center
-}

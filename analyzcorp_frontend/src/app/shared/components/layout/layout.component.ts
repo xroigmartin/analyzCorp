@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {MenuComponent} from '../menu/menu.component';
+import {MessageComponent} from '../message/message.component';
 
 @Component({
   standalone: true,
