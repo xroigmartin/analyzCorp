@@ -9,6 +9,11 @@ CREATE TABLE personal_economy.account (
     updated_by VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE personal_economy.currency (
+   code VARCHAR(3) PRIMARY KEY,
+   name VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE personal_economy.transaction (
     id SERIAL PRIMARY KEY,
     amount NUMERIC(15, 2) NOT NULL,
@@ -76,11 +81,6 @@ CREATE TABLE personal_economy.budget_category (
         REFERENCES personal_economy.budget (id) ON DELETE CASCADE,
     CONSTRAINT fk_budget_category FOREIGN KEY (category_id)
         REFERENCES personal_economy.category (id) ON DELETE CASCADE
-);
-
-CREATE TABLE personal_economy.currency (
-    code VARCHAR(3) PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
 );
 
 CREATE INDEX idx_transaction_account ON personal_economy.transaction(account_id);
