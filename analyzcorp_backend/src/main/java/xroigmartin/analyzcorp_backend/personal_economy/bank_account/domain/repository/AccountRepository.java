@@ -3,10 +3,12 @@ package xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.repo
 import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Account;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository {
 
     List<Account> findAllAccount();
+    Optional<Account> findAccountById(Long id);
     Account createAccount(Account createAccount);
-    Account updateAccount(Account updateAccount, long id);
+    Account updateAccount(Account updateAccount);
 }

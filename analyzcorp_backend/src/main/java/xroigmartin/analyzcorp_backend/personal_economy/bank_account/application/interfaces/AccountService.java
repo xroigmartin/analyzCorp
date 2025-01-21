@@ -9,6 +9,7 @@ import java.util.List;
 public interface AccountService {
 
     List<AccountDTO> findAllAccount();
+    AccountDTO findAccountById(long id);
     AccountDTO createAccount(CreateAccountDTO createAccountDTO);
-    AccountDTO updateAccount(UpdateAccountDTO updateAccountDTO, Long idAccount);
+    AccountDTO updateAccount(UpdateAccountDTO updateAccountDTO, long idAccount);
 }

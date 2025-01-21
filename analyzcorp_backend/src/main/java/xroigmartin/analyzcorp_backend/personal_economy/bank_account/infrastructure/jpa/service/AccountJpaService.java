@@ -10,6 +10,7 @@ import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructu
 import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.utils.AccountJpaUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,12 +27,24 @@ public class AccountJpaService implements AccountRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Optional<Account> findAccountById(Long id) {
+        var accountJpa = this.accountJpaRepository.findById(id);
+
+        return accountJpa.map(AccountJpaUtils::convertAccountJpaToAccount);
+    }
+
+    @Override
     @Transactional
     public Account createAccount(Account newBankAccount) {
         var newBankAccountJpa = AccountJpa.builder()
                 .bankName(newBankAccount.bankName())
                 .alias(newBankAccount.alias())
                 .iban(newBankAccount.iban())
+                .createdBy(newBankAccount.createdBy())
+                .createdAt(newBankAccount.createdAt())
+                .updatedAt(newBankAccount.updatedAt())
+                .updatedBy(newBankAccount.updatedBy())
                 .build();
 
         var bankAccount = this.accountJpaRepository.save(newBankAccountJpa);
@@ -41,14 +54,17 @@ public class AccountJpaService implements AccountRepository {
 
     @Override
     @Transactional
-    public Account updateAccount(Account updateAccount, long id) {
-        var oldBankAccount = this.accountJpaRepository.getReferenceById(id);
+    public Account updateAccount(Account updateAccount) {
 
         var bankAccountForUpdate = AccountJpa.builder()
-                .id(oldBankAccount.getId())
+                .id(updateAccount.id())
                 .bankName(updateAccount.bankName())
                 .iban(updateAccount.iban())
                 .alias(updateAccount.alias())
+                .createdAt(updateAccount.createdAt())
+                .createdBy(updateAccount.createdBy())
+                .updatedAt(updateAccount.updatedAt())
+                .updatedBy(updateAccount.updatedBy())
                 .build();
 
         var bankAccountUpdated = this.accountJpaRepository.save(bankAccountForUpdate);
