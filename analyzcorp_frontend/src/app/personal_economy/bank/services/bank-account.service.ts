@@ -17,12 +17,16 @@ export class BankAccountService {
     return this.httpClient.get<ApiResponse<AccountDTO[]>>('http://localhost:8080/api/v1/personal-economy/bank-account', {'headers': this.prepareHeaders()});
   }
 
+  getAccountById(accountId: number): Observable<ApiResponse<AccountDTO>>{
+    return this.httpClient.get<ApiResponse<AccountDTO>>(`http://localhost:8080/api/v1/personal-economy/bank-account/${accountId}`,{'headers': this.prepareHeaders()});
+  }
+
   createBankAccount(createBankAccount: CreateAccountDTO): Observable<ApiResponse<AccountDTO>>{
     return this.httpClient.post<ApiResponse<AccountDTO>>("http://localhost:8080/api/v1/personal-economy/bank-account", createBankAccount, {'headers': this.prepareHeaders()});
   }
 
-  updateBankAccount(updateBankAccount: UpdateAccountDTO): Observable<ApiResponse<AccountDTO>>{
-    return this.httpClient.put<ApiResponse<AccountDTO>>("http://localhost:8080/api/v1/personal-economy/bank-account", updateBankAccount, {'headers': this.prepareHeaders()});
+  updateBankAccount(accountId : number, updateBankAccount: UpdateAccountDTO): Observable<ApiResponse<AccountDTO>>{
+    return this.httpClient.put<ApiResponse<AccountDTO>>(`http://localhost:8080/api/v1/personal-economy/bank-account/${accountId}`, updateBankAccount, {'headers': this.prepareHeaders()});
   }
 
   private prepareHeaders(): HttpHeaders{

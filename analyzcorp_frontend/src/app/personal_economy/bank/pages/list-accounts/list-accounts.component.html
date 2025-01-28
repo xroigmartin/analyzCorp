@@ -14,6 +14,8 @@
       <th>
       IBAN
       </th>
+      <th>
+      </th>
     </tr>
   </ng-template>
   <ng-template #body let-account>
@@ -22,6 +24,9 @@
       <td>{{ account.alias }}</td>
       <td>{{ account.bankName }}</td>
       <td>{{ account.iban }}</td>
+      <td>
+        <p-button label="Update" [routerLink]="['/personal-economy/account/', account.id]" />
+      </td>
     </tr>
   </ng-template>
 </p-table>

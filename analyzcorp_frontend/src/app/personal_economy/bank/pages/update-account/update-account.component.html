@@ -1,0 +1,52 @@
+<p-card>
+  <form #accountForm="ngForm" (ngSubmit)="onSubmit()" id="bank-account-form">
+    <div>
+      <p-floatlabel variant="on">
+        <label for="bankName">Bank name: </label>
+        <input pInputText
+               id="bankName"
+               name="bankName"
+               #bankName="ngModel"
+               [(ngModel)]="accountModel.bankName"
+               type="text"
+               required>
+      </p-floatlabel>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <label for="iban">IBAN: </label>
+        <input pInputText
+               id="iban"
+               name="iban"
+               #iban="ngModel"
+               [(ngModel)]="accountModel.iban"
+               type="text"
+               required
+               (change)="trimIban()">
+      </p-floatlabel>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <label for="alias">Alias: </label>
+        <input pInputText
+               id="alias"
+               name="alias"
+               #alias="ngModel"
+               [(ngModel)]="accountModel.alias"
+               type="text"
+        >
+      </p-floatlabel>
+
+    </div>
+
+    <p-button type="submit" label="Submit" [disabled]="!accountForm.form.valid"/>
+  </form>
+</p-card>
+
+<shared-message
+  #message
+  (confirm)="onCloseMessage()"
+  (reject)="onCloseMessage()"
+/>
