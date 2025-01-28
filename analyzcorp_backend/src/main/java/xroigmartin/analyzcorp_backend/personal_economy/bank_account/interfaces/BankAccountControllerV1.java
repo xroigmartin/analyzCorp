@@ -25,6 +25,7 @@ import java.util.List;
 import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.BANK_ACCOUNT_PATH;
 import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_CREATE_BANK_ACCOUNT;
 import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_FIND_ALL_BANK_ACCOUNT;
+import static xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils.BankAccountControllerConstants.SUCCESS_GET_ACCOUNT_BY_ID;
 
 @RestController
 @RequestMapping(BANK_ACCOUNT_PATH)
@@ -37,6 +38,13 @@ public final class BankAccountControllerV1 {
     public ResponseEntity<ApiResponse<List<AccountDTO>>> findAllBankAccounts(){
         var bankAccounts = bankAccountService.findAllAccount();
         var apiResponse = ApiResponseHandler.generateSuccess(bankAccounts, SUCCESS_FIND_ALL_BANK_ACCOUNT, HttpStatus.OK.value());
+        return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<AccountDTO>> getAccountById(@PathVariable Long accountId){
+        var bankAccount = bankAccountService.findAccountById(accountId);
+        var apiResponse = ApiResponseHandler.generateSuccess(bankAccount, SUCCESS_GET_ACCOUNT_BY_ID, HttpStatus.OK.value());
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
     }
 
