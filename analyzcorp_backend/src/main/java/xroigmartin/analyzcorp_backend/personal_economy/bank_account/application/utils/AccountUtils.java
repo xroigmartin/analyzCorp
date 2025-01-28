@@ -13,6 +13,10 @@ public class AccountUtils {
                 .bankName(account.bankName())
                 .iban(account.iban())
                 .alias(account.alias())
+                .createdAt(account.createdAt())
+                .createdBy(account.createdBy())
+                .updatedAt(account.updatedAt())
+                .updatedBy(account.updatedBy())
                 .build();
     }
 }

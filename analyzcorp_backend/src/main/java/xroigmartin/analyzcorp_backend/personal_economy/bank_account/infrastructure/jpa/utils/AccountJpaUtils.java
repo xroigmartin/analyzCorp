@@ -13,6 +13,10 @@ public class AccountJpaUtils {
                 .bankName(accountJpa.getBankName())
                 .iban(accountJpa.getIban())
                 .alias(accountJpa.getAlias())
+                .createdAt(accountJpa.getCreatedAt())
+                .createdBy(accountJpa.getCreatedBy())
+                .updatedAt(accountJpa.getUpdatedAt())
+                .updatedBy(accountJpa.getUpdatedBy())
                 .build();
     }
 }
