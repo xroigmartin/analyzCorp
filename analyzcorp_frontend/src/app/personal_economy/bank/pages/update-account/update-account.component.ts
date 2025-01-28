@@ -106,4 +106,8 @@ export class UpdateAccountComponent  implements OnInit{
     }
   }
 
+  cancelForm(): void{
+    this.router.navigate(['personal-economy/account']);
+  }
+
 }

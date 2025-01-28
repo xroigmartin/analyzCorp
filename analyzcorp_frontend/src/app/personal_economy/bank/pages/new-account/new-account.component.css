@@ -4,3 +4,9 @@
   row-gap: 1rem;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  column-gap: 5rem;
+}
+

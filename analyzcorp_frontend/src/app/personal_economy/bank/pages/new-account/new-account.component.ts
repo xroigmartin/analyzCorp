@@ -95,4 +95,8 @@ export class NewAccountComponent {
   trimIban() : void {
     this.accountModel.iban = this.accountModel.iban.replace(/\s/g, "");
   }
+
+  cancelForm(): void{
+    this.router.navigate(['personal-economy/account']);
+  }
 }
