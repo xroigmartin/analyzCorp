@@ -2,6 +2,8 @@ package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastruct
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,9 +15,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.enums.TransactionType;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -37,10 +44,11 @@ public class TransactionJpa {
     private String currency;
 
     @Column(name = "date", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private Instant date;
+    private OffsetDateTime date;
 
     @Column(name = "type", nullable = false, length = 50)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -49,15 +57,19 @@ public class TransactionJpa {
     @JoinColumn(name = "account_id", nullable = false)
     private AccountJpa accountJpa;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant createdAt;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private OffsetDateTime createdAt;
 
-    @Column(name = "created_by", nullable = false, length = 50)
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, length = 50, updatable = false)
     private String createdBy;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant updatedAt;
+    @LastModifiedDate
+    @Column(name = "updated_at", updatable = false, nullable = false)
+    private OffsetDateTime updatedAt;
 
+    @LastModifiedBy
     @Column(name = "updated_by", nullable = false, length = 50)
     private String updatedBy;
 

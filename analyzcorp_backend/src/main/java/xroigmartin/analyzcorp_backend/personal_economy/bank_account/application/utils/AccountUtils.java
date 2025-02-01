@@ -1,7 +1,7 @@
 package xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.utils;
 
 import lombok.experimental.UtilityClass;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.AccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.AccountDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Account;
 
 @UtilityClass

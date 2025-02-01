@@ -1,8 +1,8 @@
 package xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces;
 
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.AccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.CreateAccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.UpdateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.AccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.CreateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.UpdateAccountDTO;
 
 import java.util.List;
 

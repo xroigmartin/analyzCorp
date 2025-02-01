@@ -1,4 +1,4 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces;
+package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.v1;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.AccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.CreateAccountDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.UpdateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.AccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.CreateAccountDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.dto.account.UpdateAccountDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces.AccountService;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
