@@ -15,7 +15,7 @@ import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntity
 public class CurrencyControllerAdvice {
 
     @ExceptionHandler({CurrencyNotFoundException.class})
-    public ResponseEntity<ApiResponse<Void>> currencyNotFound(Exception ex){
+    public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex){
         log.error(ex.getMessage(), ex);
         var apiResponseError = ApiResponseHandler.generateError(
                 "Currency not found",
