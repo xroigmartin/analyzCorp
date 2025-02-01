@@ -1,4 +1,4 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.exceptions;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.exceptions;
 
 import java.io.Serial;
 

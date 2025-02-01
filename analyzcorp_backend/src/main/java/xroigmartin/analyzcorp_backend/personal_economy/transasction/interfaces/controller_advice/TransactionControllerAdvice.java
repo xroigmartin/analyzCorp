@@ -1,11 +1,11 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.controller_advice;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.controller_advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.exceptions.CreateTransactionException;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.exceptions.CreateTransactionException;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntityHandler;

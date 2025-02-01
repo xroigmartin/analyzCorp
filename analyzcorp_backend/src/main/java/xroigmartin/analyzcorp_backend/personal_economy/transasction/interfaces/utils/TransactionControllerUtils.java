@@ -1,10 +1,10 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.utils;
-
-import lombok.experimental.UtilityClass;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.dto.transaction.TransactionDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Transaction;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.utils;
 
 import static xroigmartin.analyzcorp_backend.personal_economy.shared.interfaces.utils.PersonalEconomyControllerConstants.PERSONAL_ECONOMY_PATH;
+
+import lombok.experimental.UtilityClass;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model.Transaction;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.dto.transaction.TransactionDTO;
 
 @UtilityClass
 public class TransactionControllerUtils {

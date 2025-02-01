@@ -1,11 +1,11 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.utils;
-
-import lombok.experimental.UtilityClass;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.dto.transaction.CreateTransactionDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Transaction;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.application.utils;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+
+import lombok.experimental.UtilityClass;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model.Transaction;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.dto.transaction.CreateTransactionDTO;
 
 @UtilityClass
 public class TransactionUtils {

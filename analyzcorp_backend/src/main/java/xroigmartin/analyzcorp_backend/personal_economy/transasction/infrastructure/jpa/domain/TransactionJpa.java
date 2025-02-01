@@ -1,4 +1,7 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.domain;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,10 +22,8 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.enums.TransactionType;
-
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain.AccountJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.enums.TransactionType;
 
 @Getter
 @Setter

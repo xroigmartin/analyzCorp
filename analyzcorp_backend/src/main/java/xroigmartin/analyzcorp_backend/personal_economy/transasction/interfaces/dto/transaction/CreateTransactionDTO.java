@@ -1,11 +1,11 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.dto.transaction;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.enums.TransactionType;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.dto.transaction;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.enums.TransactionType;
 
 @Builder
 public record CreateTransactionDTO (

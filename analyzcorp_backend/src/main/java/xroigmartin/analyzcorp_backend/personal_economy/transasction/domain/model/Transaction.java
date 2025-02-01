@@ -1,13 +1,13 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.dto.transaction;
-
-import lombok.Builder;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.enums.TransactionType;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import lombok.Builder;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.enums.TransactionType;
+
 @Builder
-public record TransactionDTO (
+public record Transaction (
         Long id,
         BigDecimal amount,
         String currency,
@@ -19,4 +19,4 @@ public record TransactionDTO (
         String createdBy,
         OffsetDateTime updatedAt,
         String updatedBy
-) {}
+){}

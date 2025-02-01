@@ -1,4 +1,6 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.domain;
+
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
+import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain.CategoryJpa;
 
 @Getter
 @Setter

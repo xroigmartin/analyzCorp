@@ -1,12 +1,12 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.service;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Transaction;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.repository.TransactionRepository;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.repository.TransactionJpaRepository;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.utils.TransactionJpaUtils;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model.Transaction;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.repository.TransactionRepository;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.repository.TransactionJpaRepository;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.utils.TransactionJpaUtils;
 
 @Service
 @AllArgsConstructor

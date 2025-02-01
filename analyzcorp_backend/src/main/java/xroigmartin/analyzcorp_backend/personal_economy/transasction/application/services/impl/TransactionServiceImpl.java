@@ -1,14 +1,14 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.services;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.application.services.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.interfaces.dto.transaction.CreateTransactionDTO;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces.AccountService;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.interfaces.TransactionService;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.application.utils.TransactionUtils;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Transaction;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.repository.TransactionRepository;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.exceptions.CreateTransactionException;
+import xroigmartin.analyzcorp_backend.personal_economy.account.application.services.AccountService;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.application.services.TransactionService;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.application.utils.TransactionUtils;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.exceptions.CreateTransactionException;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model.Transaction;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.repository.TransactionRepository;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.interfaces.dto.transaction.CreateTransactionDTO;
 
 @Service
 @AllArgsConstructor

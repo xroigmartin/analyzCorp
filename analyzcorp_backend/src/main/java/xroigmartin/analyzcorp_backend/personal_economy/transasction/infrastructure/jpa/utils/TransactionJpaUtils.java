@@ -1,9 +1,9 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.utils;
+package xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.utils;
 
 import lombok.experimental.UtilityClass;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.domain.model.Transaction;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain.AccountJpa;
-import xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain.TransactionJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain.AccountJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.domain.model.Transaction;
+import xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.domain.TransactionJpa;
 
 @UtilityClass
 public class TransactionJpaUtils {
