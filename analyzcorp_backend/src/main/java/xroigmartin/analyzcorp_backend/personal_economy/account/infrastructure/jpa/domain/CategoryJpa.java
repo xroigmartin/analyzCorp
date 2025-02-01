@@ -1,4 +1,4 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain;
+package xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

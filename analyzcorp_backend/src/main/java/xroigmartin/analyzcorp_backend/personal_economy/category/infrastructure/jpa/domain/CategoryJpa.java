@@ -1,10 +1,10 @@
-package xroigmartin.analyzcorp_backend.personal_economy.bank_account.infrastructure.jpa.domain;
+package xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,22 +16,19 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "budget_category", schema = "personal_economy")
-public class BudgetCategory {
+@Entity
+@Table(name = "category", schema = "personal_economy")
+public class CategoryJpa {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "budget_id", nullable = false)
-    private BudgetJpa budgetJpa;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryJpa categoryJpa;
+    @Column(name = "name", nullable = false, length = 255, unique = true)
+    private String name;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
     private Instant createdAt;
