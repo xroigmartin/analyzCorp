@@ -30,6 +30,17 @@ export class MenuComponent implements OnInit{
           }
         ]
       },
+      {
+        label: 'Configuration',
+        icon: 'pi pi-cog',
+        items: [
+          {
+            label: 'Currencies',
+            icon: 'pi pi-money-bill',
+            routerLink: 'config/currency'
+          }
+        ]
+      }
     ]
   }
 }
