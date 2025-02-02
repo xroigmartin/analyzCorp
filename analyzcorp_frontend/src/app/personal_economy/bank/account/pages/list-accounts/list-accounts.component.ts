@@ -3,7 +3,7 @@ import {TableModule} from 'primeng/table';
 import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 import {Button} from 'primeng/button';
 import {RouterLink} from '@angular/router';
-import {BankAccountService} from '../../services/bank-account.service';
+import {AccountService} from '../../services/account.service';
 import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interface';
 
 @Component({
@@ -15,7 +15,7 @@ import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interfac
 })
 export class ListAccountsComponent implements OnInit{
 
-  private bankAccountService: BankAccountService = inject(BankAccountService);
+  private bankAccountService: AccountService = inject(AccountService);
 
   accounts: AccountDTO[] = [];
 

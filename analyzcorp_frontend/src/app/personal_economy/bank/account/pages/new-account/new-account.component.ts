@@ -15,7 +15,7 @@ import {Message} from 'primeng/message';
 import {MessageService, ToastMessageOptions} from 'primeng/api';
 import {MessageComponent} from '../../../../../shared/components/message/message.component';
 import {Router} from '@angular/router';
-import {BankAccountService} from '../../services/bank-account.service';
+import {AccountService} from '../../services/account.service';
 import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interface';
 import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 
@@ -29,7 +29,7 @@ import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 export class NewAccountComponent {
 
   private router: Router = inject(Router);
-  private bankAccountService: BankAccountService = inject(BankAccountService);
+  private bankAccountService: AccountService = inject(AccountService);
 
   private successfully: boolean = false;
 

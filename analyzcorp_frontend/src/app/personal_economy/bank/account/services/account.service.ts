@@ -9,7 +9,7 @@ import {UpdateAccountDTO} from '../interfaces/UpdateAccountDTO.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class BankAccountService {
+export class AccountService {
 
   constructor(private httpClient: HttpClient) { }
 

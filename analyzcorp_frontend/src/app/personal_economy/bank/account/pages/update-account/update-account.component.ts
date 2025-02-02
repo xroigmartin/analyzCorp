@@ -11,7 +11,7 @@ import {Card} from 'primeng/card';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BankAccountService} from '../../services/bank-account.service';
+import {AccountService} from '../../services/account.service';
 
 @Component({
   standalone: true,
@@ -33,7 +33,7 @@ export class UpdateAccountComponent  implements OnInit{
 
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute)
-  private bankAccountService: BankAccountService = inject(BankAccountService);
+  private bankAccountService: AccountService = inject(AccountService);
 
   protected successfully: boolean = false;
 
