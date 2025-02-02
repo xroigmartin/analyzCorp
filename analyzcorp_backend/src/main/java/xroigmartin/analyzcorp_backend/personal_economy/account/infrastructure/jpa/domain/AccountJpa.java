@@ -1,38 +1,40 @@
-package xroigmartin.analyzcorp_backend.personal_economy.transasction.infrastructure.jpa.domain;
-
-import java.time.Instant;
+package xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryJpa;
+
+import java.time.Instant;
 
 @Getter
 @Setter
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "transaction_category", schema = "personal_economy")
-public class TransactionCategoryJpa {
+@Table(name = "account", schema = "personal_economy")
+public class AccountJpa {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private TransactionJpa transactionJpa;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryJpa categoryJpa;
+    @Column(name = "bank_name", nullable = false, length = 255)
+    private String bankName;
+
+    @Column(name = "iban", nullable = false, length = 34, unique = true)
+    private String iban;
+
+    @Column(name = "alias", length = 255)
+    private String alias;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
     private Instant createdAt;
