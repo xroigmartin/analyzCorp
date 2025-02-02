@@ -12,7 +12,7 @@ export class CurrencyService {
   constructor(private httpClient: HttpClient) { }
 
   findAllCurrencies():Observable<ApiResponse<CurrencyDTO[]>>{
-    return this.httpClient.get<ApiResponse<CurrencyDTO[]>>("http://localhost:8080/api/v1/personal-economy/currencies", {"headers": this.prepareHeaders()});
+    return this.httpClient.get<ApiResponse<CurrencyDTO[]>>("http://localhost:8080/api/v1/control-panel/currencies", {"headers": this.prepareHeaders()});
   }
 
   private prepareHeaders(): HttpHeaders{
