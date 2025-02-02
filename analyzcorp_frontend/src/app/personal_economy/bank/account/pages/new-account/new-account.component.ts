@@ -13,10 +13,10 @@ import {Toast} from 'primeng/toast';
 import {Avatar} from 'primeng/avatar';
 import {Message} from 'primeng/message';
 import {MessageService, ToastMessageOptions} from 'primeng/api';
-import {MessageComponent} from '../../../../shared/components/message/message.component';
+import {MessageComponent} from '../../../../../shared/components/message/message.component';
 import {Router} from '@angular/router';
 import {BankAccountService} from '../../services/bank-account.service';
-import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
+import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interface';
 import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 
 @Component({

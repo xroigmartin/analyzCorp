@@ -4,7 +4,7 @@ import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
 import {Button} from 'primeng/button';
 import {RouterLink} from '@angular/router';
 import {BankAccountService} from '../../services/bank-account.service';
-import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
+import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interface';
 
 @Component({
   standalone: true,

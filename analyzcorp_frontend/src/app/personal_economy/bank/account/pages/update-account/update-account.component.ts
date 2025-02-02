@@ -1,9 +1,9 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {AccountDTO} from '../../interfaces/AccountDTO.interfaces';
-import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
+import {ApiResponse} from '../../../../../shared/interfaces/ApiResponse.interface';
 import {ToastMessageOptions} from 'primeng/api';
 import {UpdateAccountDTO} from '../../interfaces/UpdateAccountDTO.interface';
-import {MessageComponent} from '../../../../shared/components/message/message.component';
+import {MessageComponent} from '../../../../../shared/components/message/message.component';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {FloatLabel} from 'primeng/floatlabel';
