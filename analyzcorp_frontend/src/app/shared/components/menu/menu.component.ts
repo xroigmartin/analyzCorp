@@ -31,13 +31,13 @@ export class MenuComponent implements OnInit{
         ]
       },
       {
-        label: 'Configuration',
-        icon: 'pi pi-cog',
+        label: 'Control panel',
+        icon: 'pi pi-sliders-h',
         items: [
           {
             label: 'Currencies',
             icon: 'pi pi-money-bill',
-            routerLink: 'config/currency'
+            routerLink: 'control-panel/currency'
           }
         ]
       }

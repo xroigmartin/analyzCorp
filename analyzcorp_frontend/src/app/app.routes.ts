@@ -4,7 +4,7 @@ import {UpdateAccountComponent} from './personal_economy/bank/account/pages/upda
 import {NewAccountComponent} from './personal_economy/bank/account/pages/new-account/new-account.component';
 import {
   ListCurrenciesComponent
-} from './config/currency/pages/list-currencies/list-currencies.component';
+} from './control_panel/currency/pages/list-currencies/list-currencies.component';
 
 export const routes: Routes = [
   {
@@ -30,7 +30,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'config',
+    path: 'control-panel',
     children: [
       {
         path: 'currency',
