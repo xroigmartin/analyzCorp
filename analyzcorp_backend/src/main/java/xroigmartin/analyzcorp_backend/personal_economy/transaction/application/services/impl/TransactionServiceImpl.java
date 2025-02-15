@@ -11,6 +11,7 @@ import xroigmartin.analyzcorp_backend.personal_economy.account.application.servi
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.BankTransactionService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.caixa_bank.CaixaBankTransactionServiceImpl;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.utils.TransactionUtils;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.FileImportType;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.exceptions.CreateTransactionException;
@@ -67,6 +68,11 @@ public class TransactionServiceImpl implements TransactionService {
 
         this.transactionRepository.createListOfTransaction(transactions);
 
+    }
+
+    @Override
+    public List<Transaction> findTransactionsByAccountId(Long accountId) {
+        return this.transactionRepository.findTransactionsByAccountId(accountId);
     }
 
 }

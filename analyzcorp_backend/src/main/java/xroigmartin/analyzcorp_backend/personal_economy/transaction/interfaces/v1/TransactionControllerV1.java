@@ -1,15 +1,18 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.v1;
 
 import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils.SUCCESS_CREATE_TRANSACTION;
+import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils.SUCCESS_FIND_TRANSACTIONS_BY_ACCOUNT_ID;
 import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils.TRANSACTION_PATH;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +54,17 @@ public class TransactionControllerV1 {
         transactionService.importFile(accountId, file, fileImportType);
 
         var apiResponse = ApiResponseHandler.generateSuccess("Import file of transactions successfully", SUCCESS_CREATE_TRANSACTION, HttpStatus.OK.value());
+
+        return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<List<TransactionDTO>>> getAllTransactionsByAccountId(@RequestParam Long accountId) {
+        var transactions = this.transactionService.findTransactionsByAccountId(accountId);
+
+        var transactionDtos = transactions.stream().map(TransactionControllerUtils::convertToTransactionDTO).toList();
+
+        var apiResponse = ApiResponseHandler.generateSuccess(transactionDtos, SUCCESS_FIND_TRANSACTIONS_BY_ACCOUNT_ID, HttpStatus.OK.value());
 
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
     }

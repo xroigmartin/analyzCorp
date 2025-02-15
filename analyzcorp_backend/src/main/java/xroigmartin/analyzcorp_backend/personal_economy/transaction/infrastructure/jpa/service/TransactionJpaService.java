@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.repository.TransactionRepository;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain.TransactionJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.repository.TransactionJpaRepository;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.utils.TransactionJpaUtils;
 
@@ -31,9 +32,14 @@ public class TransactionJpaService implements TransactionRepository {
     @Override
     @Transactional
     public void createListOfTransaction(List<Transaction> transactions) {
-
         var transactionsJpa = transactions.stream().map(TransactionJpaUtils::convertToTransactionJpa).toList();
         this.transactionJpaRepository.saveAll(transactionsJpa);
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Transaction> findTransactionsByAccountId(Long accountId) {
+        List<TransactionJpa> transactions = this.transactionJpaRepository.findTransactionsByAccountJpa_Id(accountId);
+        return transactions.stream().map(TransactionJpaUtils::convertToTransaction).toList();
     }
 }

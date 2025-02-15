@@ -9,4 +9,6 @@ public interface TransactionRepository {
     Transaction createTransaction(Transaction transaction);
 
     void createListOfTransaction(List<Transaction> transactions);
+
+    List<Transaction> findTransactionsByAccountId(Long accountId);
 }
