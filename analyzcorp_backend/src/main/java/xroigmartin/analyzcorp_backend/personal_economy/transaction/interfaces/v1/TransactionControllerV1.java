@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.FileImportType;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.CreateTransactionDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.TransactionDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils;
@@ -45,8 +46,9 @@ public class TransactionControllerV1 {
 
     @PostMapping(value="/import_file")
     public ResponseEntity<ApiResponse<String>> importFile(@RequestParam("accountId") Long accountId,
+                                                          @RequestParam("fileImportType") FileImportType fileImportType,
                                                           @RequestPart("file") MultipartFile file) throws IOException {
-        transactionService.importFile(accountId, file);
+        transactionService.importFile(accountId, file, fileImportType);
 
         var apiResponse = ApiResponseHandler.generateSuccess("Import file of transactions successfully", SUCCESS_CREATE_TRANSACTION, HttpStatus.OK.value());
 
