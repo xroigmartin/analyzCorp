@@ -3,6 +3,8 @@ package xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.v
 import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils.SUCCESS_CREATE_TRANSACTION;
 import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils.TRANSACTION_PATH;
 
+import java.io.IOException;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.CreateTransactionDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.TransactionDTO;
@@ -36,5 +41,15 @@ public class TransactionControllerV1 {
         var apiResponse = ApiResponseHandler.generateSuccess(transactionDTO, SUCCESS_CREATE_TRANSACTION, HttpStatus.CREATED.value());
 
         return ResponseEntityHandler.generate(apiResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="/import_file")
+    public ResponseEntity<ApiResponse<String>> importFile(@RequestParam("accountId") Long accountId,
+                                                          @RequestPart("file") MultipartFile file) throws IOException {
+        transactionService.importFile(accountId, file);
+
+        var apiResponse = ApiResponseHandler.generateSuccess("Import file of transactions successfully", SUCCESS_CREATE_TRANSACTION, HttpStatus.OK.value());
+
+        return ResponseEntityHandler.generate(apiResponse, HttpStatus.OK);
     }
 }

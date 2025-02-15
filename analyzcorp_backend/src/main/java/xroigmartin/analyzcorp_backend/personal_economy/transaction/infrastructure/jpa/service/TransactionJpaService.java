@@ -1,5 +1,7 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.service;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +26,14 @@ public class TransactionJpaService implements TransactionRepository {
         var transactionJpaCreated = this.transactionJpaRepository.save(transactionJpa);
 
         return TransactionJpaUtils.convertToTransaction(transactionJpaCreated);
+    }
+
+    @Override
+    @Transactional
+    public void createListOfTransaction(List<Transaction> transactions) {
+
+        var transactionsJpa = transactions.stream().map(TransactionJpaUtils::convertToTransactionJpa).toList();
+        this.transactionJpaRepository.saveAll(transactionsJpa);
+
     }
 }
