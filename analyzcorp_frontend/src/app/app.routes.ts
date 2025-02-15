@@ -5,6 +5,9 @@ import {NewAccountComponent} from './personal_economy/bank/account/pages/new-acc
 import {
   ListCurrenciesComponent
 } from './control_panel/currency/pages/list-currencies/list-currencies.component';
+import {
+  ListTransactionsComponent
+} from './personal_economy/transaction/pages/list-transactions/list-transactions.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +27,15 @@ export const routes: Routes = [
           {
             path: ':id',
             component: UpdateAccountComponent
+          }
+        ]
+      },
+      {
+        path: 'transaction',
+        children:[
+          {
+            path: '',
+            component: ListTransactionsComponent,
           }
         ]
       }

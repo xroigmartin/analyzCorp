@@ -27,6 +27,11 @@ export class MenuComponent implements OnInit{
             label: 'Bank Account',
             icon: 'pi pi-building-columns',
             routerLink: 'personal-economy/account'
+          },
+          {
+            label: 'Transactions',
+            icon: 'pi pi-receipt',
+            routerLink: 'personal-economy/transaction'
           }
         ]
       },
