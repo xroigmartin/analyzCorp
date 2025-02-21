@@ -1,0 +1,74 @@
+<p-card>
+  <form #accountForm="ngForm" class="transactionForm" (ngSubmit)="onSubmit()" id="transaction-form">
+    <div>
+      <label for="amount">Amount</label>
+      <p-input-number
+             id="amount"
+             name="amount"
+             mode="currency"
+             currency="{{getCurrency()}}"
+             #amount="ngModel"
+             [(ngModel)]="transactionModel.amount"
+             type="text"
+             required />
+    </div>
+    <div>
+      <label for="currency">Currency</label>
+      <p-select
+        id="currency"
+        name="currency"
+        class="currencyComponent"
+        [options]="currencies"
+        [ngModel]="transactionModel.currency"
+        optionLabel="code"
+        />
+    </div>
+    <div>
+      <label for="date">Date</label>
+      <p-datePicker
+        id="date"
+        name="date"
+        [(ngModel)]="transactionModel.date"
+        dateFormat="dd/mm/yy"
+      />
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <input
+        id="description"
+        name="description"
+        type="text"
+        pInputText
+        [(ngModel)]="transactionModel.description"
+      />
+    </div>
+    <div>
+      <label for="transactionType">Type</label>
+      <p-selectButton
+        id="transactionType"
+        name="transactionType"
+        [options]="transactionType"
+        [(ngModel)]="transactionModel.transactionType"/>
+    </div>
+    <div>
+      <label for="account">Account</label>
+      <p-select
+        id="account"
+        name="account"
+        [options]="accounts"
+        optionLabel="alias"
+        [(ngModel)]="transactionModel.account"
+      >
+        <ng-template let-account pTemplate="item">
+          {{account.alias}} ({{account.iban}})
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div class="buttons">
+      <p-button type="submit" label="Submit" [disabled]="!accountForm.form.valid"/>
+      <p-button label="cancel" severity="danger" (onClick)="cancelForm()"/>
+    </div>
+
+  </form>
+</p-card>

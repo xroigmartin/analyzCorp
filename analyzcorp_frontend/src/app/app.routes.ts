@@ -8,6 +8,9 @@ import {
 import {
   ListTransactionsComponent
 } from './personal_economy/transaction/pages/list-transactions/list-transactions.component';
+import {
+  CreateTransactionComponent
+} from './personal_economy/transaction/pages/create-transaction/create-transaction.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +39,10 @@ export const routes: Routes = [
           {
             path: '',
             component: ListTransactionsComponent,
+          },
+          {
+            path: 'new',
+            component: CreateTransactionComponent
           }
         ]
       }

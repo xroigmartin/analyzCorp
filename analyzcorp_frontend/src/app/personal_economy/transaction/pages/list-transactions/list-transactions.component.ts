@@ -8,17 +8,22 @@ import {DataView} from 'primeng/dataview';
 import {TableModule} from 'primeng/table';
 import {TransactionDTO} from '../../interfaces/transactionDTO.interface';
 import {CurrencyPipe, DatePipe} from '@angular/common';
+import {Button} from 'primeng/button';
+import {Dialog} from 'primeng/dialog';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-list-transactions',
   imports: [
     Select,
-    DataView,
     TableModule,
     DatePipe,
-    CurrencyPipe
+    CurrencyPipe,
+    Button,
+    RouterLink
   ],
   templateUrl: './list-transactions.component.html',
+  standalone: true,
   styleUrl: './list-transactions.component.css'
 })
 export class ListTransactionsComponent implements OnInit{
@@ -29,6 +34,7 @@ export class ListTransactionsComponent implements OnInit{
   accounts: AccountDTO[] = [];
   accountSelected: AccountDTO | null = null;
   transactions: TransactionDTO[] = [];
+  visibleImportTransactionDialog: boolean = false;
 
   ngOnInit(): void {
     this.accountService.findAllBankAccounts().subscribe({
@@ -59,5 +65,9 @@ export class ListTransactionsComponent implements OnInit{
     }
 
     return parseFloat(amount) < 0 ? "expense" : "";
+  }
+
+  showImportTransactionDialog() {
+    this.visibleImportTransactionDialog = true;
   }
 }

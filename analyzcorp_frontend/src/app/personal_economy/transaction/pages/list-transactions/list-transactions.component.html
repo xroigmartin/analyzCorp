@@ -5,6 +5,9 @@
   (onChange)="selectAccount($event)"
 />
 
+<p-button label="New Transaction" routerLink="new"/>
+<p-button label="Import Transactions" (click)="showImportTransactionDialog()"/>
+
 <p-table
   [value]="transactions"
   >
