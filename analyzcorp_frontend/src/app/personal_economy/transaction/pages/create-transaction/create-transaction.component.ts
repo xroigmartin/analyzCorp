@@ -113,6 +113,18 @@ export class CreateTransactionComponent implements OnInit{
         }
 
         this.messageComponent.addMessage(message);
+      },
+      error: (err) : void => {
+        const errorMessage= err.error?.error?.detail || 'Failed to create transaction';
+
+        const message: ToastMessageOptions = {
+          key: 'message',
+          sticky: true,
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+        }
+        this.messageComponent.addMessage(message);
       }
     });
   }
