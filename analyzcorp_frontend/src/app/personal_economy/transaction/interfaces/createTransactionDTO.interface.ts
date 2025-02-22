@@ -4,7 +4,7 @@ export interface CreateTransactionDTO {
   amount: string;
   currency: string;
   date: string;
-  transactionType: TransactionTypeEnum;
+  type: TransactionTypeEnum;
   description: string;
-  account: number;
+  accountId: number;
 }

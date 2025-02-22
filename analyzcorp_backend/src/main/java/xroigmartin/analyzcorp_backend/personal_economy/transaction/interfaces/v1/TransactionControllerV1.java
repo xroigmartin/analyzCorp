@@ -36,8 +36,8 @@ public class TransactionControllerV1 {
 
     private final TransactionService transactionService;
 
-    @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<TransactionDTO>> createTransaction(@RequestBody @Valid CreateTransactionDTO createTransactionDTO) {
+    @PostMapping(value="", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<TransactionDTO>> createTransaction(@RequestBody @Valid CreateTransactionDTO createTransactionDTO){
         var transaction = transactionService.createTransaction(createTransactionDTO);
 
         var transactionDTO = TransactionControllerUtils.convertToTransactionDTO(transaction);

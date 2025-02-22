@@ -16,8 +16,9 @@ import {DatePicker} from 'primeng/datepicker';
 import {SelectButton} from 'primeng/selectbutton';
 import {AccountService} from '../../../bank/account/services/account.service';
 import {AccountDTO} from '../../../bank/account/interfaces/AccountDTO.interfaces';
-import {PrimeTemplate} from 'primeng/api';
+import {PrimeTemplate, ToastMessageOptions} from 'primeng/api';
 import {Button} from "primeng/button";
+import {TransactionDTO} from '../../interfaces/transactionDTO.interface';
 
 @Component({
   selector: 'app-create-transaction',
@@ -30,7 +31,8 @@ import {Button} from "primeng/button";
     DatePicker,
     SelectButton,
     PrimeTemplate,
-    Button
+    Button,
+    MessageComponent
   ],
   templateUrl: './create-transaction.component.html',
   standalone: true,
@@ -56,13 +58,13 @@ export class CreateTransactionComponent implements OnInit{
     {label: 'EXPENSE', value:TransactionTypeEnum.EXPENSE},
   ];
 
-  public transactionModel = {
+  public transactionModel: {amount: string, currency: string, date: string, transactionType: TransactionTypeEnum, description: string, account: AccountDTO | null} = {
     amount: '0.0',
     currency: 'EUR',
-    date: new Date().getUTCDate().toString(),
+    date: new Date().toISOString(),
     transactionType: TransactionTypeEnum.INCOME,
     description: '',
-    account: null,
+    account: null
   }
 
   ngOnInit(): void {
@@ -80,16 +82,39 @@ export class CreateTransactionComponent implements OnInit{
   }
 
   onSubmit(): void {
-    console.log(this.transactionModel);
+
+    let accountId: number = 0;
+
+    if(this.transactionModel.account){
+      accountId = this.transactionModel.account.id;
+    }
+
+    const date = new Date(this.transactionModel.date).toISOString();
 
     const createTransactionDTO: CreateTransactionDTO = {
       amount: this.transactionModel.amount,
       currency: this.transactionModel.currency,
-      date: this.transactionModel.date,
-      transactionType: this.transactionModel.transactionType,
+      date: date,
+      type: this.transactionModel.transactionType,
       description: this.transactionModel.description,
-      accountId: this.transactionModel.account.id;
+      accountId: accountId
     }
+
+    this.transactionService.createTransaction(createTransactionDTO).subscribe({
+      next: (response: ApiResponse<TransactionDTO>)=> {
+        this.successfully = true;
+
+        const message:  ToastMessageOptions = {
+          key: 'message',
+          sticky: true,
+          severity: 'success',
+          summary: 'Success',
+          detail: `Transaction ${response.data.description} created successfully`,
+        }
+
+        this.messageComponent.addMessage(message);
+      }
+    });
   }
 
   getCurrency() {
@@ -98,5 +123,12 @@ export class CreateTransactionComponent implements OnInit{
 
   cancelForm() {
     this.route.navigate(['personal-economy/transaction']);
+  }
+
+  onCloseMessage() {
+    if(this.successfully){
+      this.successfully = false;
+      this.route.navigate(['personal-economy/transaction']);
+    }
   }
 }

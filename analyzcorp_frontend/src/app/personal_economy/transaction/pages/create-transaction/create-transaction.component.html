@@ -72,3 +72,9 @@
 
   </form>
 </p-card>
+
+<shared-message
+  #message
+  (confirm)="onCloseMessage()"
+  (reject)="onCloseMessage()"
+/>
