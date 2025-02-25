@@ -21,6 +21,15 @@ export class TransactionService {
     return this.httpClient.post<ApiResponse<TransactionDTO>>("http://localhost:8080/api/v1/personal-economy/transactions", createTransaction, {'headers': this.prepareHeaders()})
   }
 
+  importTransactionsFromFile(file: File, accountId: number, fileImportType: string): Observable<ApiResponse<string>>{
+    const formData: FormData = new FormData();
+    formData.append('accountId', accountId.toString());
+    formData.append('fileImportType', fileImportType);
+    formData.append('file', file);
+
+    return this.httpClient.post<ApiResponse<string>>("http://localhost:8080/api/v1/personal-economy/transactions/import_file", formData);
+  }
+
   private prepareHeaders(): HttpHeaders{
     return new HttpHeaders({
       'Content-Type': 'application/json'

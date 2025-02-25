@@ -1,10 +1,10 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-
 import lombok.Builder;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Builder
 public record CreateTransactionDTO (

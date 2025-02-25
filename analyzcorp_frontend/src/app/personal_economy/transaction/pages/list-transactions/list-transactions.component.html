@@ -1,13 +1,13 @@
+<section class="options">
 <p-select
   placeholder="Select Account"
   [options]="accounts"
   optionLabel="alias"
   (onChange)="selectAccount($event)"
 />
-
 <p-button label="New Transaction" routerLink="new"/>
 <p-button label="Import Transactions" (click)="showImportTransactionDialog()"/>
-
+</section>
 <p-table
   [value]="transactions"
   >
@@ -46,3 +46,32 @@
     </tr>
   </ng-template>
 </p-table>
+
+<p-dialog [(visible)]="importDialogVisible" [modal]="true" [header]="'Import Transactions'" [closable]="true" [style]="{ width: '400px'}">
+
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="accountId">Account:</label>
+      <p-dropdown id="accountId" [options]="accounts" optionLabel="alias" optionValue="id" [(ngModel)]="accountId" placeholder="Select account"/>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="transactionFileImportType">File type:</label>
+    <p-dropdown id="transactionFileImportType" [options]="transactionFileImportTypes" optionLabel="label" optionValue="value" [(ngModel)]="transactionFileImportType" placeholder="Select file type"/>
+  </div>
+
+  <p-fileupload #fileInput mode="basic" [accept]="allowedFileTypes" (onSelect)="onFileSelect($event)" chooseLabel="Select CSV"></p-fileupload>
+
+  <div class="flex justify-end mt-3">
+    <p-button label="Cancel" icon="pi pi-times" class="p-button-text" (click)="importDialogVisible = false" />
+    <p-button label="Subir" icon="pi pi-upload" class="p-button-primary" [disabled]="!selectedFile" (click)="uploadFile()" />
+  </div>
+
+</p-dialog>
+
+<shared-message
+  #message
+  (confirm)="onCloseMessage()"
+  (reject)="onCloseMessage()"
+/>

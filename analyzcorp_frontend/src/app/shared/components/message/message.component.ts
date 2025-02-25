@@ -38,4 +38,9 @@ export class MessageComponent {
     this.visible = false;
     this.reject.emit();
   }
+
+  closeMessage(): void {
+    this.messageService.clear('message');
+    this.visible = false;
+  }
 }

@@ -1,16 +1,22 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {AccountService} from '../../../bank/account/services/account.service';
 import {TransactionService} from '../../services/transaction.service';
 import {AccountDTO} from '../../../bank/account/interfaces/AccountDTO.interfaces';
 import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
 import {Select, SelectChangeEvent} from 'primeng/select';
-import {DataView} from 'primeng/dataview';
 import {TableModule} from 'primeng/table';
 import {TransactionDTO} from '../../interfaces/transactionDTO.interface';
 import {CurrencyPipe, DatePipe} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Dialog} from 'primeng/dialog';
 import {RouterLink} from '@angular/router';
+import {FileSelectEvent, FileUpload} from 'primeng/fileupload';
+import {ALLOWED_FILES_TYPES_IMPORT_TRANSACTIONS} from '../../../../shared/constants/file-types';
+import {DropdownModule} from 'primeng/dropdown';
+import {FormsModule} from '@angular/forms';
+import {TransactionImportFileTypeEnum} from '../../enums/transaction-import-file-type.enum';
+import {ToastMessageOptions} from 'primeng/api';
+import {MessageComponent} from '../../../../shared/components/message/message.component';
 
 @Component({
   selector: 'app-list-transactions',
@@ -20,7 +26,12 @@ import {RouterLink} from '@angular/router';
     DatePipe,
     CurrencyPipe,
     Button,
-    RouterLink
+    RouterLink,
+    Dialog,
+    FileUpload,
+    DropdownModule,
+    FormsModule,
+    MessageComponent
   ],
   templateUrl: './list-transactions.component.html',
   standalone: true,
@@ -34,7 +45,15 @@ export class ListTransactionsComponent implements OnInit{
   accounts: AccountDTO[] = [];
   accountSelected: AccountDTO | null = null;
   transactions: TransactionDTO[] = [];
-  visibleImportTransactionDialog: boolean = false;
+  importDialogVisible: boolean = false;
+  selectedFile: File | null = null;
+  allowedFileTypes: string = ALLOWED_FILES_TYPES_IMPORT_TRANSACTIONS.join(',');
+  accountId: number | null = null;
+  transactionFileImportTypes = Object.entries(TransactionImportFileTypeEnum).map(([key, value]) => ({ label: value, value: key }));
+  transactionFileImportType: TransactionImportFileTypeEnum | null = null;
+
+  @ViewChild('message')
+  public messageComponent!: MessageComponent;
 
   ngOnInit(): void {
     this.accountService.findAllBankAccounts().subscribe({
@@ -68,6 +87,50 @@ export class ListTransactionsComponent implements OnInit{
   }
 
   showImportTransactionDialog() {
-    this.visibleImportTransactionDialog = true;
+    this.importDialogVisible = true;
+  }
+
+  onFileSelect(event: FileSelectEvent) {
+    this.selectedFile = event.files[0] || null;
+  }
+
+  uploadFile() {
+    if (this.selectedFile && this.accountId && this.transactionFileImportType) {
+      console.log(this.selectedFile);
+      console.log(this.accountId);
+      console.log(this.transactionFileImportType);
+      this.transactionService.importTransactionsFromFile(this.selectedFile, this.accountId, this.transactionFileImportType).subscribe({
+        next: (apiResponse: ApiResponse<string>): void => {
+          const message: ToastMessageOptions = {
+            key: 'message',
+            sticky: true,
+            severity: 'success',
+            summary: 'Success',
+            detail: `Load transactions successfully`,
+          };
+
+          this.messageComponent.addMessage(message);
+        },
+        error: (err) : void => {
+          const errorMessage= err.error?.error?.detail || 'Failed to import transactions.';
+
+          const message: ToastMessageOptions = {
+            key: 'message',
+            sticky: true,
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+          }
+          this.messageComponent.addMessage(message);
+        }
+      });
+
+      this.importDialogVisible = false;
+      this.selectedFile = null;
+    }
+  }
+
+  onCloseMessage() {
+    this.messageComponent.closeMessage();
   }
 }
