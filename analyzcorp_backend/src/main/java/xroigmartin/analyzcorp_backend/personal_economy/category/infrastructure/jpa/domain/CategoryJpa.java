@@ -11,8 +11,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -30,15 +34,19 @@ public class CategoryJpa {
     @Column(name = "name", nullable = false, length = 255, unique = true)
     private String name;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant createdAt;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private OffsetDateTime createdAt;
 
-    @Column(name = "created_by", nullable = false, length = 50)
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, length = 50, updatable = false)
     private String createdBy;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant updatedAt;
+    @LastModifiedDate
+    @Column(name = "updated_at", updatable = false, nullable = false)
+    private OffsetDateTime updatedAt;
 
+    @LastModifiedBy
     @Column(name = "updated_by", nullable = false, length = 50)
     private String updatedBy;
 
