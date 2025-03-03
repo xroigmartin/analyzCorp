@@ -1,7 +1,5 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.service;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +8,8 @@ import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.reposi
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain.TransactionJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.repository.TransactionJpaRepository;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.utils.TransactionJpaUtils;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
