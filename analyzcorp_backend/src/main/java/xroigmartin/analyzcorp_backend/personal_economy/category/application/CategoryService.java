@@ -7,4 +7,6 @@ import java.util.List;
 public interface CategoryService {
 
     List<Category> findCategories();
+
+    Category createCategory(String name);
 }

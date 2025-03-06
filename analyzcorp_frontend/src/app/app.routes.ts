@@ -12,6 +12,7 @@ import {
   CreateTransactionComponent
 } from './personal_economy/transaction/pages/create-transaction/create-transaction.component';
 import {ListCategoriesComponent} from './personal_economy/category/pages/list-categories/list-categories.component';
+import {CreateCategoryComponent} from './personal_economy/category/pages/create-category/create-category.component';
 
 export const routes: Routes = [
   {
@@ -53,6 +54,10 @@ export const routes: Routes = [
           {
             path: '',
             component: ListCategoriesComponent,
+          },
+          {
+            path: 'new',
+            component: CreateCategoryComponent,
           },
         ]
       }

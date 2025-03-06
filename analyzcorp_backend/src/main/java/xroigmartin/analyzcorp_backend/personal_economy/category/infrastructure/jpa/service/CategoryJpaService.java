@@ -23,4 +23,13 @@ public class CategoryJpaService implements CategoryRepository {
                 .map(CategoryJpaUtils::convertCategoryJpaToCategory)
                 .toList();
     }
+
+    @Override
+    public Category createCategory(Category newCategory) {
+        var newCategoryJpa = CategoryJpaUtils.convertCategoryToCategoryJpa(newCategory);
+
+        var categoryJpa = this.categoryJpaRepository.save(newCategoryJpa);
+
+        return CategoryJpaUtils.convertCategoryJpaToCategory(categoryJpa);
+    }
 }

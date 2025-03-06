@@ -17,4 +17,15 @@ public class CategoryJpaUtils {
                 .updatedBy(categoryJpa.getUpdatedBy())
                 .build();
     }
+
+    public static CategoryJpa convertCategoryToCategoryJpa(Category category){
+        return CategoryJpa.builder()
+                .id(category.id())
+                .name(category.name())
+                .createdAt(category.createdAt())
+                .createdBy(category.createdBy())
+                .updatedAt(category.updatedAt())
+                .updatedBy(category.updatedBy())
+                .build();
+    }
 }

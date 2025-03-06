@@ -1,0 +1,26 @@
+<p-card>
+  <form #categoryForm="ngForm" class="categoryForm" (ngSubmit)="onSubmit()" id="category-form">
+    <div>
+      <label for="categoryName">Name</label>
+      <input
+        id="categoryName"
+        name="cagtegoryName"
+        type="text"
+        pInputText
+        [(ngModel)]="categoryModel.name"
+      />
+    </div>
+
+    <div class="buttons">
+      <p-button type="submit" label="Submit" [disabled]="!categoryForm.form.valid"/>
+      <p-button label="cancel" severity="danger" (onClick)="cancelForm()"/>
+    </div>
+
+  </form>
+</p-card>
+
+<shared-message
+  #message
+  (confirm)="onCloseMessage()"
+  (reject)="onCloseMessage()"
+/>

@@ -15,6 +15,10 @@ export class CategoryService {
     return this.httpClient.get<ApiResponse<CategoryDTO[]>>('http://localhost:8080/api/v1/personal-economy/categories', {'headers': this.prepareHeaders()});
   }
 
+  createNewCategory(name: string): Observable<ApiResponse<CategoryDTO>>{
+    return this.httpClient.post<ApiResponse<CategoryDTO>>('http://localhost:8080/api/v1/personal-economy/categories', name, {'headers': this.prepareHeaders()});
+  }
+
   private prepareHeaders(): HttpHeaders{
     return new HttpHeaders({
       'Content-Type': 'application/json'
