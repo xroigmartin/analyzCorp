@@ -11,6 +11,7 @@ import {
 import {
   CreateTransactionComponent
 } from './personal_economy/transaction/pages/create-transaction/create-transaction.component';
+import {ListCategoriesComponent} from './personal_economy/category/pages/list-categories/list-categories.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,15 @@ export const routes: Routes = [
             path: 'new',
             component: CreateTransactionComponent
           }
+        ]
+      },
+      {
+        path: 'category',
+        children:[
+          {
+            path: '',
+            component: ListCategoriesComponent,
+          },
         ]
       }
     ]

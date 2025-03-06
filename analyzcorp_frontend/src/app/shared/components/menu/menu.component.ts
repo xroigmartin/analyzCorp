@@ -32,6 +32,11 @@ export class MenuComponent implements OnInit{
             label: 'Transactions',
             icon: 'pi pi-receipt',
             routerLink: 'personal-economy/transaction'
+          },
+          {
+            label: 'Categories',
+            icon: 'pi pi-book',
+            routerLink: 'personal-economy/category'
           }
         ]
       },

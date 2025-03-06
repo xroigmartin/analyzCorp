@@ -1,0 +1,28 @@
+<section>
+  <p-button label="New Category" routerLink="new"/>
+</section>
+<section>
+  <p-table [value]="categories" stripedRows id="categoryTable">
+    <ng-template #header>
+      <tr>
+        <th>
+          Id
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-category>
+      <tr>
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td>
+          <!--<p-button label="Update" [routerLink]="['/personal-economy/catego/', category.id]" />-->
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>

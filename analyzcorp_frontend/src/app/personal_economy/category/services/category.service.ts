@@ -1,0 +1,23 @@
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ApiResponse} from '../../../shared/interfaces/ApiResponse.interface';
+import {CategoryDTO} from '../interfaces/categoryDTO.interfaces';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CategoryService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  findCategories(): Observable<ApiResponse<CategoryDTO[]>>{
+    return this.httpClient.get<ApiResponse<CategoryDTO[]>>('http://localhost:8080/api/v1/personal-economy/categories', {'headers': this.prepareHeaders()});
+  }
+
+  private prepareHeaders(): HttpHeaders{
+    return new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+}
