@@ -1,10 +1,11 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction;
 
+import lombok.Builder;
+import xroigmartin.analyzcorp_backend.personal_economy.category.interfaces.dto.CategoryDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-
-import lombok.Builder;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
 
 @Builder
 public record TransactionDTO (
@@ -14,6 +15,7 @@ public record TransactionDTO (
         OffsetDateTime date,
         TransactionType type,
         String description,
+        CategoryDTO category,
         Long accountId,
         OffsetDateTime createdAt,
         String createdBy,

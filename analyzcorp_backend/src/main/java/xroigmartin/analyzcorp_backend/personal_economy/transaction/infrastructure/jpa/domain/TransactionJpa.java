@@ -1,8 +1,5 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +20,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain.AccountJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -57,6 +58,10 @@ public class TransactionJpa {
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private AccountJpa accountJpa;
+
+    @ManyToOne
+    @JoinColumn(name="category_id", nullable = false)
+    private CategoryJpa category;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)

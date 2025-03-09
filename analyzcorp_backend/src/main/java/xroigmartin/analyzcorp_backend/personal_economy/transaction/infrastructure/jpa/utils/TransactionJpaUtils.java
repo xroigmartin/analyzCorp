@@ -2,6 +2,8 @@ package xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructu
 
 import lombok.experimental.UtilityClass;
 import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.domain.AccountJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.utils.CategoryJpaUtils;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain.TransactionJpa;
 
@@ -9,12 +11,15 @@ import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructur
 public class TransactionJpaUtils {
 
     public static TransactionJpa convertToTransactionJpa(Transaction transaction) {
+
+
         return TransactionJpa.builder()
                 .amount(transaction.amount())
                 .currency(transaction.currency())
                 .date(transaction.date())
                 .type(transaction.type())
                 .description(transaction.description())
+                .category(CategoryJpa.builder().id(transaction.category().id()).build())
                 .accountJpa(AccountJpa.builder().id(transaction.accountId()).build())
                 .createdAt(transaction.createdAt())
                 .createdBy(transaction.createdBy())
@@ -24,6 +29,9 @@ public class TransactionJpaUtils {
     }
 
     public static Transaction convertToTransaction(TransactionJpa transactionJpa) {
+
+        var category = CategoryJpaUtils.convertCategoryJpaToCategory(transactionJpa.getCategory());
+
         return Transaction.builder()
                 .id(transactionJpa.getId())
                 .amount(transactionJpa.getAmount())
@@ -31,6 +39,7 @@ public class TransactionJpaUtils {
                 .date(transactionJpa.getDate())
                 .type(transactionJpa.getType())
                 .description(transactionJpa.getDescription())
+                .category(category)
                 .accountId(transactionJpa.getAccountJpa().getId())
                 .createdAt(transactionJpa.getCreatedAt())
                 .createdBy(transactionJpa.getCreatedBy())
