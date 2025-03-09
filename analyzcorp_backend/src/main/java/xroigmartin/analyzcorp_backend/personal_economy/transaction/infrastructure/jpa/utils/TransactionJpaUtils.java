@@ -7,11 +7,17 @@ import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.j
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain.TransactionJpa;
 
+import java.util.Optional;
+
 @UtilityClass
 public class TransactionJpaUtils {
 
     public static TransactionJpa convertToTransactionJpa(Transaction transaction) {
 
+        var categoryJpa = Optional.ofNullable(transaction.category())
+                                    .flatMap(category -> Optional.ofNullable(category.id())
+                                                            .map(id -> CategoryJpa.builder().id(id).build()))
+                                    .orElse(null);
 
         return TransactionJpa.builder()
                 .amount(transaction.amount())
@@ -19,7 +25,7 @@ public class TransactionJpaUtils {
                 .date(transaction.date())
                 .type(transaction.type())
                 .description(transaction.description())
-                .category(CategoryJpa.builder().id(transaction.category().id()).build())
+                .category(categoryJpa)
                 .accountJpa(AccountJpa.builder().id(transaction.accountId()).build())
                 .createdAt(transaction.createdAt())
                 .createdBy(transaction.createdBy())

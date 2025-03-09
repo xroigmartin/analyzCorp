@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.services.AccountService;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
+import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.BankTransactionService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.caixa_bank.CaixaBankTransactionServiceImpl;
@@ -25,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
+    private final CategoryService categoryService;
 
     @Override
     public Transaction createTransaction(CreateTransactionDTO createTransaction) {
@@ -49,9 +52,27 @@ public class TransactionServiceImpl implements TransactionService {
             throw new CreateTransactionException("Account Id is empty");
         }
 
+        var categories = this.categoryService.findCategories();
+        Category category;
+
+        if(createTransaction.categoryId() != null){
+            category = categories.stream()
+                    .filter(cat -> cat.id().equals(createTransaction.categoryId()))
+                    .findFirst()
+                    .orElseThrow(() -> new CreateTransactionException(String.format("Not exists category with id: %s", createTransaction.categoryId())));
+        }
+        else{
+            category = categories.stream()
+                    .filter(cat -> cat.name().equals("Gastos Varios"))
+                    .findFirst()
+                    .get();
+        }
+
+
         this.accountService.findAccountById(createTransaction.accountId());
 
-        var newTransaction = TransactionUtils.convertCreateTransactionToTransaction(createTransaction);
+        var newTransaction = TransactionUtils.convertCreateTransactionToTransaction(createTransaction, category);
+
         return this.transactionRepository.createTransaction(newTransaction);
     }
 
@@ -64,7 +85,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl();
 
-        bankTransactionService.importFile(account, file, transactions, fileImportType);
+        var categories = this.categoryService.findCategories();
+        var variousCategory = categories.stream()
+                .filter(cat -> cat.name().equals("Gastos Varios"))
+                .findFirst()
+                .get();
+
+        bankTransactionService.importFile(account, file, transactions, fileImportType, variousCategory);
+
 
         this.transactionRepository.createListOfTransaction(transactions);
 

@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 public record CreateTransactionDTO (
         BigDecimal amount,
         String currency,
+        Long categoryId,
         OffsetDateTime date,
         TransactionType type,
         String description,

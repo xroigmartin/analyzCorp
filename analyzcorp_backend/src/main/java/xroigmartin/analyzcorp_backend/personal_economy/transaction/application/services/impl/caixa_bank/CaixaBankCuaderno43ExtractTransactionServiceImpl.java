@@ -1,5 +1,17 @@
 package xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.caixa_bank;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.web.multipart.MultipartFile;
+import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
+import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.ImportCuaderno43;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,21 +22,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.multipart.MultipartFile;
-import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.ImportCuaderno43;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
-
 public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportCuaderno43 {
 
     @Override
-    public void importCuaderno43(Account account, MultipartFile file, List<Transaction> transactions) throws IOException {
+    public void importCuaderno43(Account account, MultipartFile file, List<Transaction> transactions, Category category) throws IOException {
         try(Workbook workbook = new HSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -33,7 +34,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
                     continue;
                 }
 
-                var transaction = parseRowCuaderno43(account.id(), row);
+                var transaction = parseRowCuaderno43(account.id(), row, category);
 
                 if(transaction != null) {
                     transactions.add(transaction);
@@ -42,7 +43,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
         }
     }
 
-    private Transaction parseRowCuaderno43(Long accountId, Row row) {
+    private Transaction parseRowCuaderno43(Long accountId, Row row, Category category) {
 
         try{
             String currency = row.getCell(3).getStringCellValue();
@@ -62,6 +63,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
                     .currency(currency)
                     .date(date)
                     .description(description)
+                    .category(category)
                     .type(type)
                     .createdAt(OffsetDateTime.now().toInstant().atOffset(ZoneOffset.UTC))
                     .createdBy("SYSTEM")

@@ -8,7 +8,7 @@ import {CreateTransactionDTO} from '../../interfaces/createTransactionDTO.interf
 import {TransactionTypeEnum} from '../../enums/TransactionTypeEnum.interface';
 import {FormsModule} from '@angular/forms';
 import {InputNumber} from 'primeng/inputnumber';
-import {Select} from 'primeng/select';
+import {Select, SelectChangeEvent} from 'primeng/select';
 import {CurrencyService} from '../../../../control_panel/currency/services/currency.service';
 import {CurrencyDTO} from '../../../../control_panel/currency/interfaces/CurrencyDTO.interfaces';
 import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
@@ -19,6 +19,8 @@ import {AccountDTO} from '../../../bank/account/interfaces/AccountDTO.interfaces
 import {PrimeTemplate, ToastMessageOptions} from 'primeng/api';
 import {Button} from "primeng/button";
 import {TransactionDTO} from '../../interfaces/transactionDTO.interface';
+import {CategoryDTO} from '../../../category/interfaces/categoryDTO.interfaces';
+import {CategoryService} from '../../../category/services/category.service';
 
 @Component({
   selector: 'app-create-transaction',
@@ -43,7 +45,8 @@ export class CreateTransactionComponent implements OnInit{
   private readonly route: Router = inject(Router);
   private readonly transactionService: TransactionService = inject(TransactionService);
   private readonly currencyService: CurrencyService = inject(CurrencyService);
-  private readonly accountService: AccountService = inject(AccountService)
+  private readonly accountService: AccountService = inject(AccountService);
+  private readonly categoryService: CategoryService = inject(CategoryService);
 
   private successfully: boolean = false;
 
@@ -52,17 +55,19 @@ export class CreateTransactionComponent implements OnInit{
 
   public currencies: CurrencyDTO[] = [];
   public accounts: AccountDTO[] = [];
+  public categories: CategoryDTO[] = [];
 
   public transactionType: any[] = [
     {label: 'INCOME', value:TransactionTypeEnum.INCOME},
     {label: 'EXPENSE', value:TransactionTypeEnum.EXPENSE},
   ];
 
-  public transactionModel: {amount: string, currency: string, date: string, transactionType: TransactionTypeEnum, description: string, account: AccountDTO | null} = {
+  public transactionModel: {amount: string, currency: CurrencyDTO, date: string, transactionType: TransactionTypeEnum, category: CategoryDTO | null, description: string, account: AccountDTO | null} = {
     amount: '0.0',
-    currency: 'EUR',
+    currency: {code: 'EUR', name: 'EUR'},
     date: new Date().toISOString(),
     transactionType: TransactionTypeEnum.INCOME,
+    category: null,
     description: '',
     account: null
   }
@@ -79,26 +84,42 @@ export class CreateTransactionComponent implements OnInit{
         this.accounts = results.data;
       }
     });
+
+    this.categoryService.findCategories().subscribe({
+      next: (results : ApiResponse<CategoryDTO[]>) => {
+        this.categories = results.data;
+      }
+    })
   }
 
   onSubmit(): void {
 
-    let accountId: number = 0;
+    let accountId: number | null = null;
+    let categoryId: number | null = null;
 
     if(this.transactionModel.account){
       accountId = this.transactionModel.account.id;
+    }
+
+    console.log(this.transactionModel.category);
+
+    if(this.transactionModel.category){
+      categoryId = this.transactionModel.category.id;
     }
 
     const date = new Date(this.transactionModel.date).toISOString();
 
     const createTransactionDTO: CreateTransactionDTO = {
       amount: this.transactionModel.amount,
-      currency: this.transactionModel.currency,
+      currency: this.transactionModel.currency.code,
       date: date,
+      categoryId: categoryId,
       type: this.transactionModel.transactionType,
       description: this.transactionModel.description,
       accountId: accountId
     }
+
+    console.log(createTransactionDTO);
 
     this.transactionService.createTransaction(createTransactionDTO).subscribe({
       next: (response: ApiResponse<TransactionDTO>)=> {
@@ -130,7 +151,7 @@ export class CreateTransactionComponent implements OnInit{
   }
 
   getCurrency() {
-    return this.transactionModel.currency;
+    return this.transactionModel.currency.code;
   }
 
   cancelForm() {
@@ -142,5 +163,10 @@ export class CreateTransactionComponent implements OnInit{
       this.successfully = false;
       this.route.navigate(['personal-economy/transaction']);
     }
+  }
+
+  showSelection($event: SelectChangeEvent) {
+    console.log("Category selected: " + JSON.stringify($event.value));
+    console.log(this.transactionModel);
   }
 }

@@ -5,6 +5,7 @@
       <p-input-number
              id="amount"
              name="amount"
+             class="createTransactionComponent"
              mode="currency"
              currency="{{getCurrency()}}"
              #amount="ngModel"
@@ -19,17 +20,29 @@
         name="currency"
         class="currencyComponent"
         [options]="currencies"
-        [ngModel]="transactionModel.currency"
+        [(ngModel)]="transactionModel.currency"
         optionLabel="code"
         />
     </div>
     <div>
-      <label for="date">Date</label>
+      <label for="dateTransaction">Date</label>
       <p-datePicker
-        id="date"
-        name="date"
+        inputId="dateTransaction"
+        name="dateTransaction"
+        styleClass="createTransactionComponent"
         [(ngModel)]="transactionModel.date"
-        dateFormat="dd/mm/yy"
+        dateFormat="dd/mm/yy"></p-datePicker>
+    </div>
+    <div>
+      <label for="category">Category</label>
+      <p-select
+        id="category"
+        name="category"
+        class="createTransactionComponent"
+        [options]="categories"
+        [(ngModel)]="transactionModel.category"
+        optionLabel="name"
+        (onChange)="showSelection($event)"
       />
     </div>
     <div>
@@ -38,6 +51,7 @@
         id="description"
         name="description"
         type="text"
+        class="createTransactionComponent"
         pInputText
         [(ngModel)]="transactionModel.description"
       />
@@ -47,6 +61,7 @@
       <p-selectButton
         id="transactionType"
         name="transactionType"
+        class="createTransactionComponent"
         [options]="transactionType"
         [(ngModel)]="transactionModel.transactionType"/>
     </div>
@@ -55,6 +70,7 @@
       <p-select
         id="account"
         name="account"
+        class="createTransactionComponent"
         [options]="accounts"
         optionLabel="alias"
         [(ngModel)]="transactionModel.account"
