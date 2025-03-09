@@ -19,6 +19,14 @@ export class CategoryService {
     return this.httpClient.post<ApiResponse<CategoryDTO>>('http://localhost:8080/api/v1/personal-economy/categories', name, {'headers': this.prepareHeaders()});
   }
 
+  getCategoryById(categoryId: number): Observable<ApiResponse<CategoryDTO>>{
+    return this.httpClient.get<ApiResponse<CategoryDTO>>(`http://localhost:8080/api/v1/personal-economy/categories/${categoryId}`, {'headers': this.prepareHeaders()});
+  }
+
+  updateCategory(name: string, categoryId: number): Observable<ApiResponse<CategoryDTO>>{
+    return this.httpClient.put<ApiResponse<CategoryDTO>>(`http://localhost:8080/api/v1/personal-economy/categories/${categoryId}`, name, {'headers': this.prepareHeaders()});
+  }
+
   private prepareHeaders(): HttpHeaders{
     return new HttpHeaders({
       'Content-Type': 'application/json'

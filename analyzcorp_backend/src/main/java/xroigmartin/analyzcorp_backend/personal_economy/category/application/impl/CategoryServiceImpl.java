@@ -37,4 +37,41 @@ public class CategoryServiceImpl implements CategoryService {
 
         return this.categoryRepository.createCategory(newCategory);
     }
+
+    @Override
+    public Category getCategoryById(Long categoryId) {
+        if(categoryId == null){
+            throw new RuntimeException("Category id of category is mandatory for search a category.");
+        }
+
+        var OptionalCategory = this.categoryRepository.getCategoryId(categoryId);
+
+        return OptionalCategory.orElseThrow(() -> new RuntimeException("Category not found."));
+    }
+
+    @Override
+    public Category updateCategory(Long categoryId, String name) {
+        if(categoryId == null){
+            throw new RuntimeException("Category id of category is mandatory for update a category.");
+        }
+
+        if(StringUtils.isBlank(name)){
+            throw new RuntimeException("Name of category is mandatory for update a category.");
+        }
+
+        var optionalCategory = this.categoryRepository.getCategoryId(categoryId);
+
+        var category = optionalCategory.get();
+
+        var updateCategory = Category.builder()
+                .id(category.id())
+                .name(name)
+                .updatedBy("SYSTEM")
+                .updatedAt(OffsetDateTime.now())
+                .createdBy(category.createdBy())
+                .createdAt(category.createdAt())
+                .build();
+
+        return this.categoryRepository.updateCategory(updateCategory);
+    }
 }

@@ -9,4 +9,9 @@ public interface CategoryService {
     List<Category> findCategories();
 
     Category createCategory(String name);
+
+    Category getCategoryById(Long categoryId);
+
+    Category updateCategory(Long categoryId, String name);
+
 }
