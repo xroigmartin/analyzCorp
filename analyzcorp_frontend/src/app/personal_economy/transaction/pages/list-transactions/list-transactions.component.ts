@@ -202,7 +202,7 @@ export class ListTransactionsComponent implements OnInit{
   }
 
   onRowEditSave(transactionTable: any) {
-    console.log("Send transaction for update");
+
     const updateTransactionDTO: UpdateTransactionDTO = {
       accountId: transactionTable.accountId,
       categoryId: transactionTable.category.id,
@@ -214,13 +214,10 @@ export class ListTransactionsComponent implements OnInit{
       amount: transactionTable.amount
 
     }
+
     delete this.clonedTransactions[transactionTable.id];
 
-    this.transactionService.updateTransaction(transactionTable.id, updateTransactionDTO).subscribe({
-      next: value => {
-        console.log("Transaction updated");
-      }
-    });
+    this.transactionService.updateTransaction(transactionTable.id, updateTransactionDTO).subscribe({    });
   }
 
   onRowEditCancel(transaction: TransactionDTO, index: number) {
