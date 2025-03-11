@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.CreateTransactionDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.UpdateTransactionDTO;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -25,6 +26,26 @@ public class TransactionUtils {
                 .accountId(createTransaction.accountId())
                 .createdAt(OffsetDateTime.now().toInstant().atOffset(ZoneOffset.UTC))
                 .createdBy("SYSTEM")
+                .updatedAt(OffsetDateTime.now().toInstant().atOffset(ZoneOffset.UTC))
+                .updatedBy("SYSTEM")
+                .build();
+    }
+
+    public static Transaction convertUpdateTransactionToTransaction(UpdateTransactionDTO updateTransaction, Transaction oldTransaction, Category category) {
+
+        var dateTransaction = updateTransaction.date().toInstant().atOffset(ZoneOffset.UTC);
+
+        return Transaction.builder()
+                .id(oldTransaction.id())
+                .amount(updateTransaction.amount())
+                .currency(updateTransaction.currency())
+                .date(dateTransaction)
+                .type(updateTransaction.type())
+                .description(updateTransaction.description())
+                .category(category)
+                .accountId(updateTransaction.accountId())
+                .createdAt(oldTransaction.createdAt())
+                .createdBy(oldTransaction.createdBy())
                 .updatedAt(OffsetDateTime.now().toInstant().atOffset(ZoneOffset.UTC))
                 .updatedBy("SYSTEM")
                 .build();

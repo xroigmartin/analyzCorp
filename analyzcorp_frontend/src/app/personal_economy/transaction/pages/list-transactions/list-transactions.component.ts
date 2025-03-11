@@ -6,8 +6,8 @@ import {ApiResponse} from '../../../../shared/interfaces/ApiResponse.interface';
 import {Select, SelectChangeEvent} from 'primeng/select';
 import {TableModule} from 'primeng/table';
 import {TransactionDTO} from '../../interfaces/transactionDTO.interface';
-import {CurrencyPipe, DatePipe} from '@angular/common';
-import {Button} from 'primeng/button';
+import {CurrencyPipe, DatePipe, NgIf} from '@angular/common';
+import {Button, ButtonDirective, ButtonIcon} from 'primeng/button';
 import {Dialog} from 'primeng/dialog';
 import {RouterLink} from '@angular/router';
 import {FileSelectEvent, FileUpload} from 'primeng/fileupload';
@@ -17,6 +17,17 @@ import {FormsModule} from '@angular/forms';
 import {TransactionImportFileTypeEnum} from '../../enums/transaction-import-file-type.enum';
 import {ToastMessageOptions} from 'primeng/api';
 import {MessageComponent} from '../../../../shared/components/message/message.component';
+import {DatePicker} from "primeng/datepicker";
+import {Ripple} from 'primeng/ripple';
+import {InputText} from 'primeng/inputtext';
+import {SelectButton} from 'primeng/selectbutton';
+import {InputNumber} from 'primeng/inputnumber';
+import {CategoryService} from '../../../category/services/category.service';
+import {CategoryDTO} from '../../../category/interfaces/categoryDTO.interfaces';
+import {CurrencyDTO} from '../../../../control_panel/currency/interfaces/CurrencyDTO.interfaces';
+import {CurrencyService} from '../../../../control_panel/currency/services/currency.service';
+import {TransactionTypeEnum} from '../../enums/TransactionTypeEnum.interface';
+import {UpdateTransactionDTO} from '../../interfaces/updateTransactionDTO.interface';
 
 @Component({
   selector: 'app-list-transactions',
@@ -31,7 +42,14 @@ import {MessageComponent} from '../../../../shared/components/message/message.co
     FileUpload,
     DropdownModule,
     FormsModule,
-    MessageComponent
+    MessageComponent,
+    DatePicker,
+    ButtonDirective,
+    Ripple,
+    ButtonIcon,
+    NgIf,
+    InputText,
+    SelectButton
   ],
   templateUrl: './list-transactions.component.html',
   standalone: true,
@@ -41,6 +59,8 @@ export class ListTransactionsComponent implements OnInit{
 
   private readonly accountService: AccountService = inject(AccountService);
   private readonly transactionService: TransactionService = inject(TransactionService);
+  private readonly categoriesService: CategoryService = inject(CategoryService);
+  private readonly currencyService: CurrencyService = inject(CurrencyService);
 
   accounts: AccountDTO[] = [];
   accountSelected: AccountDTO | null = null;
@@ -51,6 +71,25 @@ export class ListTransactionsComponent implements OnInit{
   accountId: number | null = null;
   transactionFileImportTypes = Object.entries(TransactionImportFileTypeEnum).map(([key, value]) => ({ label: value, value: key }));
   transactionFileImportType: TransactionImportFileTypeEnum | null = null;
+  categories: CategoryDTO[] = [];
+  currencies: CurrencyDTO[] = [];
+
+  public transactionType: any[] = [
+    {label: 'INCOME', value:TransactionTypeEnum.INCOME},
+    {label: 'EXPENSE', value:TransactionTypeEnum.EXPENSE},
+  ];
+
+  public transactionsTable: {id: number;
+    amount: string;
+    currency: CurrencyDTO;
+    date: Date;
+    type: TransactionTypeEnum;
+    category: CategoryDTO;
+    description: string;
+    accountId: number;
+  }[] = [];
+
+  clonedTransactions: { [s: number]: TransactionDTO } = {};
 
   @ViewChild('message')
   public messageComponent!: MessageComponent;
@@ -63,14 +102,40 @@ export class ListTransactionsComponent implements OnInit{
         this.loadTransactions(this.accountSelected.id);
       }
     });
+
+    this.categoriesService.findCategories().subscribe({
+      next: (apiResponse: ApiResponse<CategoryDTO[]>): void => {
+        this.categories = apiResponse.data;
+      }
+    });
+
+    this.currencyService.findAllCurrencies().subscribe({
+      next: (results  : ApiResponse<CurrencyDTO[]>) => {
+        this.currencies = results.data;
+      }
+    });
   }
 
   loadTransactions(accountId: number): void {
     this.transactionService.findAllTransactionByAccountId(accountId).subscribe({
       next: (apiResponse: ApiResponse<TransactionDTO[]>): void => {
         this.transactions = apiResponse.data;
+        this.transactionsTable = apiResponse.data.map((tran: TransactionDTO) =>({
+          id: tran.id,
+          amount: tran.amount,
+          currency: this.getCurrencyDTO(tran.currency),
+          date: new Date(tran.date),
+          type: tran.type,
+          category: tran.category,
+          description: tran.description,
+          accountId: tran.accountId
+        }));
       }
     });
+  }
+
+  private getCurrencyDTO(currencyCode: string): CurrencyDTO {
+    return this.currencies.find((currency: CurrencyDTO): boolean  => currency.code === currencyCode)!;
   }
 
   selectAccount(event: SelectChangeEvent): void {
@@ -96,9 +161,7 @@ export class ListTransactionsComponent implements OnInit{
 
   uploadFile() {
     if (this.selectedFile && this.accountId && this.transactionFileImportType) {
-      console.log(this.selectedFile);
-      console.log(this.accountId);
-      console.log(this.transactionFileImportType);
+
       this.transactionService.importTransactionsFromFile(this.selectedFile, this.accountId, this.transactionFileImportType).subscribe({
         next: (apiResponse: ApiResponse<string>): void => {
           const message: ToastMessageOptions = {
@@ -133,4 +196,36 @@ export class ListTransactionsComponent implements OnInit{
   onCloseMessage() {
     this.messageComponent.closeMessage();
   }
+
+  onRowEditInit(transaction: TransactionDTO) {
+    this.clonedTransactions[transaction.id] = {...transaction};
+  }
+
+  onRowEditSave(transactionTable: any) {
+    console.log("Send transaction for update");
+    const updateTransactionDTO: UpdateTransactionDTO = {
+      accountId: transactionTable.accountId,
+      categoryId: transactionTable.category.id,
+      currency: transactionTable.currency.code,
+      date: transactionTable.date,
+      description: transactionTable.description,
+      type: transactionTable.type,
+      id: transactionTable.id,
+      amount: transactionTable.amount
+
+    }
+    delete this.clonedTransactions[transactionTable.id];
+
+    this.transactionService.updateTransaction(transactionTable.id, updateTransactionDTO).subscribe({
+      next: value => {
+        console.log("Transaction updated");
+      }
+    });
+  }
+
+  onRowEditCancel(transaction: TransactionDTO, index: number) {
+    this.transactions[index] = this.clonedTransactions[transaction.id];
+    delete this.clonedTransactions[transaction.id];
+  }
+
 }

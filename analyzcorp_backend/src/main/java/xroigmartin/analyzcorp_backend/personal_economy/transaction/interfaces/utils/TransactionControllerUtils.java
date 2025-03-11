@@ -12,6 +12,7 @@ public class TransactionControllerUtils {
 
     public static final String TRANSACTION_PATH = PERSONAL_ECONOMY_PATH + "/transactions";
     public static final String SUCCESS_CREATE_TRANSACTION = "Created transaction";
+    public static final String SUCCESS_UPDATE_TRANSACTION = "Updated transaction";
     public static final String SUCCESS_FIND_TRANSACTIONS_BY_ACCOUNT_ID = "Find transactions by account id";
 
     public static TransactionDTO convertToTransactionDTO(Transaction transaction) {

@@ -101,8 +101,6 @@ export class CreateTransactionComponent implements OnInit{
       accountId = this.transactionModel.account.id;
     }
 
-    console.log(this.transactionModel.category);
-
     if(this.transactionModel.category){
       categoryId = this.transactionModel.category.id;
     }
@@ -118,8 +116,6 @@ export class CreateTransactionComponent implements OnInit{
       description: this.transactionModel.description,
       accountId: accountId
     }
-
-    console.log(createTransactionDTO);
 
     this.transactionService.createTransaction(createTransactionDTO).subscribe({
       next: (response: ApiResponse<TransactionDTO>)=> {
@@ -165,8 +161,4 @@ export class CreateTransactionComponent implements OnInit{
     }
   }
 
-  showSelection($event: SelectChangeEvent) {
-    console.log("Category selected: " + JSON.stringify($event.value));
-    console.log(this.transactionModel);
-  }
 }

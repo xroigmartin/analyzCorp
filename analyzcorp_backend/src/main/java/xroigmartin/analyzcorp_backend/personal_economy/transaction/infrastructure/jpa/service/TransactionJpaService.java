@@ -42,4 +42,20 @@ public class TransactionJpaService implements TransactionRepository {
         List<TransactionJpa> transactions = this.transactionJpaRepository.findTransactionsByAccountJpa_Id(accountId);
         return transactions.stream().map(TransactionJpaUtils::convertToTransaction).toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Transaction getTransactionById(Long transactionId) {
+        var transactionJpa = this.transactionJpaRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException(String.format("Transaction with id %s not found", transactionId)));
+        return TransactionJpaUtils.convertToTransaction(transactionJpa);
+    }
+
+    @Override
+    @Transactional
+    public Transaction updateTransaction(Transaction transaction) {
+        var transactionJpa = TransactionJpaUtils.convertToTransactionJpaForUpdate(transaction);
+        var transactionJpaUpdated = this.transactionJpaRepository.save(transactionJpa);
+        return TransactionJpaUtils.convertToTransaction(transactionJpaUpdated);
+    }
 }

@@ -9,7 +9,9 @@
 <p-button label="Import Transactions" (click)="showImportTransactionDialog()"/>
 </section>
 <p-table
-  [value]="transactions"
+  [value]="transactionsTable"
+  dataKey="id"
+  editMode="row"
   >
   <ng-template #header>
     <tr>
@@ -28,26 +30,108 @@
       <th>
         Amount
       </th>
+      <th>
+        Operations
+      </th>
     </tr>
   </ng-template>
-  <ng-template #body let-transaction>
-    <tr>
+  <ng-template #body let-transaction let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="transaction">
       <td>
-        {{transaction.date | date: 'dd/MMM/yyyy'}}
+        <p-cellEditor>
+          <ng-template #input>
+            <p-datePicker
+              inputId="dateTransaction"
+              name="dateTransaction"
+              [(ngModel)]="transaction.date"
+              dateFormat="dd/mm/yy"></p-datePicker>
+          </ng-template>
+          <ng-template #output>
+            {{transaction.date | date: 'dd/MMM/yyyy'}}
+          </ng-template>
+        </p-cellEditor>
       </td>
       <td>
-        {{transaction.description}}
+        <p-cellEditor>
+          <ng-template #input>
+            <input
+              id="description"
+              name="description"
+              type="text"
+              pInputText
+              [(ngModel)]="transaction.description"
+            />
+          </ng-template>
+          <ng-template #output>
+            {{transaction.description}}
+          </ng-template>
+        </p-cellEditor>
       </td>
       <td>
-        {{transaction.category.name}}
+        <p-cellEditor>
+          <ng-template #input>
+            <p-select
+              id="category"
+              name="category"
+              [options]="categories"
+              [(ngModel)]="transaction.category"
+              optionLabel="name"
+            />
+          </ng-template>
+          <ng-template #output>
+            {{transaction.category.name}}
+          </ng-template>
+        </p-cellEditor>
       </td>
       <td>
-        {{transaction.type}}
+        <p-cellEditor>
+          <ng-template #input>
+            <p-selectButton
+              id="transactionType"
+              name="transactionType"
+              [options]="transactionType"
+              [(ngModel)]="transaction.type"/>
+          </ng-template>
+          <ng-template #output>
+            {{transaction.type}}
+          </ng-template>
+        </p-cellEditor>
       </td>
       <td>
-        <span [className]="currencyClass(transaction.amount)">
-          {{transaction.amount | currency: transaction.currency :'symbol' : '1.2-2'}}
-        </span>
+        <p-cellEditor>
+          <ng-template #input>
+            <div class="flex flex-row">
+              <input
+                pInputText
+                type="number"
+                [(ngModel)]="transaction.amount"
+                required />
+              <p-select
+                id="currency"
+                name="currency"
+                [options]="currencies"
+                [(ngModel)]="transaction.currency"
+                optionLabel="code"
+              />
+            </div>
+          </ng-template>
+          <ng-template #output>
+             <span [className]="currencyClass(transaction.amount)">
+              {{transaction.amount | currency: transaction.currency.code :'symbol' : '1.2-2'}}
+            </span>
+          </ng-template>
+        </p-cellEditor>
+
+      </td>
+      <td>
+        <div>
+          <p-button *ngIf="!editing" pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(transaction)" text rounded severity="secondary"></p-button>
+          <p-button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(transaction)" text rounded severity="secondary"></p-button>
+          <p-button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(transaction, ri)" text rounded severity="secondary"></p-button>
+        </div>
       </td>
     </tr>
   </ng-template>
