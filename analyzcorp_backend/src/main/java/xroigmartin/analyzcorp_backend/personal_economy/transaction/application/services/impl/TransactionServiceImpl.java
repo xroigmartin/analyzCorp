@@ -86,15 +86,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         Account account = accountService.findAccountById(accountId);
 
-        BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl();
+        BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl(this.categoryService);
 
-        var categories = this.categoryService.findCategories();
-        var variousCategory = categories.stream()
-                .filter(cat -> cat.name().equals("Gastos Varios"))
-                .findFirst()
-                .get();
-
-        bankTransactionService.importFile(account, file, transactions, fileImportType, variousCategory);
+        bankTransactionService.importFile(account, file, transactions, fileImportType);
 
         this.transactionRepository.createListOfTransaction(transactions);
 
@@ -136,8 +130,8 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         var transaction = this.getTransactionById(id);
-        var account = this.accountService.findAccountById(updateTransaction.accountId());
-        var currency = this.currencyService.findCurrencyByCode(updateTransaction.currency());
+        this.accountService.findAccountById(updateTransaction.accountId());
+        this.currencyService.findCurrencyByCode(updateTransaction.currency());
         var category = this.categoryService.getCategoryById(updateTransaction.categoryId());
 
         var transactionUpdate = TransactionUtils.convertUpdateTransactionToTransaction(updateTransaction, transaction, category);

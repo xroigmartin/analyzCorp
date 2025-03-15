@@ -8,8 +8,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.control_panel.currency.domain.model.Currency;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.ImportMonthlyExtract;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.BankTransactionBaseService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 
@@ -24,10 +26,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CaixaBankMonthlyExtractTransactionServiceImpl implements ImportMonthlyExtract {
+public class CaixaBankMonthlyExtractTransactionServiceImpl extends BankTransactionBaseService implements ImportMonthlyExtract {
+
+    public CaixaBankMonthlyExtractTransactionServiceImpl(CategoryService categoryService) {
+        super(categoryService);
+    }
 
     @Override
-    public void importMonthlyExtract(Account account, MultipartFile file, List<Transaction> transactions, Category category) throws IOException {
+    public void importMonthlyExtract(Account account, MultipartFile file, List<Transaction> transactions) throws IOException {
         try(Workbook workbook = new HSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -36,7 +42,7 @@ public class CaixaBankMonthlyExtractTransactionServiceImpl implements ImportMont
                     continue;
                 }
 
-                var transaction = parseRowMonthlyExtract(account.id(), row, Currency.builder().code("EUR").build(), category);
+                var transaction = parseRowMonthlyExtract(account.id(), row, Currency.builder().code("EUR").build());
 
                 if(transaction != null) {
                     transactions.add(transaction);
@@ -45,7 +51,7 @@ public class CaixaBankMonthlyExtractTransactionServiceImpl implements ImportMont
         }
     }
 
-    private Transaction parseRowMonthlyExtract(Long accountId, Row row, Currency currency, Category category) {
+    private Transaction parseRowMonthlyExtract(Long accountId, Row row, Currency currency) {
 
         try{
             String description = row.getCell(3).getStringCellValue() + " " + row.getCell(2).getStringCellValue();
@@ -55,6 +61,8 @@ public class CaixaBankMonthlyExtractTransactionServiceImpl implements ImportMont
 
             BigDecimal amount = getCellValueAsBigDecimal(row.getCell(4));
             TransactionType type = amount.compareTo(BigDecimal.ZERO) >= 0 ? TransactionType.INCOME : TransactionType.EXPENSE;
+
+            Category category = getCategoryByDescription(description);
 
             return Transaction.builder()
                     .amount(amount)

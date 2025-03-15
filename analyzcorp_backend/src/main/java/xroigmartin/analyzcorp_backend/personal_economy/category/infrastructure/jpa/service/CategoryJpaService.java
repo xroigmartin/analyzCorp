@@ -1,10 +1,13 @@
 package xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.service;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
+import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.CategoryKeyword;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.repository.CategoryRepository;
 import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.repository.CategoryJpaRepository;
+import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.repository.CategoryKeywordJpaRepository;
 import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.utils.CategoryJpaUtils;
 
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class CategoryJpaService implements CategoryRepository {
 
     private final CategoryJpaRepository categoryJpaRepository;
+    private final CategoryKeywordJpaRepository categoryKeywordJpaRepository;
 
     @Override
     public List<Category> findAllCategories() {
@@ -62,5 +66,28 @@ public class CategoryJpaService implements CategoryRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public Category findCategoryByDescription(String description) {
+        if(StringUtils.isBlank(description)){
+            return null;
+        }
+
+        return categoryKeywordJpaRepository.findByDescription(description)
+                .map(categoryKeywordJpa -> CategoryJpaUtils.convertCategoryJpaToCategory(categoryKeywordJpa.getCategory()))
+                .orElse(null);
+
+    }
+
+
+    @Override
+    public void addCategoryKeyword(CategoryKeyword categoryKeyword) {
+        if(categoryKeyword == null){
+            return;
+        }
+
+        var categoryKeywordJpa = CategoryJpaUtils.convertCategoryKeywordToCategoryKeywordJpa(categoryKeyword);
+        categoryKeywordJpaRepository.save(categoryKeywordJpa);
     }
 }

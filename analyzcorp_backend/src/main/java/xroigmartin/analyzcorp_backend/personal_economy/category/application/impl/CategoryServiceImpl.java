@@ -74,4 +74,13 @@ public class CategoryServiceImpl implements CategoryService {
 
         return this.categoryRepository.updateCategory(updateCategory);
     }
+
+    @Override
+    public Category findCategoryByDescription(String description) {
+        if(StringUtils.isBlank(description)){
+            return null;
+        }
+
+        return this.categoryRepository.findCategoryByDescription(description);
+    }
 }

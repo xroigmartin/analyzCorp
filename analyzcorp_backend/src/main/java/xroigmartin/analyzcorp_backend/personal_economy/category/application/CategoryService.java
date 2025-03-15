@@ -14,4 +14,6 @@ public interface CategoryService {
 
     Category updateCategory(Long categoryId, String name);
 
+    Category findCategoryByDescription(String description);
+
 }

@@ -1,6 +1,7 @@
 package xroigmartin.analyzcorp_backend.personal_economy.category.domain.repository;
 
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
+import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.CategoryKeyword;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,8 @@ public interface CategoryRepository {
     Optional<Category> getCategoryId(Long categoryId);
 
     Category updateCategory(Category updateCategory);
+
+    Category findCategoryByDescription(String description);
+
+    void addCategoryKeyword(CategoryKeyword categoryKeyword);
 }

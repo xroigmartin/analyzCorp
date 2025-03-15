@@ -7,8 +7,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.ImportCuaderno43;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.BankTransactionBaseService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.TransactionType;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 
@@ -22,10 +24,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportCuaderno43 {
+public class CaixaBankCuaderno43ExtractTransactionServiceImpl extends BankTransactionBaseService implements ImportCuaderno43 {
+
+    public CaixaBankCuaderno43ExtractTransactionServiceImpl(CategoryService categoryService) {
+        super(categoryService);
+    }
 
     @Override
-    public void importCuaderno43(Account account, MultipartFile file, List<Transaction> transactions, Category category) throws IOException {
+    public void importCuaderno43(Account account, MultipartFile file, List<Transaction> transactions) throws IOException {
         try(Workbook workbook = new HSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -34,7 +40,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
                     continue;
                 }
 
-                var transaction = parseRowCuaderno43(account.id(), row, category);
+                var transaction = parseRowCuaderno43(account.id(), row);
 
                 if(transaction != null) {
                     transactions.add(transaction);
@@ -43,7 +49,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
         }
     }
 
-    private Transaction parseRowCuaderno43(Long accountId, Row row, Category category) {
+    private Transaction parseRowCuaderno43(Long accountId, Row row) {
 
         try{
             String currency = row.getCell(3).getStringCellValue();
@@ -56,6 +62,8 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl implements ImportC
             var amount = parseAmount(income, expense);
 
             TransactionType type = amount.compareTo(BigDecimal.ZERO) >= 0 ? TransactionType.INCOME : TransactionType.EXPENSE;
+
+            Category category = getCategoryByDescription(description);
 
             return Transaction.builder()
                     .amount(amount)

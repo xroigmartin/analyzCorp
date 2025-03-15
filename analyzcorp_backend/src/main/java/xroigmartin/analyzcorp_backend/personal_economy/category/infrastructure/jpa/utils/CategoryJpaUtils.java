@@ -2,7 +2,9 @@ package xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.
 
 import lombok.experimental.UtilityClass;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
+import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.CategoryKeyword;
 import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryJpa;
+import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryKeywordJpa;
 
 @UtilityClass
 public class CategoryJpaUtils {
@@ -26,6 +28,21 @@ public class CategoryJpaUtils {
                 .createdBy(category.createdBy())
                 .updatedAt(category.updatedAt())
                 .updatedBy(category.updatedBy())
+                .build();
+    }
+
+    public static CategoryKeywordJpa convertCategoryKeywordToCategoryKeywordJpa(CategoryKeyword categoryKeyword){
+
+        var category = convertCategoryToCategoryJpa(categoryKeyword.category());
+
+        return CategoryKeywordJpa.builder()
+                .id(categoryKeyword.id())
+                .keyword(categoryKeyword.keyword())
+                .category(category)
+                .createdAt(category.getCreatedAt())
+                .createdBy(category.getCreatedBy())
+                .updatedAt(category.getUpdatedAt())
+                .updatedBy(category.getUpdatedBy())
                 .build();
     }
 }
