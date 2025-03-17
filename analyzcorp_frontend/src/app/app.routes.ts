@@ -14,6 +14,8 @@ import {
 import {ListCategoriesComponent} from './personal_economy/category/pages/list-categories/list-categories.component';
 import {CreateCategoryComponent} from './personal_economy/category/pages/create-category/create-category.component';
 import {UpdateCategoryComponent} from './personal_economy/category/pages/update-category/update-category.component';
+import {ExpenseComponent} from './personal_economy/balance/expense/expense.component';
+import {IncomeComponent} from './personal_economy/balance/income/pages/income/income.component';
 
 export const routes: Routes = [
   {
@@ -64,6 +66,19 @@ export const routes: Routes = [
             path: ':id',
             component: UpdateCategoryComponent
           }
+        ]
+      },
+      {
+        path: 'balance',
+        children: [
+          {
+            path: 'expense',
+            component: ExpenseComponent
+          },
+          {
+            path: 'income',
+            component: IncomeComponent
+          },
         ]
       }
     ]

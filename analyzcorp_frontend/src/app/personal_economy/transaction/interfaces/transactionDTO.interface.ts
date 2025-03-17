@@ -3,7 +3,7 @@ import {CategoryDTO} from '../../category/interfaces/categoryDTO.interfaces';
 
 export interface TransactionDTO {
   id: number;
-  amount: string;
+  amount: number;
   currency: string;
   date: string;
   type: TransactionTypeEnum;

@@ -21,7 +21,6 @@ import {DatePicker} from "primeng/datepicker";
 import {Ripple} from 'primeng/ripple';
 import {InputText} from 'primeng/inputtext';
 import {SelectButton} from 'primeng/selectbutton';
-import {InputNumber} from 'primeng/inputnumber';
 import {CategoryService} from '../../../category/services/category.service';
 import {CategoryDTO} from '../../../category/interfaces/categoryDTO.interfaces';
 import {CurrencyDTO} from '../../../../control_panel/currency/interfaces/CurrencyDTO.interfaces';
@@ -80,7 +79,7 @@ export class ListTransactionsComponent implements OnInit{
   ];
 
   public transactionsTable: {id: number;
-    amount: string;
+    amount: number;
     currency: CurrencyDTO;
     date: Date;
     type: TransactionTypeEnum;
@@ -217,7 +216,7 @@ export class ListTransactionsComponent implements OnInit{
 
     delete this.clonedTransactions[transactionTable.id];
 
-    this.transactionService.updateTransaction(transactionTable.id, updateTransactionDTO).subscribe({    });
+    this.transactionService.updateTransaction(transactionTable.id, updateTransactionDTO).subscribe({});
   }
 
   onRowEditCancel(transaction: TransactionDTO, index: number) {

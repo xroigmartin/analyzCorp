@@ -1,0 +1,32 @@
+<section>
+  <p-select
+    placeholder="Select Account"
+    [options]="accounts"
+    optionLabel="alias"
+    (onChange)="selectAccount($event)"
+  />
+</section>
+<section>
+  <table>
+    <tr>
+      <th>Concepto</th>
+      <th>Enero</th>
+      <th>Febrero</th>
+      <th>Marzo</th>
+      <th>Abril</th>
+      <th>Mayo</th>
+      <th>Junio</th>
+      <th>Julio</th>
+      <th>Agosto</th>
+      <th>Septiembre</th>
+      <th>Octubre</th>
+      <th>Noviembre</th>
+      <th>Diciembre</th>
+    </tr>
+
+    <tr *ngFor="let expense of expenseArray" class="rowCategory">
+      <td>{{ expense[0] }}</td>
+      <td *ngFor="let amount of expense[1]" class="columnMonth">{{ amount | number:'1.2-2' }}</td>
+    </tr>
+  </table>
+</section>

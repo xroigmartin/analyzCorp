@@ -24,6 +24,22 @@ export class MenuComponent implements OnInit{
         icon: 'pi pi-money-bill',
         items: [
           {
+            label: 'Balance',
+            icon: 'pi pi-wallet',
+            items:[
+              {
+                label: 'Expense',
+                icon: 'pi pi-money-bill',
+                routerLink: 'personal-economy/balance/expense'
+              },
+              {
+                label: 'Income',
+                icon: 'pi pi-dollar',
+                routerLink: 'personal-economy/balance/income'
+              }
+            ]
+          },
+          {
             label: 'Bank Account',
             icon: 'pi pi-building-columns',
             routerLink: 'personal-economy/account'

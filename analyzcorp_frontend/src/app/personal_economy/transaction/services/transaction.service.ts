@@ -15,6 +15,7 @@ export class TransactionService {
   constructor(private httpClient: HttpClient) { }
 
   findAllTransactionByAccountId(accountId: number): Observable<ApiResponse<TransactionDTO[]>>{
+    console.log(accountId);
     return this.httpClient.get<ApiResponse<TransactionDTO[]>>(`http://localhost:8080/api/v1/personal-economy/transactions?accountId=${accountId}`, {'headers': this.prepareHeaders()});
   }
 
