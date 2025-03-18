@@ -9,6 +9,8 @@ import {AccountService} from '../../bank/account/services/account.service';
 import {AccountDTO} from '../../bank/account/interfaces/AccountDTO.interfaces';
 import {TransactionService} from '../../transaction/services/transaction.service';
 import {TransactionDTO} from '../../transaction/interfaces/transactionDTO.interface';
+import {FormsModule} from '@angular/forms';
+import {DatePicker, DatePickerYearChangeEvent} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-expense',
@@ -16,7 +18,9 @@ import {TransactionDTO} from '../../transaction/interfaces/transactionDTO.interf
     TableModule,
     NgForOf,
     Select,
-    DecimalPipe
+    DecimalPipe,
+    FormsModule,
+    DatePicker
   ],
   templateUrl: './expense.component.html',
   standalone: true,
@@ -30,8 +34,12 @@ export class ExpenseComponent implements OnInit{
 
   public categories: CategoryDTO[] = [];
   public accounts: AccountDTO[] = [];
-  public transactions: TransactionDTO[] = [];
   public expenseMap: Map<string, number[]> = new Map();
+  public yearSelect: Date = new Date();
+  public months: string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  private accountSelected: number = 0;
+
 
   ngOnInit(): void {
     this.categoryService.findCategories().subscribe({
@@ -48,35 +56,45 @@ export class ExpenseComponent implements OnInit{
   }
 
 
-  selectAccount(event: SelectChangeEvent) {
-    this.loadTransactions(event.value.id)
+  selectAccount(event: SelectChangeEvent): void {
+    this.accountSelected = event.value.id;
+    this.loadTransactions(this.accountSelected)
   }
 
   loadTransactions(accountId: number): void {
-    const currentYear: number = new Date().getFullYear();
     this.transactionService.findAllTransactionByAccountId(accountId).subscribe({
       next: (apiResponse: ApiResponse<TransactionDTO[]>) : void => {
+
+        this.expenseMap.clear();
+
         apiResponse.data.forEach((transaction: TransactionDTO) => {
+
           const categoryName: string = transaction.category.name;
           const amount: number = transaction.amount;
           const month: number = new Date(transaction.date).getMonth();
           const year: number = new Date(transaction.date).getFullYear();
 
-          if(currentYear === year){
+          if(this.yearSelect.getFullYear() === year){
             if(!this.expenseMap.has(categoryName)) {
               this.expenseMap.set(categoryName, Array(12).fill(0));
             }
-
             this.expenseMap.get(categoryName)![month] += amount;
           }
-        });
 
-        console.log(this.expenseMap);
+        });
       }
     });
   }
 
   get expenseArray() {
-    return Array.from(this.expenseMap.entries());
+    return Array.from(this.expenseMap.entries()).map(([category, amounts]) => ({
+      category,
+      amounts
+    }));
+  }
+
+  updateTransaction(event: Date) {
+    this.yearSelect = event;
+    this.loadTransactions(this.accountSelected);
   }
 }

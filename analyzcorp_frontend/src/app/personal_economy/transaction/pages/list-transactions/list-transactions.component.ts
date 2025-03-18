@@ -45,7 +45,6 @@ import {UpdateTransactionDTO} from '../../interfaces/updateTransactionDTO.interf
     DatePicker,
     ButtonDirective,
     Ripple,
-    ButtonIcon,
     NgIf,
     InputText,
     SelectButton

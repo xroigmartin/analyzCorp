@@ -1,32 +1,39 @@
-<section>
-  <p-select
-    placeholder="Select Account"
-    [options]="accounts"
-    optionLabel="alias"
-    (onChange)="selectAccount($event)"
-  />
+<section class="flex flex-row column-gap-2" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+  <div>
+    <label for="accountSelected">Account</label>
+    <p-select
+      id="accountSelected"
+      placeholder="Select Account"
+      [options]="accounts"
+      optionLabel="alias"
+      (onChange)="selectAccount($event)"
+    />
+  </div>
+  <div>
+    <label for="yearSelected">Year</label>
+    <p-datepicker
+      inputId="yearSelected"
+      [(ngModel)]="yearSelect"
+      view="year"
+      dateFormat="yy"
+      (onSelect)="updateTransaction($event)"></p-datepicker>
+  </div>
 </section>
 <section>
-  <table>
-    <tr>
-      <th>Concepto</th>
-      <th>Enero</th>
-      <th>Febrero</th>
-      <th>Marzo</th>
-      <th>Abril</th>
-      <th>Mayo</th>
-      <th>Junio</th>
-      <th>Julio</th>
-      <th>Agosto</th>
-      <th>Septiembre</th>
-      <th>Octubre</th>
-      <th>Noviembre</th>
-      <th>Diciembre</th>
-    </tr>
+  <p-table [value]="expenseArray">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Concepto</th>
+        <th *ngFor="let month of months">{{ month }}</th>
+      </tr>
+    </ng-template>
 
-    <tr *ngFor="let expense of expenseArray" class="rowCategory">
-      <td>{{ expense[0] }}</td>
-      <td *ngFor="let amount of expense[1]" class="columnMonth">{{ amount | number:'1.2-2' }}</td>
-    </tr>
-  </table>
+    <ng-template pTemplate="body" let-expense>
+      <tr>
+        <td>{{ expense.category }}</td>
+        <td *ngFor="let amount of expense.amounts">{{ amount | number:'1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
 </section>
