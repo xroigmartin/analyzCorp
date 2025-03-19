@@ -1,15 +1,12 @@
 <section class="flex flex-row column-gap-2" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
   <div>
-    <account-selector
-      (accountValueChange)="selectAccount($event)"
-    />
+    <account-selector (accountValueChange)="selectAccount($event)" />
   </div>
   <div>
-    <year-date-picker
-      (dateChange)="onSelectYear($event)"
-    />
+    <year-date-picker (dateChange)="onSelectYear($event)" />
   </div>
 </section>
+
 <section>
   <p-table [value]="transactionArray">
     <ng-template pTemplate="header">
@@ -19,12 +16,11 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-income>
+    <ng-template pTemplate="body" let-transaction>
       <tr>
-        <td>{{ income.category }}</td>
-        <td *ngFor="let amount of income.amounts">{{ amount | number:'1.2-2' }}</td>
+        <td>{{ transaction.category }}</td>
+        <td *ngFor="let amount of transaction.amounts">{{ amount | number:'1.2-2' }}</td>
       </tr>
     </ng-template>
   </p-table>
-
 </section>

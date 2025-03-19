@@ -4,6 +4,7 @@ import {AccountDTO} from '../../../../personal_economy/bank/account/interfaces/A
 import {ApiResponse} from '../../../interfaces/ApiResponse.interface';
 import {Select} from 'primeng/select';
 import {FormsModule} from '@angular/forms';
+import {AccountStateService} from '../../../services/account-state.service';
 
 @Component({
   selector: 'account-selector',
@@ -18,6 +19,7 @@ import {FormsModule} from '@angular/forms';
 export class AccountSelectorComponent implements OnInit{
 
   private readonly accountService: AccountService = inject(AccountService);
+  private accountStateService: AccountStateService = inject(AccountStateService);
 
   public accounts: AccountDTO[] = [];
   public accountSelected: AccountDTO | null = null;
@@ -29,9 +31,12 @@ export class AccountSelectorComponent implements OnInit{
         this.accounts = apiResponse.data;
       }
     });
+
+    this.accountSelected = this.accountStateService.getSelectedAccount();
   }
 
   onSelectChange(): void{
+    this.accountStateService.setSelectedAccount(this.accountSelected);
     this.accountValueChange.emit(this.accountSelected);
   }
 

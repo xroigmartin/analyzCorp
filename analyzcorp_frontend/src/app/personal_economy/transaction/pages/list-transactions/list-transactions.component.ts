@@ -36,6 +36,7 @@ import {
 import {
   MonthDataPickerComponent
 } from '../../../../shared/components/date_picker/month-data-picker/month-data-picker.component';
+import {AccountStateService} from '../../../../shared/services/account-state.service';
 
 @Component({
   selector: 'app-list-transactions',
@@ -71,6 +72,7 @@ export class ListTransactionsComponent implements OnInit{
   private readonly transactionService: TransactionService = inject(TransactionService);
   private readonly categoriesService: CategoryService = inject(CategoryService);
   private readonly currencyService: CurrencyService = inject(CurrencyService);
+  private readonly accountStateService: AccountStateService = inject(AccountStateService);
 
   accounts: AccountDTO[] = [];
   accountSelected: AccountDTO | null = null;
@@ -107,10 +109,13 @@ export class ListTransactionsComponent implements OnInit{
   public messageComponent!: MessageComponent;
 
   ngOnInit(): void {
+    this.accountSelected = this.accountStateService.getSelectedAccount();
     this.accountService.findAllBankAccounts().subscribe({
       next: (apiResponse: ApiResponse<AccountDTO[]>): void => {
         this.accounts = apiResponse.data;
-        this.accountSelected = apiResponse.data[0];
+        if(!this.accountSelected){
+          this.accountSelected = apiResponse.data[0];
+        }
         this.loadTransactions(this.accountSelected.id);
       }
     });

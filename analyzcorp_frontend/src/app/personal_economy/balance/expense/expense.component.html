@@ -1,26 +1,17 @@
 <section class="flex flex-row column-gap-2" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
   <div>
-    <label for="accountSelected">Account</label>
-    <p-select
-      id="accountSelected"
-      placeholder="Select Account"
-      [options]="accounts"
-      optionLabel="alias"
-      (onChange)="selectAccount($event)"
+    <account-selector
+      (accountValueChange)="selectAccount($event)"
     />
   </div>
   <div>
-    <label for="yearSelected">Year</label>
-    <p-datepicker
-      inputId="yearSelected"
-      [(ngModel)]="yearSelect"
-      view="year"
-      dateFormat="yy"
-      (onSelect)="updateTransaction($event)"></p-datepicker>
+    <year-date-picker
+      (dateChange)="onSelectYear($event)"
+    />
   </div>
 </section>
 <section>
-  <p-table [value]="expenseArray">
+  <p-table [value]="transactionArray">
     <ng-template pTemplate="header">
       <tr>
         <th>Concepto</th>
