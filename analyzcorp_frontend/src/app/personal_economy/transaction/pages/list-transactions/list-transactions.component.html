@@ -1,12 +1,16 @@
 <section class="options">
-<p-select
-  placeholder="Select Account"
-  [options]="accounts"
-  optionLabel="alias"
-  (onChange)="selectAccount($event)"
-/>
-<p-button label="New Transaction" routerLink="new"/>
-<p-button label="Import Transactions" (click)="showImportTransactionDialog()"/>
+  <account-selector
+    (accountValueChange)="selectAccount($event)"
+  />
+  <year-date-picker
+    (dateChange)="updateYear($event)"
+  />
+  <month-data-picker
+    (dateChange)="updateMonth($event)"
+  />
+
+  <p-button label="New Transaction" routerLink="new"/>
+  <p-button label="Import Transactions" (click)="showImportTransactionDialog()"/>
 </section>
 <p-table
   [value]="transactionsTable"

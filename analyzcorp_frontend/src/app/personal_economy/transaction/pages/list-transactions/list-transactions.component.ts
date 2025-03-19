@@ -27,6 +27,15 @@ import {CurrencyDTO} from '../../../../control_panel/currency/interfaces/Currenc
 import {CurrencyService} from '../../../../control_panel/currency/services/currency.service';
 import {TransactionTypeEnum} from '../../enums/TransactionTypeEnum.interface';
 import {UpdateTransactionDTO} from '../../interfaces/updateTransactionDTO.interface';
+import {
+  AccountSelectorComponent
+} from '../../../../shared/components/select/account-selector/account-selector.component';
+import {
+  YearDatePickerComponent
+} from '../../../../shared/components/date_picker/year-date-picker/year-date-picker.component';
+import {
+  MonthDataPickerComponent
+} from '../../../../shared/components/date_picker/month-data-picker/month-data-picker.component';
 
 @Component({
   selector: 'app-list-transactions',
@@ -47,7 +56,10 @@ import {UpdateTransactionDTO} from '../../interfaces/updateTransactionDTO.interf
     Ripple,
     NgIf,
     InputText,
-    SelectButton
+    SelectButton,
+    AccountSelectorComponent,
+    YearDatePickerComponent,
+    MonthDataPickerComponent
   ],
   templateUrl: './list-transactions.component.html',
   standalone: true,
@@ -71,6 +83,8 @@ export class ListTransactionsComponent implements OnInit{
   transactionFileImportType: TransactionImportFileTypeEnum | null = null;
   categories: CategoryDTO[] = [];
   currencies: CurrencyDTO[] = [];
+  monthSelected: Date = new Date();
+  yearSelected: Date = new Date();
 
   public transactionType: any[] = [
     {label: 'INCOME', value:TransactionTypeEnum.INCOME},
@@ -118,7 +132,10 @@ export class ListTransactionsComponent implements OnInit{
     this.transactionService.findAllTransactionByAccountId(accountId).subscribe({
       next: (apiResponse: ApiResponse<TransactionDTO[]>): void => {
         this.transactions = apiResponse.data;
-        this.transactionsTable = apiResponse.data.map((tran: TransactionDTO) =>({
+        this.transactionsTable = apiResponse.data
+          .filter((transaction: TransactionDTO): boolean => new Date(transaction.date).getMonth() == this.monthSelected.getMonth())
+          .filter((transaction: TransactionDTO): boolean => new Date(transaction.date).getFullYear() == this.yearSelected.getFullYear())
+          .map((tran: TransactionDTO) =>({
           id: tran.id,
           amount: tran.amount,
           currency: this.getCurrencyDTO(tran.currency),
@@ -136,9 +153,11 @@ export class ListTransactionsComponent implements OnInit{
     return this.currencies.find((currency: CurrencyDTO): boolean  => currency.code === currencyCode)!;
   }
 
-  selectAccount(event: SelectChangeEvent): void {
-    this.accountSelected = event.value;
-    this.loadTransactions(this.accountSelected!.id);
+  selectAccount(accountDto: AccountDTO | null): void {
+    this.accountSelected = accountDto;
+    if(this.accountSelected){
+      this.loadTransactions(this.accountSelected.id);
+    }
   }
 
   currencyClass(amount: string): string {
@@ -223,4 +242,21 @@ export class ListTransactionsComponent implements OnInit{
     delete this.clonedTransactions[transaction.id];
   }
 
+  updateTransactionByDate() {
+    this.loadTransactions(this.accountSelected!.id);
+  }
+
+  updateYear(month: Date): void {
+    this.yearSelected = month;
+    if(this.accountSelected){
+      this.loadTransactions(this.accountSelected.id);
+    }
+  }
+
+  updateMonth(month: Date): void {
+    this.monthSelected = month;
+    if(this.accountSelected){
+      this.loadTransactions(this.accountSelected.id);
+    }
+  }
 }
