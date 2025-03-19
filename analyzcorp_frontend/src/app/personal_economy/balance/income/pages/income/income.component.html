@@ -1,1 +1,39 @@
-<p>income works!</p>
+<section class="flex flex-row column-gap-2" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+  <div>
+    <label for="accountSelected">Account</label>
+    <p-select
+      id="accountSelected"
+      placeholder="Select Account"
+      [options]="accounts"
+      optionLabel="alias"
+      (onChange)="selectAccount($event)"
+    />
+  </div>
+  <div>
+    <label for="yearSelected">Year</label>
+    <p-datepicker
+      inputId="yearSelected"
+      [(ngModel)]="yearSelect"
+      view="year"
+      dateFormat="yy"
+      (onSelect)="updateTransaction($event)"></p-datepicker>
+  </div>
+</section>
+<section>
+  <p-table [value]="incomeArray">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Concepto</th>
+        <th *ngFor="let month of months">{{ month }}</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-income>
+      <tr>
+        <td>{{ income.category }}</td>
+        <td *ngFor="let amount of income.amounts">{{ amount | number:'1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</section>

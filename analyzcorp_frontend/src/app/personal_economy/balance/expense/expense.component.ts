@@ -11,6 +11,7 @@ import {TransactionService} from '../../transaction/services/transaction.service
 import {TransactionDTO} from '../../transaction/interfaces/transactionDTO.interface';
 import {FormsModule} from '@angular/forms';
 import {DatePicker, DatePickerYearChangeEvent} from 'primeng/datepicker';
+import {TransactionTypeEnum} from '../../transaction/enums/TransactionTypeEnum.interface';
 
 @Component({
   selector: 'app-expense',
@@ -67,7 +68,9 @@ export class ExpenseComponent implements OnInit{
 
         this.expenseMap.clear();
 
-        apiResponse.data.forEach((transaction: TransactionDTO) => {
+        apiResponse.data
+          .filter((transaction: TransactionDTO) : boolean => transaction.type === TransactionTypeEnum.EXPENSE)
+          .forEach((transaction: TransactionDTO) => {
 
           const categoryName: string = transaction.category.name;
           const amount: number = transaction.amount;
