@@ -2,6 +2,7 @@ package xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.
 
 import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.CategoryKeyword;
@@ -74,9 +75,14 @@ public class CategoryJpaService implements CategoryRepository {
             return null;
         }
 
-        return categoryKeywordJpaRepository.findByDescription(description)
-                .map(categoryKeywordJpa -> CategoryJpaUtils.convertCategoryJpaToCategory(categoryKeywordJpa.getCategory()))
-                .orElse(null);
+        try{
+            return categoryKeywordJpaRepository.findByDescription(description)
+                    .map(categoryKeywordJpa -> CategoryJpaUtils.convertCategoryJpaToCategory(categoryKeywordJpa.getCategory()))
+                    .orElse(null);
+        }
+        catch(IncorrectResultSizeDataAccessException ex){
+            return null;
+        }
 
     }
 
