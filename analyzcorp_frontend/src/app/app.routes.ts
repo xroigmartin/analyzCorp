@@ -16,6 +16,7 @@ import {CreateCategoryComponent} from './personal_economy/category/pages/create-
 import {UpdateCategoryComponent} from './personal_economy/category/pages/update-category/update-category.component';
 import {ExpenseComponent} from './personal_economy/balance/expense/expense.component';
 import {IncomeComponent} from './personal_economy/balance/income/pages/income/income.component';
+import {BudgetComponent} from './personal_economy/budget/pages/budget.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +81,10 @@ export const routes: Routes = [
             component: IncomeComponent
           },
         ]
+      },
+      {
+        path: 'budget',
+        component: BudgetComponent
       }
     ]
   },

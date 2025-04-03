@@ -1,0 +1,22 @@
+.global-cards{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.ingress-card{
+  margin-left: 50px;
+}
+
+.expense-card{
+}
+
+.diff-card{
+  margin-right: 50px;
+}
+
+.ingress-card, .expense-card, .diff-card{
+  min-width: 100px;
+  text-align: center;
+}

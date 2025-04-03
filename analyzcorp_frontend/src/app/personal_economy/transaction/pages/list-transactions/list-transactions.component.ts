@@ -251,8 +251,8 @@ export class ListTransactionsComponent implements OnInit{
     this.loadTransactions(this.accountSelected!.id);
   }
 
-  updateYear(month: Date): void {
-    this.yearSelected = month;
+  updateYear(year: Date): void {
+    this.yearSelected = year;
     if(this.accountSelected){
       this.loadTransactions(this.accountSelected.id);
     }

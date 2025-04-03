@@ -1,0 +1,42 @@
+<section class="global-cards">
+  <p-card header="Ingresos" class="ingress-card">
+    <span>{{totalIncome() | currency: 'EUR' :'symbol' : '1.2-2'}}</span>
+  </p-card>
+  <p-card header="Gastos" class="expense-card">
+    <span>{{totalExpense() | currency: 'EUR' :'symbol' : '1.2-2'}}</span>
+  </p-card>
+  <p-card header="Diferencia" class="diff-card">
+    <span>{{totalBalance() | currency: 'EUR':'symbol' : '1.2-2'}}</span>
+  </p-card>
+</section>
+<section>
+  <account-selector
+    (accountValueChange)="onSelectAccount($event)"
+  />
+  <year-date-picker
+    (dateChange)="onSelectYear($event)"
+  />
+  <month-data-picker
+    (dateChange)="onSelectMonth($event)"
+  />
+</section>
+<section>
+  <p-table [value]="budgetsRow" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template #header>
+      <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Expense</th>
+        <th>Balance</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-budget>
+      <tr>
+        <td>{{ budget.categoryName }}</td>
+        <td>{{ budget.amountBudget }}</td>
+        <td>{{ budget.amountTransactions }}</td>
+        <td>{{ budget.amountBudget + budget.amountTransactions}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>
