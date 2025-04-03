@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xroigmartin.analyzcorp_backend.shared.domain.exceptions.NoFiltersProvidedException;
+import xroigmartin.analyzcorp_backend.shared.domain.exceptions.PreconditionException;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 
 @RestControllerAdvice
@@ -34,6 +36,30 @@ public class AnalyzCorpControllerAdvice {
                 HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         return ResponseEntityHandler.generate(apiResponseError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({PreconditionException.class})
+    public ResponseEntity<ApiResponse<Void>> handlePreconditionException(Exception ex) {
+        log.warn("Precondition exception occurred: {}", ex.getMessage(), ex);
+
+        var apiResponseError = ApiResponseHandler.generateError(
+                "Precondition required",
+                "A precondition required occurred",
+                HttpStatus.PRECONDITION_FAILED.value());
+
+        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @ExceptionHandler({NoFiltersProvidedException.class})
+    public ResponseEntity<ApiResponse<Void>> handleBadRequest(Exception ex) {
+        log.warn("Bad request exception occurred: {}", ex.getMessage(), ex);
+
+        var apiResponseError = ApiResponseHandler.generateError(
+                "Bad request occurred",
+                "A bad request occurred",
+                HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.BAD_REQUEST);
     }
 
 }
