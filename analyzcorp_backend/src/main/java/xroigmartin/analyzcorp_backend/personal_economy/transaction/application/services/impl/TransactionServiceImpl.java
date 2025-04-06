@@ -84,7 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> transactions = new ArrayList<>();
 
-        Account account = accountService.findAccountById(accountId);
+        Account account = accountService.findAccountById(accountId).orElseThrow(() -> new RuntimeException());
 
         BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl(this.categoryService);
 

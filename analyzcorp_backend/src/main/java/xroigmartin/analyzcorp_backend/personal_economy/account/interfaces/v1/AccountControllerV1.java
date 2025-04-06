@@ -1,12 +1,5 @@
 package xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.v1;
 
-import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.ACCOUNT_PATH;
-import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_CREATE_BANK_ACCOUNT;
-import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_FIND_ALL_BANK_ACCOUNT;
-import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_GET_ACCOUNT_BY_ID;
-
-import java.util.List;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +21,13 @@ import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResp
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntityHandler;
 
+import java.util.List;
+
+import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.ACCOUNT_PATH;
+import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_CREATE_BANK_ACCOUNT;
+import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_FIND_ALL_BANK_ACCOUNT;
+import static xroigmartin.analyzcorp_backend.personal_economy.account.interfaces.utils.AccountControllerUtils.SUCCESS_GET_ACCOUNT_BY_ID;
+
 @RestController
 @RequestMapping(ACCOUNT_PATH)
 @AllArgsConstructor
@@ -48,7 +48,7 @@ public final class AccountControllerV1 {
 
     @GetMapping(value = "/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<AccountDTO>> getAccountById(@PathVariable Long accountId){
-        var account = bankAccountService.findAccountById(accountId);
+        var account = bankAccountService.findAccountById(accountId).orElseThrow(() -> new RuntimeException());
 
         var accountDto = AccountControllerUtils.convertAccountToAccountDTO(account);
 

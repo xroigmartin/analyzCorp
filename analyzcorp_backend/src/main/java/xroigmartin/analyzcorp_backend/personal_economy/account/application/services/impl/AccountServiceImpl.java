@@ -1,14 +1,15 @@
 package xroigmartin.analyzcorp_backend.personal_economy.account.application.services.impl;
 
-import java.time.Instant;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.services.AccountService;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.exceptions.AccountNotFoundByIdException;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
 import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jpa.service.AccountJpaService;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -46,7 +47,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account updateAccount(Account updateAccount) {
 
-        var oldAccount = this.findAccountById(updateAccount.id());
+        var oldAccount = this.findAccountById(updateAccount.id())
+                .orElseThrow(() -> new RuntimeException());
 
         var bankAccountUpdateInfo = Account.builder()
                 .id(updateAccount.id())
@@ -60,6 +62,11 @@ public class AccountServiceImpl implements AccountService {
                 .build();
 
         return accountJpaService.updateAccount(bankAccountUpdateInfo);
+    }
+
+    @Override
+    public Optional<Account> findAccountById(Long id) {
+        return Optional.empty();
     }
 
 }

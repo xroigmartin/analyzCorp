@@ -16,18 +16,18 @@ public class BudgetControllerUtils {
 
     public static BudgetDTO convertBudgetToBudgetDto(Budget budget){
 
-        var categoryDto = CategoryControllerUtils.convertCategoryToCategoryDTO(budget.category());
+        var categoryDto = CategoryControllerUtils.convertCategoryToCategoryDTO(budget.getCategory());
 
         return BudgetDTO.builder()
-                .id(budget.id())
+                .id(budget.getId())
                 .category(categoryDto)
-                .amount(budget.amount())
-                .startDate(budget.startDate())
-                .endDate(budget.endDate())
-                .createdAt(budget.createdAt())
-                .createdBy(budget.createdBy())
-                .updatedAt(budget.updatedAt())
-                .updatedBy(budget.updatedBy())
+                .amount(budget.getAmount())
+                .startDate(budget.getStartDate())
+                .endDate(budget.getEndDate())
+                .createdAt(budget.getCreatedAt())
+                .createdBy(budget.getCreatedBy())
+                .updatedAt(budget.getUpdatedAt())
+                .updatedBy(budget.getUpdatedBy())
                 .build();
     }
 }

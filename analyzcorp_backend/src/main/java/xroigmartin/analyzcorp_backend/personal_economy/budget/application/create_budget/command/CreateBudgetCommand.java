@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Builder
 public record CreateBudgetCommand(
    Long categoryId,
+   Long accountId,
    BigDecimal amount,
    LocalDate startDate,
    LocalDate endDate,
