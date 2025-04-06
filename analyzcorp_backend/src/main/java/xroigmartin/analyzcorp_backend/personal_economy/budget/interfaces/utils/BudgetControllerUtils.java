@@ -12,6 +12,7 @@ public class BudgetControllerUtils {
 
     public static final String BUDGET_PATH = PERSONAL_ECONOMY_PATH + "/budgets";
     public static final String SUCCESS_GET_BUDGETS = "Get budgets";
+    public static final String SUCCESS_BUDGETS_AMOUNT_UPDATE = "Update budget amount";
 
     public static BudgetDTO convertBudgetToBudgetDto(Budget budget){
 

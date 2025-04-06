@@ -96,4 +96,10 @@ public class CategoryJpaService implements CategoryRepository {
         var categoryKeywordJpa = CategoryJpaUtils.convertCategoryKeywordToCategoryKeywordJpa(categoryKeyword);
         categoryKeywordJpaRepository.save(categoryKeywordJpa);
     }
+
+    @Override
+    public Optional<Category> findCategoryById(Long id) {
+        return Optional.empty();
+    }
+
 }

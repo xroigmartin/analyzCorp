@@ -9,35 +9,39 @@ import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.j
 @UtilityClass
 public class BudgetJpaUtils {
 
-    public static Budget convertBudgetJpaToBudget(BudgetJpa budgetJpa) {
+    public static Budget toDomain(BudgetJpa entity) {
 
-        var category = CategoryJpaUtils.convertCategoryJpaToCategory(budgetJpa.getCategory());
+        var category = CategoryJpaUtils.convertCategoryJpaToCategory(entity.getCategory());
 
         return Budget.builder()
-                .id(budgetJpa.getId())
+                .id(entity.getId())
                 .category(category)
-                .amount(budgetJpa.getAmount())
-                .startDate(budgetJpa.getStartDate())
-                .endDate(budgetJpa.getEndDate())
-                .createdAt(budgetJpa.getCreatedAt())
-                .createdBy(budgetJpa.getCreatedBy())
-                .updatedAt(budgetJpa.getUpdatedAt())
-                .updatedBy(budgetJpa.getUpdatedBy())
+                .amount(entity.getAmount())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .createdAt(entity.getCreatedAt())
+                .createdBy(entity.getCreatedBy())
+                .updatedAt(entity.getUpdatedAt())
+                .updatedBy(entity.getUpdatedBy())
                 .build();
     }
 
-    public static BudgetJpa convertBudgetToBudgetJpa(Budget budget, CategoryJpa categoryJpa) {
+    public static BudgetJpa toEntity(Budget budget) {
+
+        var categoryJpa = CategoryJpa.builder()
+                .id(budget.getCategory().id())
+                .build();
 
         return BudgetJpa.builder()
-                .id(budget.id())
+                .id(budget.getId())
                 .category(categoryJpa)
-                .amount(budget.amount())
-                .startDate(budget.startDate())
-                .endDate(budget.endDate())
-                .createdAt(budget.createdAt())
-                .createdBy(budget.createdBy())
-                .updatedAt(budget.updatedAt())
-                .updatedBy(budget.updatedBy())
+                .amount(budget.getAmount())
+                .startDate(budget.getStartDate())
+                .endDate(budget.getEndDate())
+                .createdAt(budget.getCreatedAt())
+                .createdBy(budget.getCreatedBy())
+                .updatedAt(budget.getUpdatedAt())
+                .updatedBy(budget.getUpdatedBy())
                 .build();
     }
 }

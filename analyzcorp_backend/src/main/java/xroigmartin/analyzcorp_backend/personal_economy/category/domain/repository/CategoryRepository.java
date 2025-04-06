@@ -8,15 +8,23 @@ import java.util.Optional;
 
 public interface CategoryRepository {
 
+    @Deprecated
     List<Category> findAllCategories();
 
+    @Deprecated
     Category createCategory(Category newCategory);
 
+    @Deprecated
     Optional<Category> getCategoryId(Long categoryId);
 
+    @Deprecated
     Category updateCategory(Category updateCategory);
 
+    @Deprecated
     Category findCategoryByDescription(String description);
 
+    @Deprecated
     void addCategoryKeyword(CategoryKeyword categoryKeyword);
+
+    Optional<Category> findCategoryById(Long id);
 }
