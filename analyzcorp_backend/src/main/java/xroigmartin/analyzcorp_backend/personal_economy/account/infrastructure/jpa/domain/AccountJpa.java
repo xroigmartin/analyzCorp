@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -37,15 +37,31 @@ public class AccountJpa {
     private String alias;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "created_by", nullable = false, length = 50)
     private String createdBy;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
-    private Instant updatedAt;
+    private OffsetDateTime updatedAt;
 
     @Column(name = "updated_by", nullable = false, length = 50)
     private String updatedBy;
 
+    public static AccountJpa create(Long id, String bankName, String iban, String alias, String createdBy, String updatedBy) {
+        return AccountJpa.create(id, bankName, iban, alias, createdBy, updatedBy, OffsetDateTime.now(), OffsetDateTime.now());
+    }
+
+    public static AccountJpa create(Long id, String bankName, String iban, String alias, String createdBy, String updatedBy, OffsetDateTime createdAt, OffsetDateTime updatedAt){
+        return AccountJpa.builder()
+                .id(id)
+                .bankName(bankName)
+                .iban(iban)
+                .alias(alias)
+                .createdBy(createdBy)
+                .createdAt(createdAt)
+                .updatedBy(updatedBy)
+                .updatedAt(updatedAt)
+                .build();
+    }
 }

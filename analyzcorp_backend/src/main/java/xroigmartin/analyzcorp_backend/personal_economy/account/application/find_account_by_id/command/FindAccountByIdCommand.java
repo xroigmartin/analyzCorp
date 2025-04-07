@@ -1,8 +1,9 @@
 package xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.command;
 
-import lombok.Builder;
+public record FindAccountByIdCommand(Long accountId) {
 
-@Builder
-public record FindAccountByIdCommand(
-        Long id
-) {}
+    public static FindAccountByIdCommand create(Long accountId){
+        return new FindAccountByIdCommand(accountId);
+    }
+
+}

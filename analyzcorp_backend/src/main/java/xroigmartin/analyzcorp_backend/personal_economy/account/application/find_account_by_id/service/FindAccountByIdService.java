@@ -16,7 +16,7 @@ public class FindAccountByIdService implements FindAccountByIdUseCase {
 
     @Override
     public Account handle(FindAccountByIdCommand command) {
-        return accountRepository.findAccountById(command.id())
-                .orElseThrow(() -> new AccountNotFoundByIdException(command.id()));
+        return accountRepository.findAccountById(command.accountId())
+                .orElseThrow(() -> new AccountNotFoundByIdException(command.accountId()));
     }
 }

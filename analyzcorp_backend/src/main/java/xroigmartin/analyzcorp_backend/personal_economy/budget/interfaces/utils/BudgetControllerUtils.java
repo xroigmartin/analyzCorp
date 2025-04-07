@@ -21,7 +21,7 @@ public class BudgetControllerUtils {
         return BudgetDTO.builder()
                 .id(budget.getId())
                 .category(categoryDto)
-                .amount(budget.getAmount())
+                .amount(budget.getAmount().value())
                 .startDate(budget.getStartDate())
                 .endDate(budget.getEndDate())
                 .createdAt(budget.getCreatedAt())

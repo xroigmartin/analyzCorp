@@ -5,6 +5,7 @@ import xroigmartin.analyzcorp_backend.personal_economy.budget.domain.model.Budge
 import xroigmartin.analyzcorp_backend.personal_economy.budget.infrastructure.jpa.domain.BudgetJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.domain.CategoryJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.jpa.utils.CategoryJpaUtils;
+import xroigmartin.analyzcorp_backend.personal_economy.shared.domain.value_object.AmountValueObject;
 
 @UtilityClass
 public class BudgetJpaUtils {
@@ -16,7 +17,7 @@ public class BudgetJpaUtils {
         return Budget.builder()
                 .id(entity.getId())
                 .category(category)
-                .amount(entity.getAmount())
+                .amount(new AmountValueObject(entity.getAmount()))
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .createdAt(entity.getCreatedAt())
@@ -35,7 +36,7 @@ public class BudgetJpaUtils {
         return BudgetJpa.builder()
                 .id(budget.getId())
                 .category(categoryJpa)
-                .amount(budget.getAmount())
+                .amount(budget.getAmount().value())
                 .startDate(budget.getStartDate())
                 .endDate(budget.getEndDate())
                 .createdAt(budget.getCreatedAt())

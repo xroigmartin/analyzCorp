@@ -22,8 +22,9 @@ public class AccountJpaService implements AccountRepository {
     @Override
     @Transactional(readOnly = true)
     public List<Account> findAllAccount() {
-        var bankAccounts = this.accountJpaRepository.findAll();
-        return bankAccounts.stream().map(AccountJpaUtils::convertAccountJpaToAccount).toList();
+        return this.accountJpaRepository.findAll()
+                .stream()
+                .map(AccountJpaUtils::toDomain).toList();
     }
 
     @Override
@@ -31,44 +32,17 @@ public class AccountJpaService implements AccountRepository {
     public Optional<Account> findAccountById(Long id) {
         var accountJpa = this.accountJpaRepository.findById(id);
 
-        return accountJpa.map(AccountJpaUtils::convertAccountJpaToAccount);
+        return accountJpa.map(AccountJpaUtils::toDomain);
     }
 
     @Override
     @Transactional
-    public Account createAccount(Account newBankAccount) {
-        var newBankAccountJpa = AccountJpa.builder()
-                .bankName(newBankAccount.bankName())
-                .alias(newBankAccount.alias())
-                .iban(newBankAccount.iban())
-                .createdBy(newBankAccount.createdBy())
-                .createdAt(newBankAccount.createdAt())
-                .updatedAt(newBankAccount.updatedAt())
-                .updatedBy(newBankAccount.updatedBy())
-                .build();
+    public Account save(Account account) {
+        var newBankAccountJpa = AccountJpa.create(null, account.getBankName(), account.getIban(),
+                account.getAlias(), account.getCreatedBy(), account.getUpdatedBy(), account.getCreatedAt(), account.getUpdatedAt());
 
         var bankAccount = this.accountJpaRepository.save(newBankAccountJpa);
 
-        return AccountJpaUtils.convertAccountJpaToAccount(bankAccount);
-    }
-
-    @Override
-    @Transactional
-    public Account updateAccount(Account updateAccount) {
-
-        var bankAccountForUpdate = AccountJpa.builder()
-                .id(updateAccount.id())
-                .bankName(updateAccount.bankName())
-                .iban(updateAccount.iban())
-                .alias(updateAccount.alias())
-                .createdAt(updateAccount.createdAt())
-                .createdBy(updateAccount.createdBy())
-                .updatedAt(updateAccount.updatedAt())
-                .updatedBy(updateAccount.updatedBy())
-                .build();
-
-        var bankAccountUpdated = this.accountJpaRepository.save(bankAccountForUpdate);
-
-        return AccountJpaUtils.convertAccountJpaToAccount(bankAccountUpdated);
+        return AccountJpaUtils.toDomain(bankAccount);
     }
 }

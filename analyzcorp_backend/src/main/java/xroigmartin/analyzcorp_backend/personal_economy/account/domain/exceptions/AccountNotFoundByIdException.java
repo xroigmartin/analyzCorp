@@ -2,7 +2,7 @@ package xroigmartin.analyzcorp_backend.personal_economy.account.domain.exception
 
 import java.io.Serial;
 
-public class AccountNotFoundByIdException extends RuntimeException{
+public class AccountNotFoundByIdException extends AccountException{
 
     @Serial
     private static final long serialVersionUID = 6694314933677693607L;

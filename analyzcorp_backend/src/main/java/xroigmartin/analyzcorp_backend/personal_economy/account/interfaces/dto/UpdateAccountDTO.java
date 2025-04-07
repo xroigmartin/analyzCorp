@@ -9,5 +9,6 @@ import lombok.Builder;
 public record UpdateAccountDTO(
         @NotBlank @Size(max = 100) String bankName,
         @NotBlank @Pattern(regexp = "^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$") String iban,
-        @Size(max = 50) String alias
+        @Size(max = 50) String alias,
+        @NotBlank String updatedBy
 ){}

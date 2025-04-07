@@ -7,16 +7,9 @@ import xroigmartin.analyzcorp_backend.personal_economy.account.infrastructure.jp
 @UtilityClass
 public class AccountJpaUtils {
 
-    public static Account convertAccountJpaToAccount(AccountJpa accountJpa){
-        return Account.builder()
-                .id(accountJpa.getId())
-                .bankName(accountJpa.getBankName())
-                .iban(accountJpa.getIban())
-                .alias(accountJpa.getAlias())
-                .createdAt(accountJpa.getCreatedAt())
-                .createdBy(accountJpa.getCreatedBy())
-                .updatedAt(accountJpa.getUpdatedAt())
-                .updatedBy(accountJpa.getUpdatedBy())
-                .build();
+    public static Account toDomain(AccountJpa accountJpa){
+        return Account.create(accountJpa.getId(), accountJpa.getBankName(), accountJpa.getIban(),
+                accountJpa.getAlias(), accountJpa.getCreatedBy(), accountJpa.getUpdatedBy(),
+                accountJpa.getCreatedAt(), accountJpa.getUpdatedAt());
     }
 }
