@@ -41,9 +41,7 @@ public class CreateBudgetService implements CreateBudgetUseCase {
     }
 
     private Account getAccount(Long accountId){
-        var command = FindAccountByIdCommand.builder()
-                .id(accountId)
-                .build();
+        var command = FindAccountByIdCommand.create(accountId);
 
         return findAccountByIdUseCase.handle(command);
     }

@@ -40,7 +40,7 @@ public class CaixaBankCuaderno43ExtractTransactionServiceImpl extends BankTransa
                     continue;
                 }
 
-                var transaction = parseRowCuaderno43(account.id(), row);
+                var transaction = parseRowCuaderno43(account.getId(), row);
 
                 if(transaction != null) {
                     transactions.add(transaction);

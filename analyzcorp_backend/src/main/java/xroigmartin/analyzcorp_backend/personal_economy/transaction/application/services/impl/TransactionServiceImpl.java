@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.control_panel.currency.application.services.CurrencyService;
-import xroigmartin.analyzcorp_backend.personal_economy.account.application.services.AccountService;
-import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
+import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.command.FindAccountByIdCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.use_case.FindAccountByIdUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.BankTransactionService;
@@ -28,7 +28,7 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final AccountService accountService;
+    private final FindAccountByIdUseCase findAccountByIdUseCase;
     private final CategoryService categoryService;
     private final CurrencyService currencyService;
 
@@ -71,8 +71,8 @@ public class TransactionServiceImpl implements TransactionService {
                     .get();
         }
 
-
-        this.accountService.findAccountById(createTransaction.accountId());
+        var findAccountByIdCommand = FindAccountByIdCommand.create(createTransaction.accountId());
+        findAccountByIdUseCase.handle(findAccountByIdCommand);
 
         var newTransaction = TransactionUtils.convertCreateTransactionToTransaction(createTransaction, category);
 
@@ -84,7 +84,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> transactions = new ArrayList<>();
 
-        Account account = accountService.findAccountById(accountId).orElseThrow(() -> new RuntimeException());
+        var findAccountByIdCommand = FindAccountByIdCommand.create(accountId);
+        var account = findAccountByIdUseCase.handle(findAccountByIdCommand);
 
         BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl(this.categoryService);
 
@@ -130,7 +131,8 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         var transaction = this.getTransactionById(id);
-        this.accountService.findAccountById(updateTransaction.accountId());
+        var findAccountByIdCommand = FindAccountByIdCommand.create(updateTransaction.accountId());
+        findAccountByIdUseCase.handle(findAccountByIdCommand);
         this.currencyService.findCurrencyByCode(updateTransaction.currency());
         var category = this.categoryService.getCategoryById(updateTransaction.categoryId());
 
