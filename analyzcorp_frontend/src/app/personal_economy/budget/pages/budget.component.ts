@@ -15,9 +15,12 @@ import {TransactionService} from '../../transaction/services/transaction.service
 import {AccountSelectorComponent} from '../../../shared/components/select/account-selector/account-selector.component';
 import {AccountDTO} from '../../bank/account/interfaces/AccountDTO.interfaces';
 import {TransactionTypeEnum} from '../../transaction/enums/TransactionTypeEnum.interface';
-import {AccountService} from '../../bank/account/services/account.service';
 import {AccountStateService} from '../../../shared/services/account-state.service';
-import {CurrencyPipe} from '@angular/common';
+import {CurrencyPipe, NgIf} from '@angular/common';
+import {InputText} from 'primeng/inputtext';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Button, ButtonDirective} from 'primeng/button';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-budget',
@@ -27,7 +30,14 @@ import {CurrencyPipe} from '@angular/common';
     YearDatePickerComponent,
     MonthDataPickerComponent,
     AccountSelectorComponent,
-    CurrencyPipe
+    CurrencyPipe,
+    InputText,
+    ReactiveFormsModule,
+    FormsModule,
+    Button,
+    ButtonDirective,
+    NgIf,
+    Ripple
   ],
   templateUrl: './budget.component.html',
   standalone: true,
@@ -44,11 +54,19 @@ export class BudgetComponent implements OnInit{
 
   budgetsRow: {
     id: number;
-    amountBudget: string;
+    amountBudget: number;
     amountTransactions: number;
     categoryId: number;
     categoryName: string
   }[] = [];
+
+  clonedBudgetRows: { [s: number]:{
+    id: number;
+    amountBudget: number;
+    amountTransactions: number;
+    categoryId: number;
+    categoryName: string
+  }} = [];
 
   selectedMonth: number = 0;
   selectedYear: number = 0;
@@ -104,7 +122,7 @@ export class BudgetComponent implements OnInit{
               .reduce((sum: number, transaction: TransactionDTO) => sum + transaction.amount, 0),
             categoryId: budget.category.id,
             categoryName: budget.category.name
-        }));
+        })).sort((a, b) => a.categoryName.localeCompare(b.categoryName));
     }
   }
 
@@ -124,6 +142,20 @@ export class BudgetComponent implements OnInit{
 
   totalBalance(): number {
     return this.totalExpense() + this.totalIncome();
+  }
+
+  onRowEditInit(budgetRow: {id: number; amountBudget: number; amountTransactions: number; categoryId: number; categoryName: string}): void {
+    this.clonedBudgetRows[budgetRow.id] = {...budgetRow};
+  }
+
+  onRowEditSave(budgetRow: {id: number; amountBudget: number; amountTransactions: number; categoryId: number; categoryName: string}): void {
+    this.budgetService.updateAmountOfBudget(budgetRow.id, budgetRow.amountBudget).subscribe({});
+    delete this.clonedBudgetRows[budgetRow.id];
+  }
+
+  onRowEditCancel(budgetRow: {id: number; amountBudget: string; amountTransactions: number; categoryId: number; categoryName: string}, index:number): void {
+    this.budgetsRow[index] = this.clonedBudgetRows[budgetRow.id];
+    delete this.clonedBudgetRows[budgetRow.id];
   }
 
   private loadBudgets(): void {

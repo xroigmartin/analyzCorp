@@ -3,7 +3,7 @@ import {CategoryDTO} from '../../category/interfaces/categoryDTO.interfaces';
 export interface BudgetDTO {
   id: number;
   category: CategoryDTO;
-  amount: string;
+  amount: number;
   startDate: string;
   endDate: string;
   createdAt: string;

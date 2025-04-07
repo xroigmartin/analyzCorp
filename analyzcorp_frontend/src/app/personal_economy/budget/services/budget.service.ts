@@ -12,7 +12,14 @@ export class BudgetService {
   private httpClient: HttpClient = inject(HttpClient);
 
   findBudgetForYear(year: number): Observable<ApiResponse<BudgetDTO[]>> {
-    return this.httpClient.get<ApiResponse<BudgetDTO[]>>(`http://localhost:8080/api/v1/personal-economy/budgets?year=2025`, {'headers': this.prepareHeaders()})
+    return this.httpClient.get<ApiResponse<BudgetDTO[]>>(`http://localhost:8080/api/v1/personal-economy/budgets?year=${year}`, {'headers': this.prepareHeaders()})
+  }
+
+  updateAmountOfBudget(budgetId: number, amount: number): Observable<ApiResponse<BudgetDTO>>{
+    return this.httpClient.patch<ApiResponse<BudgetDTO>>(`http://localhost:8080/api/v1/personal-economy/budgets?id=${budgetId}&amount=${amount}`,
+      null,
+      {'headers': this.prepareHeaders()}
+    );
   }
 
   private prepareHeaders(): HttpHeaders{

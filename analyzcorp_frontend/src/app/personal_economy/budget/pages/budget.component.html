@@ -21,7 +21,9 @@
   />
 </section>
 <section>
-  <p-table [value]="budgetsRow" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table [value]="budgetsRow" [tableStyle]="{ 'min-width': '50rem' }"
+    dataKey="id"
+    editMode="row">
     <ng-template #header>
       <tr>
         <th>Category</th>
@@ -30,10 +32,35 @@
         <th>Balance</th>
       </tr>
     </ng-template>
-    <ng-template #body let-budget>
-      <tr>
+    <ng-template #body let-budget let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="budget">
         <td>{{ budget.categoryName }}</td>
-        <td>{{ budget.amountBudget }}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <div>
+              <input
+                pInputText
+                type="number"
+                [(ngModel)]="budget.amountBudget"
+                required />
+                <p-button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                          (click)="onRowEditSave(budget)" text rounded severity="secondary"></p-button>
+                <p-button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                          (click)="onRowEditCancel(budget, ri)" text rounded severity="secondary"></p-button>
+              </div>
+            </ng-template>
+            <ng-template #output>
+              <div>
+                {{ budget.amountBudget }}
+                <p-button *ngIf="!editing" pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                          (click)="onRowEditInit(budget)" text rounded severity="secondary"></p-button>
+
+              </div>
+            </ng-template>
+          </p-cellEditor>
+
+        </td>
         <td>{{ budget.amountTransactions }}</td>
         <td>{{ budget.amountBudget + budget.amountTransactions}}</td>
       </tr>
