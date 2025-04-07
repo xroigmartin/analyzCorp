@@ -2,7 +2,7 @@ package xroigmartin.analyzcorp_backend.personal_economy.account.domain.exception
 
 import java.io.Serial;
 
-public class AccountValidationException extends AccountException{
+public class AccountValidationException extends AccountDomainException {
 
     @Serial
     private static final long serialVersionUID = -8146092435639788834L;
