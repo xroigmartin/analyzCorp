@@ -15,7 +15,7 @@ public class TransactionJpaUtils {
     public static TransactionJpa convertToTransactionJpa(Transaction transaction) {
 
         var categoryJpa = Optional.ofNullable(transaction.category())
-                                    .flatMap(category -> Optional.ofNullable(category.id())
+                                    .flatMap(category -> Optional.ofNullable(category.getId())
                                                             .map(id -> CategoryJpa.builder().id(id).build()))
                                     .orElse(null);
 
@@ -36,7 +36,7 @@ public class TransactionJpaUtils {
 
     public static Transaction convertToTransaction(TransactionJpa transactionJpa) {
 
-        var category = CategoryJpaUtils.convertCategoryJpaToCategory(transactionJpa.getCategory());
+        var category = CategoryJpaUtils.toDomain(transactionJpa.getCategory());
 
         return Transaction.builder()
                 .id(transactionJpa.getId())
@@ -56,7 +56,7 @@ public class TransactionJpaUtils {
 
     public static TransactionJpa convertToTransactionJpaForUpdate(Transaction transaction) {
         var categoryJpa = Optional.ofNullable(transaction.category())
-                .flatMap(category -> Optional.ofNullable(category.id())
+                .flatMap(category -> Optional.ofNullable(category.getId())
                         .map(id -> CategoryJpa.builder().id(id).build()))
                 .orElse(null);
 

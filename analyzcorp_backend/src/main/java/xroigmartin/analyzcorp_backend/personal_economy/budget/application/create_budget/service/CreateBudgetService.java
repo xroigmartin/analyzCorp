@@ -33,10 +33,7 @@ public class CreateBudgetService implements CreateBudgetUseCase {
     }
 
     private Category getCategory(Long categoryId){
-        var findCategoryByIdCommand = FindCategoryByIdCommand.builder()
-                .id(categoryId)
-                .build();
-
+        var findCategoryByIdCommand = FindCategoryByIdCommand.create(categoryId);
         return findCategoryByIdUseCase.handle(findCategoryByIdCommand);
     }
 

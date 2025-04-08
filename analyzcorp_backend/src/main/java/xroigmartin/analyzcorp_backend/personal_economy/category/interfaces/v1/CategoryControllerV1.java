@@ -11,8 +11,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.create_category.command.CreateCategoryCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.create_category.use_case.CreateCategoryUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_all_categories.use_case.FindAllCategoriesUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_id.command.FindCategoryByIdCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_id.use_case.FindCategoryByIdUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.update_category.command.UpdateCategoryCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.update_category.use_case.UpdateCategoryUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.category.interfaces.dto.CategoryDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.category.interfaces.dto.CreateCategoryDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.category.interfaces.dto.UpdateCategoryDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.category.interfaces.utils.CategoryControllerUtils;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
@@ -32,11 +40,14 @@ import static xroigmartin.analyzcorp_backend.personal_economy.category.interface
 @AllArgsConstructor
 public class CategoryControllerV1 {
 
-    private final CategoryService categoryService;
+    private final FindAllCategoriesUseCase findAllCategoriesUseCase;
+    private final CreateCategoryUseCase createCategoryUseCase;
+    private final FindCategoryByIdUseCase findCategoryByIdUseCase;
+    private final UpdateCategoryUseCase updateCategoryUseCase;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<CategoryDTO>>> findAllCategories(){
-        var categories = this.categoryService.findCategories();
+        var categories = findAllCategoriesUseCase.handle();
 
         var categoriesDTOs = categories.stream()
                 .map(CategoryControllerUtils::convertCategoryToCategoryDTO)
@@ -48,8 +59,9 @@ public class CategoryControllerV1 {
     }
 
     @PostMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<CategoryDTO>> createCategory(@RequestBody String name){
-        var category = this.categoryService.createCategory(name);
+    public ResponseEntity<ApiResponse<CategoryDTO>> createCategory(@RequestBody CreateCategoryDTO createCategoryDTO){
+        var command = CreateCategoryCommand.createCategoryCommand(createCategoryDTO.name(), createCategoryDTO.createdBy());
+        var category = createCategoryUseCase.handle(command);
 
         var categoryDTO = CategoryControllerUtils.convertCategoryToCategoryDTO(category);
 
@@ -60,7 +72,8 @@ public class CategoryControllerV1 {
 
     @GetMapping(value="{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<CategoryDTO>> getCategoryById(@PathVariable Long categoryId){
-        var category = this.categoryService.getCategoryById(categoryId);
+        var command = FindCategoryByIdCommand.create(categoryId);
+        var category = findCategoryByIdUseCase.handle(command);
 
         var categoryDTO = CategoryControllerUtils.convertCategoryToCategoryDTO(category);
 
@@ -70,8 +83,9 @@ public class CategoryControllerV1 {
     }
 
     @PutMapping(value="/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<CategoryDTO>> updateCategory(@PathVariable Long categoryId, @RequestBody String name){
-        var category = this.categoryService.updateCategory(categoryId, name);
+    public ResponseEntity<ApiResponse<CategoryDTO>> updateCategory(@PathVariable Long categoryId, @RequestBody UpdateCategoryDTO updateCategoryDTO){
+        var command = UpdateCategoryCommand.create(categoryId, updateCategoryDTO.name(), updateCategoryDTO.updatedBy());
+        var category = updateCategoryUseCase.handle(command);
 
         var categoryDTO = CategoryControllerUtils.convertCategoryToCategoryDTO(category);
 

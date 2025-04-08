@@ -7,7 +7,10 @@ import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_cu
 import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_currency_by_code.use_case.FindCurrencyByCodeUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.command.FindAccountByIdCommand;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.use_case.FindAccountByIdUseCase;
-import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_all_categories.use_case.FindAllCategoriesUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_id.command.FindCategoryByIdCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_id.use_case.FindCategoryByIdUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_keyword.use_case.FindCategoryByKeywordUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.BankTransactionService;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
@@ -30,8 +33,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final FindAccountByIdUseCase findAccountByIdUseCase;
-    private final CategoryService categoryService;
     private final FindCurrencyByCodeUseCase findCurrencyByCodeUseCase;
+    private final FindAllCategoriesUseCase findAllCategoriesUseCase;
+    private final FindCategoryByKeywordUseCase findCategoryByKeywordUseCase;
+    private final FindCategoryByIdUseCase findCategoryByIdUseCase;
 
     @Override
     public Transaction createTransaction(CreateTransactionDTO createTransaction) {
@@ -56,18 +61,18 @@ public class TransactionServiceImpl implements TransactionService {
             throw new CreateTransactionException("Account Id is empty");
         }
 
-        var categories = this.categoryService.findCategories();
+        var categories = findAllCategoriesUseCase.handle();
         Category category;
 
         if(createTransaction.categoryId() != null){
             category = categories.stream()
-                    .filter(cat -> cat.id().equals(createTransaction.categoryId()))
+                    .filter(cat -> cat.getId().equals(createTransaction.categoryId()))
                     .findFirst()
                     .orElseThrow(() -> new CreateTransactionException(String.format("Not exists category with id: %s", createTransaction.categoryId())));
         }
         else{
             category = categories.stream()
-                    .filter(cat -> cat.name().equals("Gastos Varios"))
+                    .filter(cat -> cat.getName().equals("Gastos Varios"))
                     .findFirst()
                     .get();
         }
@@ -88,7 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
         var findAccountByIdCommand = FindAccountByIdCommand.create(accountId);
         var account = findAccountByIdUseCase.handle(findAccountByIdCommand);
 
-        BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl(this.categoryService);
+        BankTransactionService bankTransactionService = new CaixaBankTransactionServiceImpl(findAllCategoriesUseCase, findCategoryByKeywordUseCase);
 
         bankTransactionService.importFile(account, file, transactions, fileImportType);
 
@@ -132,11 +137,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         var transaction = this.getTransactionById(id);
-        var findAccountByIdCommand = FindAccountByIdCommand.create(updateTransaction.accountId());
-        findAccountByIdUseCase.handle(findAccountByIdCommand);
-        var command = FindCurrencyByCodeCommand.create(updateTransaction.currency());
-        findCurrencyByCodeUseCase.handle(command);
-        var category = this.categoryService.getCategoryById(updateTransaction.categoryId());
+        findAccountByIdUseCase.handle(FindAccountByIdCommand.create(updateTransaction.accountId()));
+        findCurrencyByCodeUseCase.handle(FindCurrencyByCodeCommand.create(updateTransaction.currency()));
+        var category = findCategoryByIdUseCase.handle(FindCategoryByIdCommand.create(updateTransaction.categoryId()));
 
         var transactionUpdate = TransactionUtils.convertUpdateTransactionToTransaction(updateTransaction, transaction, category);
 

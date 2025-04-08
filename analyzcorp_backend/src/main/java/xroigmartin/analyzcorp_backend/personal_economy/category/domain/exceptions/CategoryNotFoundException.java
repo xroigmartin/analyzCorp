@@ -10,4 +10,8 @@ public class CategoryNotFoundException extends CategoryDomainException{
     public CategoryNotFoundException(Long id) {
         super(String.format("Not found category with id %d", id));
     }
+
+    public CategoryNotFoundException(String message) {
+        super(message);
+    }
 }

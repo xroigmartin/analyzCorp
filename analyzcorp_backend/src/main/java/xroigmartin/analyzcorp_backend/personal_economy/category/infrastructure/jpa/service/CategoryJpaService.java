@@ -2,7 +2,6 @@ package xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.
 
 import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.CategoryKeyword;
@@ -26,64 +25,24 @@ public class CategoryJpaService implements CategoryRepository {
         var categoriesJpa = this.categoryJpaRepository.findAll();
 
         return categoriesJpa.stream()
-                .map(CategoryJpaUtils::convertCategoryJpaToCategory)
+                .map(CategoryJpaUtils::toDomain)
                 .toList();
     }
 
     @Override
-    public Category createCategory(Category newCategory) {
-        var newCategoryJpa = CategoryJpaUtils.convertCategoryToCategoryJpa(newCategory);
-
-        var categoryJpa = this.categoryJpaRepository.save(newCategoryJpa);
-
-        return CategoryJpaUtils.convertCategoryJpaToCategory(categoryJpa);
+    public Category save(Category newCategory) {
+        var saved = categoryJpaRepository.save(CategoryJpaUtils.toEntity(newCategory));
+        return CategoryJpaUtils.toDomain(saved);
     }
 
     @Override
-    public Optional<Category> getCategoryId(Long categoryId) {
-
-        var optionalCategoryJpa = this.categoryJpaRepository.findById(categoryId);
-
-        if (optionalCategoryJpa.isPresent()) {
-            var categoryJpa = optionalCategoryJpa.get();
-            return Optional.of(CategoryJpaUtils.convertCategoryJpaToCategory(categoryJpa));
+    public Optional<Category> findCategoryByKeyword(String keyword) {
+        if(StringUtils.isBlank(keyword)){
+            return Optional.empty();
         }
 
-        return Optional.empty();
-    }
-
-    @Override
-    public Category updateCategory(Category updateCategory) {
-
-        var optionalCategoryJpa = this.categoryJpaRepository.findById(updateCategory.id());
-
-        if(optionalCategoryJpa.isPresent()) {
-            var categoryJpa = optionalCategoryJpa.get();
-            categoryJpa.setName(updateCategory.name());
-            categoryJpa.setUpdatedAt(updateCategory.updatedAt());
-            categoryJpa.setUpdatedBy(updateCategory.updatedBy());
-            var categoryUpdated = this.categoryJpaRepository.save(categoryJpa);
-            return CategoryJpaUtils.convertCategoryJpaToCategory(categoryUpdated);
-        }
-
-        return null;
-    }
-
-    @Override
-    public Category findCategoryByDescription(String description) {
-        if(StringUtils.isBlank(description)){
-            return null;
-        }
-
-        try{
-            return categoryKeywordJpaRepository.findByDescription(description)
-                    .map(categoryKeywordJpa -> CategoryJpaUtils.convertCategoryJpaToCategory(categoryKeywordJpa.getCategory()))
-                    .orElse(null);
-        }
-        catch(IncorrectResultSizeDataAccessException ex){
-            return null;
-        }
-
+        return categoryKeywordJpaRepository.findByKeyword(keyword)
+                .map(categoryKeywordJpa -> CategoryJpaUtils.toDomain(categoryKeywordJpa.getCategory()));
     }
 
 
@@ -99,7 +58,10 @@ public class CategoryJpaService implements CategoryRepository {
 
     @Override
     public Optional<Category> findCategoryById(Long id) {
-        return Optional.empty();
+        return categoryJpaRepository.findById(id)
+                .map(CategoryJpaUtils::toDomain);
     }
+
+
 
 }

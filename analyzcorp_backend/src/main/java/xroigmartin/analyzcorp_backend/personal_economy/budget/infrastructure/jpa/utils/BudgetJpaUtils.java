@@ -12,7 +12,7 @@ public class BudgetJpaUtils {
 
     public static Budget toDomain(BudgetJpa entity) {
 
-        var category = CategoryJpaUtils.convertCategoryJpaToCategory(entity.getCategory());
+        var category = CategoryJpaUtils.toDomain(entity.getCategory());
 
         return Budget.builder()
                 .id(entity.getId())
@@ -30,7 +30,7 @@ public class BudgetJpaUtils {
     public static BudgetJpa toEntity(Budget budget) {
 
         var categoryJpa = CategoryJpa.builder()
-                .id(budget.getCategory().id())
+                .id(budget.getCategory().getId())
                 .build();
 
         return BudgetJpa.builder()

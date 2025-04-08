@@ -8,7 +8,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 import xroigmartin.analyzcorp_backend.control_panel.currency.domain.model.Currency;
 import xroigmartin.analyzcorp_backend.personal_economy.account.domain.model.Account;
-import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_all_categories.use_case.FindAllCategoriesUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.category.application.find_category_by_keyword.use_case.FindCategoryByKeywordUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.category.domain.model.Category;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.ImportMonthlyExtract;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.impl.BankTransactionBaseService;
@@ -28,8 +29,8 @@ import java.util.regex.Pattern;
 
 public class CaixaBankMonthlyExtractTransactionServiceImpl extends BankTransactionBaseService implements ImportMonthlyExtract {
 
-    public CaixaBankMonthlyExtractTransactionServiceImpl(CategoryService categoryService) {
-        super(categoryService);
+    public CaixaBankMonthlyExtractTransactionServiceImpl(FindAllCategoriesUseCase findAllCategoriesUseCase, FindCategoryByKeywordUseCase findCategoryByKeywordUseCase) {
+        super(findAllCategoriesUseCase, findCategoryByKeywordUseCase);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CaixaBankMonthlyExtractTransactionServiceImpl extends BankTransacti
             BigDecimal amount = getCellValueAsBigDecimal(row.getCell(4));
             TransactionType type = amount.compareTo(BigDecimal.ZERO) >= 0 ? TransactionType.INCOME : TransactionType.EXPENSE;
 
-            Category category = getCategoryByDescription(description);
+            Category category = getCategoryByKeyword(description);
 
             return Transaction.builder()
                     .amount(amount)

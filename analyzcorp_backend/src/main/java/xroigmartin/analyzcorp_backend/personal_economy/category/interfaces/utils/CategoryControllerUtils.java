@@ -16,13 +16,7 @@ public class CategoryControllerUtils {
     public static final String SUCCESS_UPDATE_CATEGORY = "Update category";
 
     public CategoryDTO convertCategoryToCategoryDTO(Category category){
-        return CategoryDTO.builder()
-                .id(category.id())
-                .name(category.name())
-                .createdAt(category.createdAt())
-                .createdBy(category.createdBy())
-                .updatedAt(category.updatedAt())
-                .updatedBy(category.updatedBy())
-                .build();
+        return CategoryDTO.create(category.getId(), category.getName(), category.getCreatedAt(), category.getCreatedBy(),
+                category.getUpdatedAt(), category.getUpdatedBy());
     }
 }

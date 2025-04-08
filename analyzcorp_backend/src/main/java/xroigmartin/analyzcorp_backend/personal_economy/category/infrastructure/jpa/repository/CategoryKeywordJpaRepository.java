@@ -11,7 +11,6 @@ public interface CategoryKeywordJpaRepository extends JpaRepository<CategoryKeyw
 
     Optional<CategoryKeywordJpa> findByKeywordIgnoreCase(String keyword);
 
-    // Buscar coincidencia parcial (subcadena)
-    @Query("SELECT ck FROM CategoryKeywordJpa ck WHERE LOWER(:description) LIKE CONCAT('%', LOWER(ck.keyword), '%')")
-    Optional<CategoryKeywordJpa> findByDescription(@Param("description") String description);
+    @Query("SELECT ck FROM CategoryKeywordJpa ck WHERE LOWER(:keyword) LIKE CONCAT('%', LOWER(ck.keyword), '%')")
+    Optional<CategoryKeywordJpa> findByKeyword(@Param("keyword") String keyword);
 }

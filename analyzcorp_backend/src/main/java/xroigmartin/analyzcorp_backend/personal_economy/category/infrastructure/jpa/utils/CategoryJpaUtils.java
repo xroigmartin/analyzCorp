@@ -9,31 +9,25 @@ import xroigmartin.analyzcorp_backend.personal_economy.category.infrastructure.j
 @UtilityClass
 public class CategoryJpaUtils {
 
-    public static Category convertCategoryJpaToCategory(CategoryJpa categoryJpa){
-        return Category.builder()
-                .id(categoryJpa.getId())
-                .name(categoryJpa.getName())
-                .createdAt(categoryJpa.getCreatedAt())
-                .createdBy(categoryJpa.getCreatedBy())
-                .updatedAt(categoryJpa.getUpdatedAt())
-                .updatedBy(categoryJpa.getUpdatedBy())
-                .build();
+    public static Category toDomain(CategoryJpa categoryJpa){
+        return Category.create(categoryJpa.getId(), categoryJpa.getName(), categoryJpa.getCreatedBy(),
+                 categoryJpa.getUpdatedBy(), categoryJpa.getCreatedAt(), categoryJpa.getUpdatedAt());
     }
 
-    public static CategoryJpa convertCategoryToCategoryJpa(Category category){
+    public static CategoryJpa toEntity(Category category){
         return CategoryJpa.builder()
-                .id(category.id())
-                .name(category.name())
-                .createdAt(category.createdAt())
-                .createdBy(category.createdBy())
-                .updatedAt(category.updatedAt())
-                .updatedBy(category.updatedBy())
+                .id(category.getId())
+                .name(category.getName())
+                .createdAt(category.getCreatedAt())
+                .createdBy(category.getCreatedBy())
+                .updatedAt(category.getUpdatedAt())
+                .updatedBy(category.getUpdatedBy())
                 .build();
     }
 
     public static CategoryKeywordJpa convertCategoryKeywordToCategoryKeywordJpa(CategoryKeyword categoryKeyword){
 
-        var category = convertCategoryToCategoryJpa(categoryKeyword.category());
+        var category = toEntity(categoryKeyword.category());
 
         return CategoryKeywordJpa.builder()
                 .id(categoryKeyword.id())
