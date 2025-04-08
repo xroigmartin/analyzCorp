@@ -1,15 +1,14 @@
 package xroigmartin.analyzcorp_backend.control_panel.currency.infrastructure.jpa.service;
 
-import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import xroigmartin.analyzcorp_backend.control_panel.currency.domain.exceptions.currency.CurrencyNotFoundException;
 import xroigmartin.analyzcorp_backend.control_panel.currency.domain.model.Currency;
 import xroigmartin.analyzcorp_backend.control_panel.currency.domain.repository.CurrencyRepository;
 import xroigmartin.analyzcorp_backend.control_panel.currency.infrastructure.jpa.repository.CurrencyJpaRepository;
 import xroigmartin.analyzcorp_backend.control_panel.currency.infrastructure.jpa.utils.CurrencyJpaUtils;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -24,13 +23,8 @@ public class CurrencyJpaService implements CurrencyRepository {
     }
 
     @Override
-    public Currency findCurrencyByCode(String currencyCode) {
-        try {
-            var currency = this.currencyRepository.getReferenceById(currencyCode);
-            return CurrencyJpaUtils.convertToCurrency(currency);
-        }
-        catch(EntityNotFoundException ex){
-            throw new CurrencyNotFoundException(currencyCode);
-        }
+    public Optional<Currency> findCurrencyByCode(String currencyCode) {
+        return this.currencyRepository.findById(currencyCode)
+                .map(CurrencyJpaUtils::convertToCurrency);
     }
 }

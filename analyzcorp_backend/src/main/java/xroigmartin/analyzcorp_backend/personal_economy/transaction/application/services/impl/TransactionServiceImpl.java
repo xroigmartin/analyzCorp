@@ -3,7 +3,8 @@ package xroigmartin.analyzcorp_backend.personal_economy.transaction.application.
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import xroigmartin.analyzcorp_backend.control_panel.currency.application.services.CurrencyService;
+import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_currency_by_code.command.FindCurrencyByCodeCommand;
+import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_currency_by_code.use_case.FindCurrencyByCodeUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.command.FindAccountByIdCommand;
 import xroigmartin.analyzcorp_backend.personal_economy.account.application.find_account_by_id.use_case.FindAccountByIdUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.category.application.CategoryService;
@@ -30,7 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final FindAccountByIdUseCase findAccountByIdUseCase;
     private final CategoryService categoryService;
-    private final CurrencyService currencyService;
+    private final FindCurrencyByCodeUseCase findCurrencyByCodeUseCase;
 
     @Override
     public Transaction createTransaction(CreateTransactionDTO createTransaction) {
@@ -133,7 +134,8 @@ public class TransactionServiceImpl implements TransactionService {
         var transaction = this.getTransactionById(id);
         var findAccountByIdCommand = FindAccountByIdCommand.create(updateTransaction.accountId());
         findAccountByIdUseCase.handle(findAccountByIdCommand);
-        this.currencyService.findCurrencyByCode(updateTransaction.currency());
+        var command = FindCurrencyByCodeCommand.create(updateTransaction.currency());
+        findCurrencyByCodeUseCase.handle(command);
         var category = this.categoryService.getCategoryById(updateTransaction.categoryId());
 
         var transactionUpdate = TransactionUtils.convertUpdateTransactionToTransaction(updateTransaction, transaction, category);

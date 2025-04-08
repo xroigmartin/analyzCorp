@@ -8,9 +8,6 @@ import xroigmartin.analyzcorp_backend.control_panel.currency.infrastructure.jpa.
 public class CurrencyJpaUtils {
 
     public static Currency convertToCurrency(CurrencyJpa currencyJpa) {
-        return Currency.builder()
-                .name(currencyJpa.getName())
-                .code(currencyJpa.getCode())
-                .build();
+        return Currency.create(currencyJpa.getCode(), currencyJpa.getName());
     }
 }

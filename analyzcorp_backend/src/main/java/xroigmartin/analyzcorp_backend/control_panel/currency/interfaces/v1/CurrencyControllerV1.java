@@ -1,11 +1,5 @@
 package xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.v1;
 
-import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.CURRENCIES_PATH;
-import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.SUCCESS_FIND_ALL_CURRENCIES;
-import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.SUCCESS_GET_CURRENCY_BY_CODE;
-
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,23 +8,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xroigmartin.analyzcorp_backend.control_panel.currency.application.services.CurrencyService;
+import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_all_currencies.use_case.FindAllCurrenciesUseCase;
+import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_currency_by_code.command.FindCurrencyByCodeCommand;
+import xroigmartin.analyzcorp_backend.control_panel.currency.application.find_currency_by_code.use_case.FindCurrencyByCodeUseCase;
 import xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.dto.currency.CurrencyDTO;
 import xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntityHandler;
 
+import java.util.List;
+
+import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.CURRENCIES_PATH;
+import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.SUCCESS_FIND_ALL_CURRENCIES;
+import static xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils.CurrencyControllerUtilsV1.SUCCESS_GET_CURRENCY_BY_CODE;
+
 @RestController
 @RequestMapping(CURRENCIES_PATH)
 @AllArgsConstructor
 public class CurrencyControllerV1 {
 
-    public final CurrencyService currencyService;
+    public final FindAllCurrenciesUseCase findAllCurrenciesUseCase;
+    public final FindCurrencyByCodeUseCase findCurrencyByCodeUseCase;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<CurrencyDTO>>> findAllCurrencies() {
-        var currencies = currencyService.findAllCurrencies();
+        var currencies = findAllCurrenciesUseCase.handle();
 
         var currenciesDtos = currencies.stream().map(CurrencyControllerUtilsV1::convertToCurrencyDTO).toList();
 
@@ -41,7 +44,8 @@ public class CurrencyControllerV1 {
 
     @GetMapping(value = "/{currencyCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<CurrencyDTO>> getCurrencyByCode(@PathVariable String currencyCode) {
-        var currency = currencyService.findCurrencyByCode(currencyCode);
+        var command = FindCurrencyByCodeCommand.create(currencyCode);
+        var currency = findCurrencyByCodeUseCase.handle(command);
 
         var currencyDto = CurrencyControllerUtilsV1.convertToCurrencyDTO(currency);
 

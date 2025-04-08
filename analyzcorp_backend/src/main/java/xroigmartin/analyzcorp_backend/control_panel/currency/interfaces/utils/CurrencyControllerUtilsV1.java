@@ -1,10 +1,10 @@
 package xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.utils;
 
-import static xroigmartin.analyzcorp_backend.personal_economy.shared.interfaces.utils.PersonalEconomyControllerConstants.CONTROL_PANEL_PATH;
-
 import lombok.experimental.UtilityClass;
 import xroigmartin.analyzcorp_backend.control_panel.currency.domain.model.Currency;
 import xroigmartin.analyzcorp_backend.control_panel.currency.interfaces.dto.currency.CurrencyDTO;
+
+import static xroigmartin.analyzcorp_backend.personal_economy.shared.interfaces.utils.PersonalEconomyControllerConstants.CONTROL_PANEL_PATH;
 
 @UtilityClass
 public class CurrencyControllerUtilsV1 {
@@ -14,9 +14,6 @@ public class CurrencyControllerUtilsV1 {
     public static final String SUCCESS_GET_CURRENCY_BY_CODE = "Get account by code";
 
     public static CurrencyDTO convertToCurrencyDTO(Currency currency) {
-        return CurrencyDTO.builder()
-                .code(currency.code())
-                .name(currency.name())
-                .build();
+        return CurrencyDTO.create(currency.code(), currency.name());
     }
 }

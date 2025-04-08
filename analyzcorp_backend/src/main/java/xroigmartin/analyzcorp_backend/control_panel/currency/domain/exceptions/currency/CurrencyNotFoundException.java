@@ -2,7 +2,7 @@ package xroigmartin.analyzcorp_backend.control_panel.currency.domain.exceptions.
 
 import java.io.Serial;
 
-public class CurrencyNotFoundException extends RuntimeException {
+public class CurrencyNotFoundException extends CurrencyDomainException {
 
     @Serial
     private static final long serialVersionUID = 3727938250519710221L;

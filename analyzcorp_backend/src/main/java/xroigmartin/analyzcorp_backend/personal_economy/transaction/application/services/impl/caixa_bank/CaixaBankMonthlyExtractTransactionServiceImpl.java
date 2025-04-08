@@ -42,7 +42,7 @@ public class CaixaBankMonthlyExtractTransactionServiceImpl extends BankTransacti
                     continue;
                 }
 
-                var transaction = parseRowMonthlyExtract(account.getId(), row, Currency.builder().code("EUR").build());
+                var transaction = parseRowMonthlyExtract(account.getId(), row, Currency.create("EUR", null));
 
                 if(transaction != null) {
                     transactions.add(transaction);
