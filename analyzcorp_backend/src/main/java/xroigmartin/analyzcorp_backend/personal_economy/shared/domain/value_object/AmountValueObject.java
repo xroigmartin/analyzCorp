@@ -1,6 +1,6 @@
 package xroigmartin.analyzcorp_backend.personal_economy.shared.domain.value_object;
 
-import xroigmartin.analyzcorp_backend.personal_economy.budget.domain.exceptions.BudgetValidationException;
+import xroigmartin.analyzcorp_backend.personal_economy.shared.domain.exceptions.AmountValueObjectException;
 
 import java.math.BigDecimal;
 
@@ -8,7 +8,7 @@ public record AmountValueObject(BigDecimal value) {
 
     public AmountValueObject {
         if (value == null || value.signum() < 0) {
-            throw new BudgetValidationException("Amount must be non-negative");
+            throw new AmountValueObjectException("Amount must be non-negative");
         }
     }
 

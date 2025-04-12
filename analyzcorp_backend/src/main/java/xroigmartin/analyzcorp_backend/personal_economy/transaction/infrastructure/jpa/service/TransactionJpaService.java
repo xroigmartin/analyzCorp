@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.repository.TransactionRepository;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.domain.TransactionJpa;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.repository.TransactionJpaRepository;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.infrastructure.jpa.utils.TransactionJpaUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,42 +20,30 @@ public class TransactionJpaService implements TransactionRepository {
 
     @Override
     @Transactional
-    public Transaction createTransaction(Transaction transaction) {
-
-        var transactionJpa = TransactionJpaUtils.convertToTransactionJpa(transaction);
-
-        var transactionJpaCreated = this.transactionJpaRepository.save(transactionJpa);
-
-        return TransactionJpaUtils.convertToTransaction(transactionJpaCreated);
+    public Transaction save(Transaction transaction) {
+        var saved = transactionJpaRepository.save(TransactionJpaUtils.toEntity(transaction));
+        return TransactionJpaUtils.toDomain(saved);
     }
 
     @Override
     @Transactional
     public void createListOfTransaction(List<Transaction> transactions) {
-        var transactionsJpa = transactions.stream().map(TransactionJpaUtils::convertToTransactionJpa).toList();
+        var transactionsJpa = transactions.stream().map(TransactionJpaUtils::toEntity).toList();
         this.transactionJpaRepository.saveAll(transactionsJpa);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Transaction> findTransactionsByAccountId(Long accountId) {
-        List<TransactionJpa> transactions = this.transactionJpaRepository.findTransactionsByAccountJpa_Id(accountId);
-        return transactions.stream().map(TransactionJpaUtils::convertToTransaction).toList();
+        return this.transactionJpaRepository.findTransactionsByAccountJpa_Id(accountId)
+                .stream()
+                .map(TransactionJpaUtils::toDomain).toList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Transaction getTransactionById(Long transactionId) {
-        var transactionJpa = this.transactionJpaRepository.findById(transactionId)
-                .orElseThrow(() -> new RuntimeException(String.format("Transaction with id %s not found", transactionId)));
-        return TransactionJpaUtils.convertToTransaction(transactionJpa);
-    }
-
-    @Override
-    @Transactional
-    public Transaction updateTransaction(Transaction transaction) {
-        var transactionJpa = TransactionJpaUtils.convertToTransactionJpaForUpdate(transaction);
-        var transactionJpaUpdated = this.transactionJpaRepository.save(transactionJpa);
-        return TransactionJpaUtils.convertToTransaction(transactionJpaUpdated);
+    public Optional<Transaction> findTransactionById(Long transactionId) {
+        return this.transactionJpaRepository.findById(transactionId)
+                .map(TransactionJpaUtils::toDomain);
     }
 }

@@ -14,5 +14,6 @@ public record CreateTransactionDTO (
         OffsetDateTime date,
         TransactionType type,
         String description,
-        Long accountId
+        Long accountId,
+        String createdBy
 ){}

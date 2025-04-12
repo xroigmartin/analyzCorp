@@ -17,21 +17,21 @@ public class TransactionControllerUtils {
 
     public static TransactionDTO convertToTransactionDTO(Transaction transaction) {
 
-        var categoryDTO = CategoryControllerUtils.convertCategoryToCategoryDTO(transaction.category());
+        var categoryDTO = CategoryControllerUtils.convertCategoryToCategoryDTO(transaction.getCategory());
 
         return TransactionDTO.builder()
-                .id(transaction.id())
-                .amount(transaction.amount())
-                .currency(transaction.currency())
-                .date(transaction.date())
-                .type(transaction.type())
-                .description(transaction.description())
+                .id(transaction.getId())
+                .amount(transaction.getAmount().value())
+                .currency(transaction.getCurrency().code())
+                .date(transaction.getDate())
+                .type(transaction.getType())
+                .description(transaction.getDescription())
                 .category(categoryDTO)
-                .accountId(transaction.accountId())
-                .createdAt(transaction.createdAt())
-                .createdBy(transaction.createdBy())
-                .updatedAt(transaction.updatedAt())
-                .updatedBy(transaction.updatedBy())
+                .accountId(transaction.getAccount().getId())
+                .createdAt(transaction.getCreatedAt())
+                .createdBy(transaction.getCreatedBy())
+                .updatedAt(transaction.getUpdatedAt())
+                .updatedBy(transaction.getUpdatedBy())
                 .build();
     }
 }

@@ -14,5 +14,6 @@ public record UpdateTransactionDTO(
         OffsetDateTime date,
         TransactionType type,
         String description,
-        Long accountId
+        Long accountId,
+        String updatedBy
 ){}

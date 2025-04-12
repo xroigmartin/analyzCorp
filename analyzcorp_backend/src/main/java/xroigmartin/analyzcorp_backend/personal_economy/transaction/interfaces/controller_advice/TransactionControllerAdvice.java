@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.exceptions.CreateTransactionException;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.exceptions.TransactionDomainException;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.exceptions.TransactionNotFoundByIdException;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.exceptions.TransactionValidationException;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.domain.model.ApiResponse;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ApiResponseHandler;
 import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntityHandler;
@@ -14,14 +16,39 @@ import xroigmartin.analyzcorp_backend.shared.infrastructure.utils.ResponseEntity
 @Slf4j
 public class TransactionControllerAdvice {
 
-    @ExceptionHandler({CreateTransactionException.class})
-    public ResponseEntity<ApiResponse<Void>> TransactionException(Exception ex){
-        log.error("Create transaction error: {}",ex.getMessage(), ex);
-        var apiResponseError = ApiResponseHandler.generateError(
-                "Create transaction error",
-                String.format("Create transaction error: %s",ex.getMessage()),
-                HttpStatus.METHOD_NOT_ALLOWED.value());
+    @ExceptionHandler(TransactionDomainException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTransactionDomainException(TransactionDomainException ex) {
+        log.error(ex.getMessage(), ex);
 
-        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.METHOD_NOT_ALLOWED);
+        var apiResponseError = ApiResponseHandler.generateError(
+                "Bad request for transaction",
+                String.format(ex.getMessage()),
+                HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TransactionNotFoundByIdException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(TransactionNotFoundByIdException ex) {
+        log.error(ex.getMessage(), ex);
+
+        var apiResponseError = ApiResponseHandler.generateError(
+                "Transaction not found",
+                String.format(ex.getMessage()),
+                HttpStatus.NOT_FOUND.value());
+
+        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TransactionValidationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTransactionValidationException(TransactionValidationException ex) {
+        log.error(ex.getMessage(), ex);
+
+        var apiResponseError = ApiResponseHandler.generateError(
+                "Transaction precondition error",
+                String.format(ex.getMessage()),
+                HttpStatus.PRECONDITION_FAILED.value());
+
+        return ResponseEntityHandler.generate(apiResponseError, HttpStatus.PRECONDITION_FAILED);
     }
 }

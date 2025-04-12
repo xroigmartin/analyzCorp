@@ -3,15 +3,12 @@ package xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.repos
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.model.Transaction;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionRepository {
 
-    Transaction createTransaction(Transaction transaction);
-
+    Transaction save(Transaction transaction);
     void createListOfTransaction(List<Transaction> transactions);
-
     List<Transaction> findTransactionsByAccountId(Long accountId);
-
-    Transaction getTransactionById(Long transactionId);
-    Transaction updateTransaction(Transaction transaction);
+    Optional<Transaction> findTransactionById(Long transactionId);
 }

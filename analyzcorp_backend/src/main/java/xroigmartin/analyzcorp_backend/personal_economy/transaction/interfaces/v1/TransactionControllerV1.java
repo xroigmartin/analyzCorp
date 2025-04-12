@@ -15,9 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.services.TransactionService;
-import xroigmartin.analyzcorp_backend.personal_economy.transaction.domain.enums.FileImportType;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.create_transaction.command.CreateTransactionCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.create_transaction.use_case.CreateTransactionUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.find_transactions_by_account_id.command.FindTransactionsByAccountIdCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.find_transactions_by_account_id.use_case.FindTransactionsByAccountIdUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.import_file.command.ImportFileCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.import_file.use_case.ImportFileUseCase;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.update_transaction.command.UpdateTransactionCommand;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.application.update_transaction.use_case.UpdateTransactionUseCase;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.CreateTransactionDTO;
+import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.ImportTransactionsDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.TransactionDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.dto.transaction.UpdateTransactionDTO;
 import xroigmartin.analyzcorp_backend.personal_economy.transaction.interfaces.utils.TransactionControllerUtils;
@@ -38,11 +45,18 @@ import static xroigmartin.analyzcorp_backend.personal_economy.transaction.interf
 @AllArgsConstructor
 public class TransactionControllerV1 {
 
-    private final TransactionService transactionService;
+    private final CreateTransactionUseCase createTransactionUseCase;
+    private final ImportFileUseCase importFileUseCase;
+    private final UpdateTransactionUseCase updateTransactionUseCase;
+    private final FindTransactionsByAccountIdUseCase findTransactionsByAccountIdUseCase;
 
     @PostMapping(value="", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<TransactionDTO>> createTransaction(@RequestBody @Valid CreateTransactionDTO createTransactionDTO){
-        var transaction = transactionService.createTransaction(createTransactionDTO);
+        var command = CreateTransactionCommand.create(createTransactionDTO.amount(), createTransactionDTO.currency(),
+                createTransactionDTO.categoryId(), createTransactionDTO.date(), createTransactionDTO.type(),
+                createTransactionDTO.description(), createTransactionDTO.accountId(), createTransactionDTO.createdBy());
+
+        var transaction = createTransactionUseCase.handle(command);
 
         var transactionDTO = TransactionControllerUtils.convertToTransactionDTO(transaction);
 
@@ -52,10 +66,12 @@ public class TransactionControllerV1 {
     }
 
     @PostMapping(value="/import_file")
-    public ResponseEntity<ApiResponse<String>> importFile(@RequestParam("accountId") Long accountId,
-                                                          @RequestParam("fileImportType") FileImportType fileImportType,
+    public ResponseEntity<ApiResponse<String>> importFile(@RequestBody() ImportTransactionsDTO importTransactionsDTO,
                                                           @RequestPart("file") MultipartFile file) throws IOException {
-        transactionService.importFile(accountId, file, fileImportType);
+        var command = ImportFileCommand.create(importTransactionsDTO.accountId(), importTransactionsDTO.fileImportType(),
+                file, importTransactionsDTO.createdBy());
+
+        importFileUseCase.handle(command);
 
         var apiResponse = ApiResponseHandler.generateSuccess("Import file of transactions successfully", SUCCESS_CREATE_TRANSACTION, HttpStatus.OK.value());
 
@@ -64,7 +80,11 @@ public class TransactionControllerV1 {
 
     @PutMapping(value="/{id}")
     public ResponseEntity<ApiResponse<TransactionDTO>> updateTransaction(@PathVariable Long id, @RequestBody UpdateTransactionDTO updateTransaction){
-        var transaction = transactionService.updateTransaction(id, updateTransaction);
+        var command = UpdateTransactionCommand.create(id, updateTransaction.amount(), updateTransaction.currency(),
+                updateTransaction.categoryId(), updateTransaction.date(), updateTransaction.type(), updateTransaction.description(),
+                updateTransaction.accountId(), updateTransaction.updatedBy());
+
+        var transaction = updateTransactionUseCase.handle(command);
 
         var transactionDTO = TransactionControllerUtils.convertToTransactionDTO(transaction);
 
@@ -75,7 +95,9 @@ public class TransactionControllerV1 {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<TransactionDTO>>> getAllTransactionsByAccountId(@RequestParam Long accountId) {
-        var transactions = this.transactionService.findTransactionsByAccountId(accountId);
+        var command = FindTransactionsByAccountIdCommand.create(accountId);
+
+        var transactions = findTransactionsByAccountIdUseCase.handle(command);
 
         var transactionDtos = transactions.stream().map(TransactionControllerUtils::convertToTransactionDTO).toList();
 

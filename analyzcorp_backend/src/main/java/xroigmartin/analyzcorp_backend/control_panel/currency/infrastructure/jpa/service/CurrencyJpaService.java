@@ -19,12 +19,12 @@ public class CurrencyJpaService implements CurrencyRepository {
     @Override
     public List<Currency> findAllCurrencies() {
         var currencies = this.currencyRepository.findAll();
-        return currencies.stream().map(CurrencyJpaUtils::convertToCurrency).toList();
+        return currencies.stream().map(CurrencyJpaUtils::toDomain).toList();
     }
 
     @Override
     public Optional<Currency> findCurrencyByCode(String currencyCode) {
         return this.currencyRepository.findById(currencyCode)
-                .map(CurrencyJpaUtils::convertToCurrency);
+                .map(CurrencyJpaUtils::toDomain);
     }
 }

@@ -7,7 +7,7 @@ import xroigmartin.analyzcorp_backend.control_panel.currency.infrastructure.jpa.
 @UtilityClass
 public class CurrencyJpaUtils {
 
-    public static Currency convertToCurrency(CurrencyJpa currencyJpa) {
+    public static Currency toDomain(CurrencyJpa currencyJpa) {
         return Currency.create(currencyJpa.getCode(), currencyJpa.getName());
     }
 }
