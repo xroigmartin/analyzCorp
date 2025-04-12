@@ -11,18 +11,20 @@ services:
       - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_INITIAL_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_INITIAL_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       #- postgres_data:/var/lib/postgresql/data/pgdata
       - ./init-scripts:/docker-entrypoint-initdb.d
-      - ./postgres-ssl:/etc/ssl/postgresql:ro
-    command: >
-      postgres
-      -c ssl=on
-      -c ssl_cert_file=/etc/ssl/postgresql/server.crt
-      -c ssl_key_file=/etc/ssl/postgresql/server.key
+     # - ./postgres-ssl:/etc/ssl/postgresql:ro
+    secrets:
+      - db_password
+    #command: >
+    #  postgres
+    #  -c ssl=on
+    #  -c ssl_cert_file=/etc/ssl/postgresql/server.crt
+    #  -c ssl_key_file=/etc/ssl/postgresql/server.key
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_INITIAL_USER:-postgres} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -38,3 +40,7 @@ networks:
   analyz_corp_internal:
     driver: bridge
     name: analyz_corp_internal
+
+secrets:
+  db_password:
+    file: ./secrets/postgres_password

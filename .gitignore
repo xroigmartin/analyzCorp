@@ -2,3 +2,4 @@
 .idea
 .vscode
 /postgres-ssl/
+secrets/postgres_password
