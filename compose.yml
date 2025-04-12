@@ -17,6 +17,12 @@ services:
     volumes:
       #- postgres_data:/var/lib/postgresql/data/pgdata
       - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./postgres-ssl:/etc/ssl/postgresql:ro
+    command: >
+      postgres
+      -c ssl=on
+      -c ssl_cert_file=/etc/ssl/postgresql/server.crt
+      -c ssl_key_file=/etc/ssl/postgresql/server.key
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_INITIAL_USER:-postgres} -d ${POSTGRES_DB}"]
       interval: 10s
