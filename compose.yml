@@ -1,15 +1,34 @@
+name: analyz-corp-stack
+
 services:
   analyz_corp_db:
     image: postgres:17
     container_name: analyz_corp_db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    restart: unless-stopped
+    networks:
+      - analyz_corp_internal
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_INITIAL_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_INITIAL_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./init-scripts/:/docker-entrypoint-initdb.d/
+      #- postgres_data:/var/lib/postgresql/data/pgdata
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_INITIAL_USER:-postgres} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:
+    driver: local
+
+networks:
+  analyz_corp_internal:
+    driver: bridge
+    name: analyz_corp_internal
