@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       PGDATA: /var/lib/postgresql/data/pgdata
       APP_OW_USER: ${APP_OW_USER}
-      APP_OW_PASSWORD: ${APP_OW_PASSWORD}
+      APP_OW_PASSWORD: /run/secrets/app_ow_password
       APP_DB_NAME: ${APP_DB_NAME}
     volumes:
       #- postgres_data:/var/lib/postgresql/data/pgdata
@@ -23,6 +23,7 @@ services:
       - ./postgres-ssl:/etc/ssl/postgresql:ro
     secrets:
       - db_password
+      - app_ow_password
     command: >
       postgres
       -c ssl=on
@@ -47,3 +48,5 @@ networks:
 secrets:
   db_password:
     file: ./secrets/postgres_password
+  app_ow_password:
+    file: ./secrets/app_ow_password
