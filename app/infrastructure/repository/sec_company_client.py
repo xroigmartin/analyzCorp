@@ -16,7 +16,6 @@ class SECCompanyClient(CompanyRepository):
     def get_all_companies(self) -> list[Company]:
         try:
             logger.info("Requesting company data from SEC API...")
-            logger.debug(f"SEC API URL: {self.url}")
             response = httpx.get(self.url, headers=self.headers)
             response.raise_for_status()
         except httpx.HTTPStatusError as e:
