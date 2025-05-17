@@ -1,5 +1,6 @@
 from functools import lru_cache
-from app.infrastructure.repository.sec_company_client import SECCompanyClient
+
+from app.company.infrastructure.repository.sec_company_client import SECCompanyClient
 
 
 @lru_cache(maxsize=1)

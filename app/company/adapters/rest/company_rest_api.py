@@ -1,18 +1,14 @@
 from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 
-from app.apadters.cache.cache import get_cached_companies, refresh_companies_cache
-from app.apadters.dto.company_dto import CompanyDTO
-from app.apadters.dto.paginated_response_dto import PaginatedCompanyResponseDTO
-from app.application.use_case.get_companies import GetCompaniesUseCase
-from app.domain.exceptions.sec_api_exception import SECAPIException
-from app.domain.models.company import Company
-from app.infrastructure.repository.sec_company_client import SECCompanyClient
-
+from app.company.adapters.cache.cache import get_cached_companies, refresh_companies_cache
+from app.company.adapters.dto.company_dto import CompanyDTO
+from app.company.domain.models.company import Company
+from app.share.infrastructure.dto.paginated_response_dto import PaginatedResponseDTO
 
 router = APIRouter()
 
-@router.get("/companies", response_model=PaginatedCompanyResponseDTO)
+@router.get("/companies", response_model=PaginatedResponseDTO[CompanyDTO])
 def get_companies(
     name: Optional[str] = Query(None),
     cik: Optional[str] = Query(None),
@@ -32,7 +28,7 @@ def get_companies(
     total = len(companies)
     paged_companies = companies[offset: offset + limit]
     
-    return PaginatedCompanyResponseDTO(
+    return PaginatedResponseDTO[CompanyDTO](
         total = total,
         limit = limit,
         offset = offset,

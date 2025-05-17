@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
-from app.apadters import rest_api
+from app.company.adapters.rest import company_rest_api
+
 
 app = FastAPI()
 
-app.include_router(rest_api.router)
+app.include_router(company_rest_api.router)

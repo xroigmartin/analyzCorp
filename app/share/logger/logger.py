@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 
-from app.core.config.config import Config
+from app.share.config.config import Config
 
 logger = logging.getLogger("sec_data_api")
 logger.setLevel(getattr(logging, Config.LOG_LEVEL, logging.DEBUG))

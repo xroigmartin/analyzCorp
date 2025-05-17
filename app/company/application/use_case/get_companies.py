@@ -1,6 +1,8 @@
-from app.domain.repository.company_repository import CompanyRepository
-from app.domain.models.company import Company
+
 from typing import List
+
+from app.company.domain.models.company import Company
+from app.company.domain.repository.company_repository import CompanyRepository
 
 class GetCompaniesUseCase:
     def __init__(self, repository: CompanyRepository):

@@ -1,9 +1,9 @@
 import httpx
-from app.core.config.config import Config
-from app.core.logger.logger import logger
-from app.domain.exceptions.sec_api_exception import SECAPIException
-from app.domain.repository.company_repository import CompanyRepository
-from app.domain.models.company import Company
+from app.company.domain.exceptions.sec_api_exception import SECAPIException
+from app.company.domain.models.company import Company
+from app.company.domain.repository.company_repository import CompanyRepository
+from app.share.config.config import Config
+from app.share.logger.logger import logger
 
 class SECCompanyClient(CompanyRepository):
     def __init__(self):
