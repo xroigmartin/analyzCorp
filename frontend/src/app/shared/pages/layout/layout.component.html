@@ -1,0 +1,17 @@
+<div class="layout-container">
+    <app-shared-header (toggleMenu)="toggleMenuVisibility()"></app-shared-header>
+
+    <div class="layout-body">
+        <aside class="layout-menu" [class.hidden]="!showMenu" *ngIf="!isMobile">
+            <app-shared-menu></app-shared-menu>
+        </aside>
+
+        <p-sidebar [(visible)]="showMenu" position="left" [modal]="true" *ngIf="isMobile" [baseZIndex]="10000">
+            <app-shared-menu></app-shared-menu>
+        </p-sidebar>
+
+        <main [class.full-width]="!showMenu">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
