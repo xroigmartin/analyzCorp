@@ -1,0 +1,11 @@
+<header class="header-container">
+    <button type="button" class="menu-toggle" (click)="onToggleMenu()">
+        <i class= "pi pi-bars icon-transition" [class.rotated]="isMenuOpen"></i>
+    </button>
+
+    <h1 class="title">AnalyzCorp</h1>
+
+    <button type="button" class="theme-toggle" (click)="toggleTheme()">
+        <i [ngClass]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"></i>
+    </button>
+</header>
