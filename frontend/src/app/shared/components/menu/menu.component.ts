@@ -1,21 +1,16 @@
+import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-shared-menu',
-  imports: [Menu],
+  imports: [RouterLink, NgFor],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent implements OnInit {
-  items: MenuItem[] = [];
-
-  ngOnInit() {
-    this.items = [
-      { label: 'New', icon: 'pi pi-plus' },
-      { label: 'Search', icon: 'pi pi-search' }
+export class MenuComponent {
+  items = [
+      { label: 'New', icon: 'pi pi-plus', route: "/" },
+      { label: 'Search', icon: 'pi pi-search', route: "/search" },
     ];
-  }
-
 }

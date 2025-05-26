@@ -1,8 +1,8 @@
 .header-container {
   display: flex;
   align-items: center;
-  background-color: #1976d2;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text-on-dark);
   padding: 0.5rem 1rem;
   height: 60px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -10,11 +10,20 @@
   .menu-toggle {
     background: none;
     border: none;
-    color: white;
+    color: var(--color-text-on-dark);
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 1rem;
     flex-shrink: 0;
+
+    i.icon-transition {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    i.rotated {
+      transform: rotate(90deg);
+    }
   }
 
   .title {
@@ -24,6 +33,30 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex-grow: 1;
+  }
+
+  .theme-toggle {
+    background-color: transparent;
+    border: 2px solid var(--color-text-on-dark);
+    color: var(--color-text-on-dark);
+    border-radius: 50%;
+    padding: 0.4rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, border-color 0.3s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    i {
+      transition: transform 0.3s ease;
+    }
   }
 }
 

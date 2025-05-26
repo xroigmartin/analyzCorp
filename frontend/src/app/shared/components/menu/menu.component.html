@@ -1,1 +1,9 @@
-<p-menu [model]="items" styleClass="w-full"/>
+<nav class="custom-menu">
+  <a *ngFor="let item of items"
+     class="menu-item"
+     [routerLink]="item.route"
+     routerLinkActive="active">
+    <i class="{{ item.icon }}"></i>
+    <span>{{ item.label }}</span>
+  </a>
+</nav>

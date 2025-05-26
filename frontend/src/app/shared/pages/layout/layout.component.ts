@@ -3,11 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from "../../components/menu/menu.component";
 import { HeaderComponent } from "../../components/header/header.component";
 import { NgIf } from '@angular/common';
-import { Sidebar } from "primeng/sidebar";
-
 @Component({
   selector: 'app-shared-layout',
-  imports: [RouterOutlet, MenuComponent, HeaderComponent, NgIf, Sidebar],
+  imports: [RouterOutlet, MenuComponent, HeaderComponent, NgIf],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
@@ -26,11 +24,7 @@ export class LayoutComponent implements OnInit {
 
   checkScreenSize() {
     this.isMobile = window.innerWidth < 768;
-    if (this.isMobile) {
-      this.showMenu = false;
-    } else {
-      this.showMenu = true;
-    }
+    this.showMenu = !this.isMobile;
   }
   
   toggleMenuVisibility() {
