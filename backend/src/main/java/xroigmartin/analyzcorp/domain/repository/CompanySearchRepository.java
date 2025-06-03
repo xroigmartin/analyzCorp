@@ -1,9 +1,9 @@
 package xroigmartin.analyzcorp.domain.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import xroigmartin.analyzcorp.domain.model.Company;
 
-import java.util.List;
-
 public interface CompanySearchRepository {
-    List<Company> findByNameOrTicker(String name, String ticker, int limit, int offset);
+    Page<Company> findByNameOrTicker(String name, String ticker, String cik, Pageable pageable);
 }

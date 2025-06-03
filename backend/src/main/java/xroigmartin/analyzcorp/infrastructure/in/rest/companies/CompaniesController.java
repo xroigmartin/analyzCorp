@@ -7,40 +7,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import xroigmartin.analyzcorp.application.use_case.GetAllCompaniesUseCase;
+import xroigmartin.analyzcorp.application.use_case.GetCompaniesUseCase;
 import xroigmartin.analyzcorp.application.use_case.ImportCompaniesFromSecUseCase;
-import xroigmartin.analyzcorp.domain.model.Company;
 import xroigmartin.analyzcorp.infrastructure.in.rest.dto.CompanyDTO;
-
-import java.util.List;
+import xroigmartin.analyzcorp.infrastructure.in.rest.dto.PaginatedResponseDTO;
+import xroigmartin.analyzcorp.infrastructure.in.rest.utils.CompanyDTOUtils;
+import xroigmartin.analyzcorp.infrastructure.in.rest.utils.PaginatedResponseUtils;
 
 @RestController
 @RequestMapping("/api/companies")
 @AllArgsConstructor
 public class CompaniesController {
 
-    private final GetAllCompaniesUseCase getAllCompaniesUseCase;
+    private final GetCompaniesUseCase getCompaniesUseCase;
     private final ImportCompaniesFromSecUseCase importCompaniesFromSecUseCase;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CompanyDTO>> getCompanies(@RequestParam(required = false) String name,
-                                                         @RequestParam(required = false) String ticker,
-                                                         @RequestParam(required = false, defaultValue = "10") int limit,
-                                                         @RequestParam(required = false, defaultValue = "0") int offset) {
+    public ResponseEntity<PaginatedResponseDTO<CompanyDTO>> getCompanies(@RequestParam(required = false) String name,
+                                                                         @RequestParam(required = false) String ticker,
+                                                                         @RequestParam(required = false) String cik,
+                                                                         @RequestParam(required = false, defaultValue = "10") int size,
+                                                                         @RequestParam(required = false, defaultValue = "0") int page) {
 
-        var companies = getAllCompaniesUseCase.execute();
-        return ResponseEntity.ok(toDTO(companies));
+        var companyPage = getCompaniesUseCase.execute(name, ticker, cik, page, size);
+        var paginatedResponse = PaginatedResponseUtils.toPaginatedResponseDTO(companyPage, CompanyDTOUtils::toDTO);
+        return ResponseEntity.ok(paginatedResponse);
     }
 
     @GetMapping("/import")
     public ResponseEntity<Void> importFromSec(){
         importCompaniesFromSecUseCase.execute();
         return ResponseEntity.accepted().build();
-    }
-
-    private List<CompanyDTO> toDTO(List<Company> companies) {
-        return companies.stream()
-                .map(company -> new CompanyDTO(company.cik(), company.name(), company.ticker()))
-                .toList();
     }
 }

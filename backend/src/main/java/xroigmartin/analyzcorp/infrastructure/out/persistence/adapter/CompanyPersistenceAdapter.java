@@ -1,6 +1,8 @@
 package xroigmartin.analyzcorp.infrastructure.out.persistence.adapter;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import xroigmartin.analyzcorp.domain.model.Company;
 import xroigmartin.analyzcorp.domain.repository.CompanyByIdRepository;
@@ -9,6 +11,7 @@ import xroigmartin.analyzcorp.domain.repository.CompanySearchRepository;
 import xroigmartin.analyzcorp.domain.repository.SaveCompanyRepository;
 import xroigmartin.analyzcorp.infrastructure.out.persistence.entity.CompanyEntity;
 import xroigmartin.analyzcorp.infrastructure.out.persistence.repository.CompanyJpaRepository;
+import xroigmartin.analyzcorp.infrastructure.out.persistence.specifications.CompanySpecification;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,8 +24,8 @@ public class CompanyPersistenceAdapter implements CompanyGetAllRepository, SaveC
     private final CompanyJpaRepository companyJpaRepository;
 
     @Override
-    public List<Company> findByNameOrTicker(String name, String ticker, int limit, int offset) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public Page<Company> findByNameOrTicker(String name, String ticker, String cik, Pageable pageable) {
+        return companyJpaRepository.findAll(CompanySpecification.findByNameTickerCik(name, ticker, cik), pageable).map(this::toDomain);
     }
 
     @Override
