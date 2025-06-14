@@ -5,7 +5,7 @@ import { HeaderComponent } from "../../components/header/header.component";
 import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-shared-layout',
-  imports: [RouterOutlet, MenuComponent, HeaderComponent, NgIf],
+  imports: [RouterOutlet, MenuComponent, HeaderComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
@@ -26,7 +26,7 @@ export class LayoutComponent implements OnInit {
     this.isMobile = window.innerWidth < 768;
     this.showMenu = !this.isMobile;
   }
-  
+
   toggleMenuVisibility() {
     this.showMenu = !this.showMenu;
   }

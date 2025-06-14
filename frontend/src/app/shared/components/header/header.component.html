@@ -5,6 +5,10 @@
 
     <h1 class="title">AnalyzCorp</h1>
 
+    <button class="lang-toggle" (click)="toggleLanguage()" [title]="currentLang === 'es' ? 'Español' : 'English'">
+      <img [src]="'http://flagcdn.com/w40/' + currentLang + '.png'" alt="Flag" class="flag-icon">
+    </button>
+
     <button type="button" class="theme-toggle" (click)="toggleTheme()">
         <i [ngClass]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"></i>
     </button>

@@ -1,0 +1,26 @@
+{
+  "TITLE": "AnalyzCorp",
+  "MENU": {
+    "HOME": "Inicio",
+    "FINANCE": "Finanzas",
+    "FINANCE_ITEMS": {
+      "TRANSACTIONS": "Transacciones",
+      "BUDGET": "Presupuestos",
+      "RESUME": "Resumen",
+      "CATEGORIES": "Categorias",
+      "ACCOUNT": "Cuentas"
+    },
+    "INVESTMENT": "Inversión",
+    "INVESTMENT_ITEMS": {
+      "COMPANIES": "Empresas",
+      "FUNDAMENTAL_ANALYZE": "Análisis fundamental",
+      "VALUATION": "Valoración",
+      "FILINGS": "Filings",
+      "PORTFOLIO": "Portfolio"
+    }
+  },
+  "SETTINGS":  "Configuración",
+  "PROFILE":  "Perfil",
+  "LOGIN": "Entrar",
+  "LOGOUT": "Salir"
+}

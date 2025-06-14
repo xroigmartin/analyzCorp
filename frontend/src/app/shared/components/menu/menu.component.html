@@ -1,9 +1,29 @@
 <nav class="custom-menu">
-  <a *ngFor="let item of items"
-     class="menu-item"
-     [routerLink]="item.route"
-     routerLinkActive="active">
-    <i class="{{ item.icon }}"></i>
-    <span>{{ item.label }}</span>
-  </a>
+  <ng-container *ngFor="let item of menuItems">
+    <div *ngIf="item.children; else simpleItem" class="menu-group">
+      <div class="menu-item" (click)="toggleExpand(item)">
+        <i class="{{ item.icon }}"></i>
+        <span>{{ item.label | translate }}</span>
+        <i class="pi pi-chevron-down chevron" [class.expanded]="item.expanded"></i>
+      </div>
+      <div class="submenu" *ngIf="item.expanded">
+        <a *ngFor="let child of item.children"
+           class="submenu-item"
+           [routerLink]="child.route"
+           routerLinkActive="active">
+          <i class="{{ child.icon }}"></i>
+          <span>{{ child.label | translate}}</span>
+        </a>
+      </div>
+    </div>
+
+    <ng-template #simpleItem>
+      <a class="menu-item" [routerLink]="item.route" routerLinkActive="active">
+        <i class="{{ item.icon }}"></i>
+        <span>{{ item.label | translate }}</span>
+      </a>
+    </ng-template>
+
+  </ng-container>
+
 </nav>
