@@ -1,0 +1,20 @@
+<div class="accounts-container">
+  <div class="accounts-header">
+    <h2>{{ 'MENU.FINANCE_ITEMS.ACCOUNT' | translate }}</h2>
+    <button class="add-account-button">
+      <i class="pi pi-plus"></i>
+      {{ 'Add Account' | translate }}
+    </button>
+  </div>
+
+  <div class="accounts-grid">
+    <div class="account-card" *ngFor="let account of accounts">
+      <div class="account-name">{{ account.name }}</div>
+      <button class="edit-button" title="Editar">
+        <i class="pi pi-pencil"></i>
+      </button>
+    </div>
+
+  </div>
+
+</div>

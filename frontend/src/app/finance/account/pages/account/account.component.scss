@@ -1,0 +1,71 @@
+.accounts-container{
+  padding: 1rem;
+
+  .accounts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .add-account-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--color-primary);
+      color: var(--color-text);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: var(--color-primary-dark);
+      }
+
+      i {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .account-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    .account-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .edit-button {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background-color: transparent;
+      border: none;
+      color: var(--color-text);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
+  }
+}
