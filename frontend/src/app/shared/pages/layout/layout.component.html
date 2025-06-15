@@ -1,16 +1,28 @@
 <div class="layout-container">
-    <app-shared-header 
+    <app-shared-header
         (toggleMenu)="toggleMenuVisibility()"
         [isMenuOpen]="showMenu"
     >
     </app-shared-header>
 
     <div class="layout-body">
-        <aside class="layout-menu" [class.hidden]="!showMenu">
-            <app-shared-menu></app-shared-menu>
+
+      <div class="menu-overlay"
+          *ngIf="showMenu && isMobile"
+          (click)="toggleMenuVisibility()">
+      </div>
+
+      <aside class="layout-menu"
+               [class.hidden]="!showMenu"
+               [class.modal]="isMobile"
+        >
+            <app-shared-menu
+              [isMobile]="isMobile"
+              (closeMenu)="toggleMenuVisibility()"
+            ></app-shared-menu>
         </aside>
 
-        <main class="layout-main" [class.full-width]="!showMenu">
+        <main class="layout-main" [class.full-width]="!showMenu && !isMobile">
             <router-outlet></router-outlet>
         </main>
     </div>

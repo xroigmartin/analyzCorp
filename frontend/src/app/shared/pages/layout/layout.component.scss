@@ -5,35 +5,59 @@
 }
 
 .layout-body {
+  position: relative;
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
 .layout-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
   width: 250px;
   padding: 1rem;
   background-color: var(--color-surface);
   border-right: 1px solid var(--color-border);
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  z-index: 10;
   transform: translateX(0);
-  opacity: 1;
-  visibility: visible;
+
+  &.hidden {
+    transform: translateX(-100%);
+  }
+
+  &.model {
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (min-width: 768px) {
+    position: relative;
+    transform: translateX(0) !important;
+  }
+
 }
 
-.layout-menu.hidden {
-  transform: translateX(-100%);
-  opacity: 0;
-  visibility: hidden;
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
 
 .layout-main {
   flex: 1;
   padding: 1rem;
-  overflow-y: auto;
-  transition: margin-left 0.3s ease;
-}
+  transition: margin-left 0.3s ease-in-out;
 
-.full-width {
-  width: 100%;
+  @media (min-width: 768px) {
+    margin-left: 250px;
+  }
+
+  &.full-width {
+    margin-left: 0;
+  }
 }

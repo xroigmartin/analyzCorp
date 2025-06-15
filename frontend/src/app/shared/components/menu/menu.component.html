@@ -10,7 +10,9 @@
         <a *ngFor="let child of item.children"
            class="submenu-item"
            [routerLink]="child.route"
-           routerLinkActive="active">
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }"
+           (click)="onNavigate()">
           <i class="{{ child.icon }}"></i>
           <span>{{ child.label | translate}}</span>
         </a>
@@ -18,7 +20,11 @@
     </div>
 
     <ng-template #simpleItem>
-      <a class="menu-item" [routerLink]="item.route" routerLinkActive="active">
+      <a class="menu-item"
+         [routerLink]="item.route"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="onNavigate()">
         <i class="{{ item.icon }}"></i>
         <span>{{ item.label | translate }}</span>
       </a>
