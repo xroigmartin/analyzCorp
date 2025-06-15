@@ -1,7 +1,8 @@
 import {NgFor, NgIf} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {filter} from 'rxjs';
 
 export interface MenuItem {
   label: string;
@@ -17,8 +18,9 @@ export interface MenuItem {
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   private readonly translate: TranslateService = inject(TranslateService);
+  private readonly router: Router = inject(Router);
 
   menuItems: MenuItem[] = [
     {
@@ -29,7 +31,7 @@ export class MenuComponent {
     {
       label: 'MENU.FINANCE',
       icon: 'pi pi-wallet',
-      expanded: true,
+      expanded: false,
       children: [
         { label: 'MENU.FINANCE_ITEMS.BUDGET', icon: 'pi pi-book', route: '/budgets' },
         { label: 'MENU.FINANCE_ITEMS.TRANSACTIONS', icon: 'pi pi-list', route: '/transactions' },
@@ -39,7 +41,7 @@ export class MenuComponent {
     {
       label: 'MENU.INVESTMENT',
       icon: 'pi pi-chart-line',
-      expanded: true,
+      expanded: false,
       children: [
         { label: 'MENU.INVESTMENT_ITEMS.COMPANIES', icon: 'pi pi-building', route: '/companies' },
         { label: 'MENU.INVESTMENT_ITEMS.FUNDAMENTAL_ANALYZE', icon: 'pi pi-search', route: '/fundamentals' }
@@ -47,7 +49,22 @@ export class MenuComponent {
     }
   ];
 
+  ngOnInit() {
+    this.updateMenuState(this.router.url);
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => this.updateMenuState(event.urlAfterRedirects));
+  }
+
   toggleExpand(item: MenuItem) {
     item.expanded = !item.expanded;
+  }
+
+  private updateMenuState(currentUrl: string): void {
+    for(const item of this.menuItems) {
+      if(item.children) {
+        item.expanded = item.children.some(child => currentUrl === child.route);
+      }
+    }
   }
 }
