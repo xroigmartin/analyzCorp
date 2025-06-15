@@ -33,7 +33,7 @@ export class MenuComponent {
       children: [
         { label: 'MENU.FINANCE_ITEMS.BUDGET', icon: 'pi pi-book', route: '/budgets' },
         { label: 'MENU.FINANCE_ITEMS.TRANSACTIONS', icon: 'pi pi-list', route: '/transactions' },
-        { label: 'MENU.FINANCE_ITEMS.ACCOUNT', icon: 'pi pi-credit-card', route: '/accounts' }
+        { label: 'MENU.FINANCE_ITEMS.ACCOUNT', icon: 'pi pi-credit-card', route: '/finance/accounts' }
       ]
     },
     {
