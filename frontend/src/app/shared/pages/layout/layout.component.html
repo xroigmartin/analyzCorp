@@ -1,5 +1,5 @@
 <div class="layout-container">
-    <app-shared-header 
+    <app-shared-header
         (toggleMenu)="toggleMenuVisibility()"
         [isMenuOpen]="showMenu"
     >
@@ -10,7 +10,11 @@
             <app-shared-menu></app-shared-menu>
         </aside>
 
-        <main class="layout-main" [class.full-width]="!showMenu">
+        <main class="layout-main"
+              [class.full-width]="!showMenu && !isMobile"
+              (click)="isMobile && showMenu ? toggleMenuVisibility() : null"
+              role="main"
+              aria-label="Main content area">
             <router-outlet></router-outlet>
         </main>
     </div>
