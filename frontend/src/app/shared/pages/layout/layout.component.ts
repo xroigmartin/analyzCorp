@@ -3,9 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from "../../components/menu/menu.component";
 import { HeaderComponent } from "../../components/header/header.component";
 import { NgIf } from '@angular/common';
+
 @Component({
   selector: 'app-shared-layout',
-  imports: [RouterOutlet, MenuComponent, HeaderComponent],
+  imports: [RouterOutlet, MenuComponent, HeaderComponent, NgIf],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
@@ -30,4 +31,5 @@ export class LayoutComponent implements OnInit {
   toggleMenuVisibility() {
     this.showMenu = !this.showMenu;
   }
+
 }

@@ -6,16 +6,26 @@
     </app-shared-header>
 
     <div class="layout-body">
-        <aside class="layout-menu" [class.hidden]="!showMenu">
-            <app-shared-menu></app-shared-menu>
-        </aside>
 
-        <main class="layout-main"
-              [class.full-width]="!showMenu && !isMobile"
-              (click)="isMobile && showMenu ? toggleMenuVisibility() : null"
-              role="main"
-              aria-label="Main content area">
-            <router-outlet></router-outlet>
-        </main>
+      <aside class="layout-menu"
+             [class.hidden]="!showMenu"
+             [class.modal]="isMobile"
+      >
+          <app-shared-menu></app-shared-menu>
+      </aside>
+
+      <div class="menu-overlay"
+           *ngIf="isMobile && showMenu"
+           (click)="toggleMenuVisibility()"
+      >
+      </div>
+
+      <main class="layout-main"
+            [class.full-width]="!showMenu && !isMobile"
+            (click)="isMobile && showMenu ? toggleMenuVisibility() : null"
+            role="main"
+            aria-label="Main content area">
+          <router-outlet></router-outlet>
+      </main>
     </div>
 </div>
