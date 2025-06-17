@@ -20,6 +20,11 @@
   --color-error: #f44336;
   --color-warning: #ff9800;
   --color-info: #03a9f4;
+  --color-danger: #e74c3c;
+  --color-danger-hover: #c0392b;
+
+  // Card
+  --color-card-bg: #ffffff;
 }
 
 html[data-theme='dark'] {
@@ -39,4 +44,9 @@ html[data-theme='dark'] {
   --color-error: #ef5350;
   --color-warning: #ffb74d;
   --color-info: #4fc3f7;
+  --color-danger: #ff6b6b;
+  --color-danger-hover: #ff4c4c;
+
+  // Card
+  --color-card-bg: #1e1e2f;
 }

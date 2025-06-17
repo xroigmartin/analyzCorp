@@ -8,13 +8,13 @@
   </div>
 
   <div class="accounts-grid">
-    <div class="account-card" *ngFor="let account of accounts">
-      <div class="account-name">{{ account.name }}</div>
-      <button class="edit-button" title="Edit">
-        <i class="pi pi-pencil"></i>
-      </button>
-    </div>
-
+    <analyz-corp-card *ngFor="let account of accounts"
+                      [text]="account.name"
+                      [editable]="true"
+                      [deletable]="true"
+                      (onEdit)="onEditAccount(account.id)"
+                      (onDelete)="onDeleteAccount(account.id)"
+    />
   </div>
 
 </div>

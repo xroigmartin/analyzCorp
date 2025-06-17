@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-text">
+    <div class="main-text">{{ text }}</div>
+    <div class="sub-text" *ngIf="subText">{{ subText }}</div>
+  </div>
+  <div class="action-buttons">
+    <button *ngIf="editable"
+            class="icon-button"
+            title="Edit"
+            (click)="onEditClick()">
+      <i class="pi pi-pencil"></i>
+    </button>
+    <button *ngIf="deletable"
+            class="icon-button delete-button"
+            title="Delete"
+            (click)="onEditClick()">
+      <i class="pi pi-trash"></i>
+    </button>
+  </div>
+</div>

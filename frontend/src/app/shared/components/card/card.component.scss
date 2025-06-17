@@ -1,0 +1,73 @@
+.card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: box-shadow 0.2s ease;
+  position: relative;
+
+  .card-text{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .main-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .sub-text {
+    font-size: 0.9rem;
+    color: var(--color-text-light, #888);
+  }
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+
+    .icon-button {
+      background-color: transparent;
+      border: none;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--color-primary);
+      }
+
+      &.delete-button:hover {
+        color: var(--color-danger-hover);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    text-align: center;
+
+    .card-text{
+      align-items: center;
+      width: 100%;
+    }
+
+    .action-buttons {
+      align-self: center;
+    }
+  }
+}

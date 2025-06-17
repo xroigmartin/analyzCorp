@@ -41,31 +41,4 @@
     gap: 1rem;
   }
 
-  .account-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    position: relative;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-
-    .account-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .edit-button {
-      position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
-      background-color: transparent;
-      border: none;
-      color: var(--color-text);
-      cursor: pointer;
-
-      &:hover {
-        color: var(--color-primary);
-      }
-    }
-  }
 }

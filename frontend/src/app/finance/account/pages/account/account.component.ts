@@ -3,12 +3,14 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {NgForOf} from '@angular/common';
 import {Account} from '../../model/account';
 import {AccountsService} from '../../services/accounts.service';
+import {CardComponent} from '../../../../shared/components/card/card.component';
 
 @Component({
   selector: 'app-account',
   imports: [
     TranslatePipe,
-    NgForOf
+    NgForOf,
+    CardComponent
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -32,5 +34,13 @@ export class AccountComponent implements OnInit {
         console.error('Error loading accounts:', error);
       }
     });
+  }
+
+  onEditAccount(accountId: number): void {
+    console.log("Edit Account");
+  }
+
+  onDeleteAccount(accountId: number): void {
+    console.log("Deleting Account");
   }
 }
