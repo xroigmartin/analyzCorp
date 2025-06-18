@@ -22,9 +22,7 @@
 
       <main class="layout-main"
             [class.full-width]="!showMenu && !isMobile"
-            (click)="isMobile && showMenu ? toggleMenuVisibility() : null"
-            role="main"
-            aria-label="Main content area">
+            (click)="isMobile && showMenu ? toggleMenuVisibility() : null">
           <router-outlet></router-outlet>
       </main>
     </div>

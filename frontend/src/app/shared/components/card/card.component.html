@@ -6,13 +6,13 @@
   <div class="action-buttons">
     <button *ngIf="editable"
             class="icon-button"
-            title="Edit"
+            title="{{ 'EDIT_BUTTON_LABEL' | translate}}"
             (click)="onEditClick()">
       <i class="pi pi-pencil"></i>
     </button>
     <button *ngIf="deletable"
             class="icon-button delete-button"
-            title="Delete"
+            title="{{ 'DELETE_BUTTON_LABEL' | translate}}"
             (click)="onEditClick()">
       <i class="pi pi-trash"></i>
     </button>

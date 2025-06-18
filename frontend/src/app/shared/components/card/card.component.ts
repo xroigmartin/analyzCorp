@@ -1,17 +1,19 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgIf} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'analyz-corp-card',
   imports: [
-    NgIf
+    NgIf,
+    TranslatePipe
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
   @Input() text!: string;
-  @Input() subText: string = "Esto es un subtexto";
+  @Input() subText: string = "Payload text";
   @Input() editable: boolean = false;
   @Input() deletable: boolean = false;
 

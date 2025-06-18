@@ -4,6 +4,10 @@
   "PROFILE": "Profile",
   "LOGIN": "Login",
   "LOGOUT": "Logout",
-  "CANCEL_BUTTON": "Cancel",
-  "SAVE_BUTTON": "Save"
+  "CANCEL_BUTTON_LABEL": "Cancel",
+  "SAVE_BUTTON_LABEL": "Save",
+  "EDIT_BUTTON_LABEL": "Edit",
+  "DELETE_BUTTON_LABEL": "Delete",
+  "YES_BUTTON_LABEL": "Yes",
+  "NO_BUTTON_LABEL": "No"
 }
