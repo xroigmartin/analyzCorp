@@ -3,7 +3,7 @@
         <i class= "pi pi-bars icon-transition" [class.rotated]="isMenuOpen"></i>
     </button>
 
-    <h1 class="title">AnalyzCorp</h1>
+    <h1 class="title">{{'APP_TITLE' | translate}}</h1>
 
     <button class="lang-toggle" (click)="toggleLanguage()" [title]="currentLang === 'es' ? 'Español' : 'English'">
       <img [src]="'http://flagcdn.com/w40/' + currentLang + '.png'" alt="Flag" class="flag-icon">

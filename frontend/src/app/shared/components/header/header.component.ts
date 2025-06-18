@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-shared-header',
-  imports: [NgClass],
+  imports: [NgClass, TranslatePipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

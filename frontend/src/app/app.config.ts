@@ -3,15 +3,18 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
 import { FilterMatchMode } from 'primeng/api';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient, provideHttpClient} from '@angular/common/http';
+import {HttpBackend, provideHttpClient} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {MultiTranslateHttpLoader} from 'ngx-translate-multi-http-loader';
 
-const httpLoaderFactory: (http:HttpClient) => TranslateHttpLoader =
-  (http: HttpClient) =>
-    new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+export function multiTranslateLoaderFactory(backend: HttpBackend): TranslateLoader {
+  return new MultiTranslateHttpLoader(backend, [
+    { prefix: '/assets/i18n/',                                     suffix: '.json' },
+    { prefix: '/assets/shared/components/generic-modal/',          suffix: '.json' },
+    { prefix: '/assets/shared/components/menu/',                   suffix: '.json' },
+  ]);
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,8 +26,8 @@ export const appConfig: ApplicationConfig = {
       defaultLanguage: 'es',
       loader:{
         provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
+        useFactory: multiTranslateLoaderFactory,
+        deps: [HttpBackend]
       }
     })]),
     providePrimeNG({

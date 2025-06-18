@@ -1,26 +1,9 @@
 {
-  "TITLE": "AnalyzCorp",
-  "MENU": {
-    "HOME": "Home",
-    "FINANCE": "Finance",
-    "FINANCE_ITEMS": {
-      "TRANSACTIONS": "Transactions",
-      "BUDGET": "Budgets",
-      "RESUME": "Summary",
-      "CATEGORIES": "Categories",
-      "ACCOUNT": "Accounts"
-    },
-    "INVESTMENT": "Investment",
-    "INVESTMENT_ITEMS": {
-      "COMPANIES": "Companies",
-      "FUNDAMENTAL_ANALYZE": "Fundamental Analysis",
-      "VALUATION": "Valuation",
-      "FILINGS": "Filings",
-      "PORTFOLIO": "Portfolio"
-    }
-  },
+  "APP_TITLE": "AnalyzCorp",
   "SETTINGS": "Settings",
   "PROFILE": "Profile",
   "LOGIN": "Login",
-  "LOGOUT": "Logout"
+  "LOGOUT": "Logout",
+  "CANCEL_BUTTON": "Cancel",
+  "SAVE_BUTTON": "Save"
 }
