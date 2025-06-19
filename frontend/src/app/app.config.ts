@@ -10,9 +10,10 @@ import {MultiTranslateHttpLoader} from 'ngx-translate-multi-http-loader';
 
 export function multiTranslateLoaderFactory(backend: HttpBackend): TranslateLoader {
   return new MultiTranslateHttpLoader(backend, [
-    { prefix: '/assets/i18n/',                                     suffix: '.json' },
-    { prefix: '/assets/shared/components/generic-modal/',          suffix: '.json' },
-    { prefix: '/assets/shared/components/menu/',                   suffix: '.json' },
+    { prefix: '/assets/i18n/', suffix: '.json' },
+    { prefix: '/assets/shared/components/generic-modal/', suffix: '.json' },
+    { prefix: '/assets/shared/components/menu/', suffix: '.json' },
+    { prefix: '/assets/finance/account/pages/', suffix: '.json' },
   ]);
 }
 

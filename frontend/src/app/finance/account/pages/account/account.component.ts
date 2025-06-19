@@ -5,6 +5,7 @@ import {Account} from '../../model/account';
 import {AccountsService} from '../../services/accounts.service';
 import {CardComponent} from '../../../../shared/components/card/card.component';
 import {GenericModalComponent} from '../../../../shared/components/generic-modal/generic-modal.component';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-account',
@@ -21,9 +22,18 @@ import {GenericModalComponent} from '../../../../shared/components/generic-modal
 export class AccountComponent implements OnInit {
 
   private readonly accountService: AccountsService = inject(AccountsService);
+  private fb: FormBuilder = inject(FormBuilder);
 
   accounts: Account[] = [];
+  accountToEdit: Account | null = null;
   showEditModal: boolean = false;
+  editForm: FormGroup;
+
+  constructor() {
+    this.editForm = this.fb.group({
+      name: ['', Validators.required]
+    })
+  }
 
   ngOnInit(): void {
     this.loadCompanies();
@@ -41,12 +51,35 @@ export class AccountComponent implements OnInit {
   }
 
   onEditAccount(accountId: number): void {
-    console.log("Edit Account");
-    this.showEditModal = true;
+    this.accountService.getAccountById(accountId).subscribe({
+      next: (account) => {
+        console.log("Edit Account");
+        this.accountToEdit = {...account};
+        this.editForm.patchValue({
+          name: account.name
+        })
+        this.showEditModal = true;
+      },
+      error: (error) => {
+        console.error('Error loading account:', error);
+      }
+    })
+
   }
 
   onSaveAccount(): void {
-    console.log("Save Account");
+    if(this.editForm.invalid) {
+      this.editForm.markAsTouched();
+      return;
+    }
+
+    if(this.accountToEdit) {
+      const updated: Account = {
+        ...this.accountToEdit,
+        name: this.editForm.value.name,
+      };
+     this.accountService
+    }
     this.showEditModal = false;
   }
 

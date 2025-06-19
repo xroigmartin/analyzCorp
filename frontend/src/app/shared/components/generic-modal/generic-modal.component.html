@@ -1,0 +1,15 @@
+<div class="modal-overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="modal-container" [ngStyle]="style" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h2>{{ header }}</h2>
+      <button class="close-btn" [attr.aria-label]="'CLOSE_MODAL_LABEL' | translate" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" [attr.aria-label]="'CANCEL_BUTTON_LABEL' | translate" (click)="onClose()">{{ 'CANCEL_BUTTON_LABEL' | translate }}</button>
+      <button class="btn btn-primary" [attr.aria-label]="'SAVE_BUTTON_LABEL' | translate"(click)="confirm.emit()">{{ 'SAVE_BUTTON_LABEL' | translate }}</button>
+    </div>
+  </div>
+</div>

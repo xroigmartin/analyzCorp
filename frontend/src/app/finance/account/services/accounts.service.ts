@@ -15,4 +15,12 @@ export class AccountsService {
   getAccounts(): Observable<Account[]> {
     return this.http.get<Account[]>(this.apiUrl);
   }
+
+  getAccountById(id: number): Observable<Account> {
+    return this.http.get<Account>(`${this.apiUrl}/${id}`);
+  }
+
+  getSaveAccount(accountId: number, account: Account): Observable<Account> {
+    return this.http.get<Account>(`${this.apiUrl}/save/${accountId}`);
+  }
 }

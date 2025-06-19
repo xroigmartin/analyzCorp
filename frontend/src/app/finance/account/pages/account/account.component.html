@@ -3,7 +3,7 @@
     <h2>{{ 'MENU.FINANCE_ITEMS.ACCOUNT' | translate }}</h2>
     <button class="add-account-button">
       <i class="pi pi-plus"></i>
-      {{ 'Add Account' | translate }}
+      {{ 'ADD_ACCOUNT_LABEL' | translate }}
     </button>
   </div>
 
@@ -18,3 +18,12 @@
   </div>
 
 </div>
+
+<analayz-corp-generic-modal
+  [(visible)]="showEditModal"
+  header="{{'EDIT_ACCOUNT_LABEL' | translate}}"
+  [style]="{ width: '500px', minHeight: '200px' }"
+  (confirm)="onSaveAccount()"
+>
+  <p *ngIf="showEditModal">Editando</p>
+</analayz-corp-generic-modal>`
