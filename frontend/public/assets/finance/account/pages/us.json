@@ -1,4 +1,9 @@
 {
   "ADD_ACCOUNT_LABEL": "Add account",
-  "EDIT_ACCOUNT_LABEL": "Edit account"
+  "EDIT_ACCOUNT_LABEL": "Edit account",
+  "accountNameLabel": "Account Name",
+  "accountNamePlaceholder": "Enter account name",
+  "accountNameRequired": "Account name is required",
+  "accountSubtitleLabel": "Account Subtitle",
+  "accountSubtitlePlaceholder": "Enter an optional subtitle"
 }

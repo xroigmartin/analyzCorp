@@ -1,4 +1,9 @@
 {
   "ADD_ACCOUNT_LABEL": "Añadir cuenta",
-  "EDIT_ACCOUNT_LABEL": "Editar cuenta"
+  "EDIT_ACCOUNT_LABEL": "Editar cuenta",
+  "accountNameLabel": "Nombre de la cuenta",
+  "accountNamePlaceholder": "Introduce el nombre de la cuenta",
+  "accountNameRequired": "El nombre de la cuenta es obligatorio",
+  "accountSubtitleLabel": "Subtítulo de la cuenta",
+  "accountSubtitlePlaceholder": "Introduce un subtítulo opcional"
 }

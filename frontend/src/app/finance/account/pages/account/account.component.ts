@@ -5,7 +5,9 @@ import {Account} from '../../model/account';
 import {AccountsService} from '../../services/accounts.service';
 import {CardComponent} from '../../../../shared/components/card/card.component';
 import {GenericModalComponent} from '../../../../shared/components/generic-modal/generic-modal.component';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {UpdateAccountDTO} from '../../model/updateAccountDTO';
+import {ApiResponse} from '../../../../shared/model/apiResponse';
 
 @Component({
   selector: 'app-account',
@@ -14,7 +16,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
     NgForOf,
     CardComponent,
     GenericModalComponent,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -28,6 +31,9 @@ export class AccountComponent implements OnInit {
   accountToEdit: Account | null = null;
   showEditModal: boolean = false;
   editForm: FormGroup;
+  saving: boolean = false;
+  successMessageKey: string | null = null;
+  errorMessageKey: string | null = null;
 
   constructor() {
     this.editForm = this.fb.group({
@@ -36,10 +42,10 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCompanies();
+    this.loadAccounts();
   }
 
-  private loadCompanies() {
+  private loadAccounts() {
     this.accountService.getAccounts().subscribe({
       next: (accounts) => {
         this.accounts = accounts;
@@ -53,7 +59,6 @@ export class AccountComponent implements OnInit {
   onEditAccount(accountId: number): void {
     this.accountService.getAccountById(accountId).subscribe({
       next: (account) => {
-        console.log("Edit Account");
         this.accountToEdit = {...account};
         this.editForm.patchValue({
           name: account.name
@@ -74,11 +79,23 @@ export class AccountComponent implements OnInit {
     }
 
     if(this.accountToEdit) {
-      const updated: Account = {
-        ...this.accountToEdit,
+      this.saving = true;
+      const updated: UpdateAccountDTO = {
         name: this.editForm.value.name,
       };
-     this.accountService
+
+     this.accountService.updateAccount(this.accountToEdit.id, updated).subscribe({
+       next: (apiResponse: ApiResponse<Account>):void => {
+         this.loadAccounts();
+         this.showEditModal = false;
+         this.saving = false;
+         this.successMessageKey = 'updateSuccess';
+       },
+       error: () => {
+         this.saving = false;
+         this.errorMessageKey = 'updateError';
+       }
+     })
     }
     this.showEditModal = false;
   }

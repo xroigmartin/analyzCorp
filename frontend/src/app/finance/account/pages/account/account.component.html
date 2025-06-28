@@ -16,7 +16,6 @@
                       (onDelete)="onDeleteAccount(account.id)"
     />
   </div>
-
 </div>
 
 <analayz-corp-generic-modal
@@ -25,5 +24,13 @@
   [style]="{ width: '500px', minHeight: '200px' }"
   (confirm)="onSaveAccount()"
 >
-  <p *ngIf="showEditModal">Editando</p>
-</analayz-corp-generic-modal>`
+  <form [formGroup]="editForm" class="account-form">
+    <div class="form-group">
+      <label for="name">{{ 'accountNameLabel' | translate}}</label>
+      <input id="name" type="text" formControlName="name" placeholder="{{ 'accountNamePlaceholder' | translate }}">
+      <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="error">
+        {{ 'accountNameRequired' | translate }}
+      </div>
+    </div>
+  </form>
+</analayz-corp-generic-modal>
